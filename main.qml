@@ -6,7 +6,7 @@ import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.1
 import "qrc:/Database.js" as DB
 
-
+/*test*/
 Window{
     property  var res;
     id: eRoboWeldSysCheck
@@ -71,6 +71,7 @@ Window{
                                        ctx.clearRect(0,0,canvas.width, canvas.height);
                                        ctx.strokeStyle =theme.primaryColor;
                                         ctx.font="16px Roboto";
+                                        ctx.fillStyle="blue";
                                         ctx.antialiasing=false;
                                        ctx.lineWidth=1.5;
                                        ctx.beginPath();
