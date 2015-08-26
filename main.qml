@@ -1,12 +1,12 @@
-import QtQuick 2.4
+import QtQuick 2.2
 import Material 0.1
 import Material.Extras 0.1
 import WeldSys.APPConfig 1.0
 import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.1
 import "qrc:/Database.js" as DB
+import QtQuick.LocalStorage 2.0
 
-/*test*/
 Window{
     property  var res;
     id: eRoboWeldSysCheck
@@ -14,7 +14,7 @@ Window{
     width:appConfig.screenWidth
     height: appConfig.screenHeight
     theme.primaryColor: "red";
-    theme.accentColor: "red";
+    theme.accentColor: "blue";
     theme.backgroundColor: "yellow"
        APPConfig{
            id:appConfig
@@ -30,38 +30,36 @@ Window{
                 right:parent.right
                 top:parent.top
           }
-                Row{
+                RowLayout{
                     height:24
                     width: parent.width
                         Text{
                             id:appname
                             text:qsTr("  ER-100:便携式MAG焊接机器人系统");
                         }
-                        Icon{ id:brighnessIcon; anchors.right:warnIcon.left;name:"device/brightness_medium" }
-                        Icon{id:warnIcon; name:"awesome/warning" ;anchors.right:exchange.left;}
-                        Icon{id:exchange;name:"awesome/upload";anchors.right:lock.left;}
-                        Icon{id:lock;name:"awesome/lock";anchors.right:accountIcon.left;}
+                        Icon{ id:brighnessIcon;name:"device/brightness_medium" }
+                        Icon{id:warnIcon; name:"awesome/warning" ;}
+                        Icon{id:exchange;name:"awesome/upload";}
+                        Icon{id:lock;name:"awesome/lock";}
                         IconButton{
                             id:accountIcon;
-                            anchors.right:accountname.left;
                              iconName:"awesome/user";
                              color: Theme.lightDark(theme.backgroundColor, Theme.light.iconColor,
                                                                                            Theme.dark.iconColor);
-                             onClicked:  changeuser.show();
+                             onClicked: {changeuser.show();password.enabled=false;password.text=""}
                         }
-                        Text{id:accountname; anchors.right:datetime.left; text:appConfig.currentusername;}
-                        Text{id:datetime ;anchors.right:powerIcon.left;}
-                        Icon{ id:powerIcon; anchors.right:parent.right;anchors.rightMargin: 5;name:"awesome/power_off"}
+                        Text{id:accountname; text:appConfig.currentusername;}
+                        Text{id:datetime ;}
+                        Icon{ id:powerIcon;name:"awesome/power_off"}
                         ThinDivider{anchors.bottom: parent.bottom;}
                 }
+
                 Button{
                     x:150;
                     y:100;
                     width:100;
                     height:80;
-                    text:"sdsadasd"
-                    backgroundColor:"green";
-                    Canvas{
+                /*  Canvas{
                           id:canvas
                           height:80;
                           width: 100;
@@ -98,7 +96,7 @@ Window{
                                         ctx.stroke();
                                        ctx.restore();
                             }
-                    }
+                    }*/
                 }
            }
       Dialog {
@@ -112,6 +110,12 @@ Window{
                   isLandscape: true
               }
       }
+      ListModel{
+            id:usrnamemodel;
+            ListElement{
+            text:"user";
+            }
+      }
       Dialog{
             id:changeuser;
             title:qsTr("更改用户");
@@ -120,38 +124,93 @@ Window{
             negativeButtonText:qsTr("取消");
             positiveButtonText:qsTr("确定");
             positiveButtonEnabled:false;
-            contentMargins: 20;
+            contentMargins: 12;
+            onAccepted: {
+                appConfig.currentusername = changeuserid.selectedText;
+                appConfig.currentusertype = changeuserid.helperText;
+            }
+            onRejected: {
+                changeuserid.helperText = appConfig.currentusertype;
+                 for(var i=0;i<100;i++){
+                     if(accountname.text === usrnamemodel.get(i).text ){
+                            changeuserid.selectedIndex = i;
+                           break;
+                     }
+                 }
+            }
             Rectangle{
                 height:changeuserid.height+3*changeuser.contentMargins+password.height;
                 width:parent.width
-              TextField{
-                       id:changeuserid
-                       anchors.top:parent.top
-                       anchors.topMargin: 10;
+                MenuField{
+                      id:changeuserid
+                      anchors.top:parent.top
                       floatingLabel:true;
                       width: parent.width
-                      placeholderText:qsTr("用户名");
-                      helperText: qsTr("请输入名称");
-                      onAccepted:{
-                             changeuser.positiveButtonEnabled=true;
-                              res=DB.checkusername(changeuserid.text.toString());
+                      placeholderText:qsTr("用户名:");
+                      model:usrnamemodel;
+                      onItemSelected:  {
+                          password.enabled=true;
+                          var data=usrnamemodel.get(index);
+                          DB.db.transaction ( function(tx) {
+                              var result = tx.executeSql("select * from AccountTable where name = " + "\'"+data.text+"\'");
+                              if(result.rows.length === 0) {
+                                     //////////////
+                              }
+                              else{
+                           //     appConfig.currentusername = result.rows.item(0).name;
+                                   appConfig.currentuserpassword = result.rows.item(0).password;
+                                   changeuserid.helperText = result.rows.item(0).type;
+                              }
+                          });
+                          password.text="";
                       }
               }
              TextField{
                         id:password
                         floatingLabel:true;
                         anchors.top:changeuserid.bottom
-                        anchors.topMargin: 28;
+                        anchors.topMargin: 10;
                         width: parent.width
-                        placeholderText:qsTr("密码");
+                        placeholderText:qsTr("密码:");
                         characterLimit: 8;
-
+                        onTextChanged:{
+                                if(password.text=== appConfig.currentuserpassword){
+                                       changeuser.positiveButtonEnabled=true;
+                                       password.helperText=qsTr("密码正确");
+                                }
+                                else{
+                                        changeuser.positiveButtonEnabled=false;
+                                       password.helperText=qsTr("请输入密码...");
+                                }
+                        }
+                        onHasErrorChanged: {
+                            if(password.hasError === true){
+                                 console.log("length changed");
+                                  password.helperText =qsTr( "密码超过最大限制");
+                            }
+                        }
                 }
               }
-      }
-
+        }
       Component.onCompleted: {
             DB.openDatabase();
+            var  name;
+            DB.db.transaction ( function(tx) {
+              var result = tx.executeSql("select * from AccountTable");
+              if(result.rows.length === 0) {
+                     //////////////
+              }
+              else{
+                  for(var i=0;i<result.rows.length;i++){
+                      name = result.rows.item(i).name;
+                      usrnamemodel.append( {"text":name});
+                      if(name === accountname.text){
+                           changeuserid.selectedIndex = i+1;
+                           changeuserid.helperText=result.rows.item(i).type;
+                      }
+                  }
+                   usrnamemodel.remove(0);
+              }
+          });
       }
-
 }

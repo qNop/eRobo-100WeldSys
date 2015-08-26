@@ -4381,13 +4381,13 @@ function checkuserPassword(username,password) {
             error = "username is not exist~"
         }
         else{
-            if(result.rows[1] === password){
+            if(result.rows.item(0).name === password){
                 error="";
             }
             else{
                 error="password is not right";
+                 console.log(error);
             }
-
         }
     });
 }

@@ -166,7 +166,7 @@ void APPConfig::setcurrentusertype(QString usertype){
     Set->setValue("Current_User_Type",usertype);
     Set->endGroup();
     emit currentusertypeChanged(usertype);
-   qDebug() <<"current password change";
+   qDebug() <<"current type change";
 }
 /*
  ************************************************************************************当前用户类型
