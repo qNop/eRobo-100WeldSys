@@ -19,6 +19,8 @@ HEADERS += \
     WeldAPI/appconfig.h \
     WeldAPI/gloabldefine.h
 
+DISTFILES +=
+
 
 
 

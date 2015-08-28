@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<APPConfig>("WeldSys.APPConfig",1,0,"APPConfig");
     QQmlApplicationEngine engine;
     engine.setOfflineStoragePath("offlineSrorage");
-    qDebug()<< engine.offlineStoragePath();
+    qDebug()<<engine.offlineStoragePath();
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     return app.exec();
 }

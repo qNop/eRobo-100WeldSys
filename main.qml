@@ -9,6 +9,7 @@ import QtQuick.LocalStorage 2.0
 
 Window{
     property  var res;
+
     id: eRoboWeldSysCheck
     visible:true
     width:appConfig.screenWidth
@@ -16,15 +17,117 @@ Window{
     theme.primaryColor: "red";
     theme.accentColor: "blue";
     theme.backgroundColor: "yellow"
-       APPConfig{
+    APPConfig{
            id:appConfig
        }
-       Timer{
+    Timer{
            interval: 500; running: true; repeat: true
            onTriggered: datetime.text = Qt.formatDateTime(new Date(), "yyyy-MM-dd dddd hh:mm:ss")
        }
-      Rectangle{
+    OverlayLayer{
+        id:dialogOverlayLayer
+        objectName: "dialogOverlayLayer"
+    Dialog {
+              id: landscapeDatePickerDialog
+              hasActions: true
+              contentMargins: 0
+              floatingActions: true
+              DatePicker {
+                  frameVisible: false
+                  dayAreaBottomMargin : Units.dp(48)
+                  isLandscape: true
+              }
+      }
+    Dialog{
+         ListModel{
+                id:usrnamemodel;
+                ListElement{
+                text:"user";
+                }
+           }
+            id:changeuserDialog;
+            title:qsTr("更改用户");
+            hasActions: true;
+            floatingActions: false;
+            negativeButtonText:qsTr("取消");
+            positiveButtonText:qsTr("确定");
+            positiveButtonEnabled:false;
+            contentMargins: 12;
+            onAccepted: {
+                appConfig.currentusername = changeuserFeildtext.selectedText;
+                appConfig.currentusertype = changeuserFeildtext.helperText;
+            }
+            onRejected: {
+                changeuserFeildtext.helperText = appConfig.currentusertype;
+                 for(var i=0;i<100;i++){
+                     if(accountname.text === usrnamemodel.get(i).text ){
+                            changeuserFeildtext.selectedIndex = i;
+                           break;
+                     }
+                 }
+            }
+            Rectangle{
+                height:changeuserFeildtext.height+3*changeuserDialog.contentMargins+password.height;
+                width:parent.width
+                anchors{
+                    left:parent.left;
+                    leftMargin: 10;
+                }
+                MenuField{
+                      id:changeuserFeildtext
+                      anchors.top:parent.top
+                      floatingLabel:true;
+                      width: parent.width-20;
+                      placeholderText:qsTr("用户名:");
+                      model:usrnamemodel;
+                      onItemSelected:  {
+                          password.enabled=true;
+                          var data=usrnamemodel.get(index);
+                          DB.db.transaction ( function(tx) {
+                              var result = tx.executeSql("select * from AccountTable where name = " + "\'"+data.text+"\'");
+                              if(result.rows.length === 0) {
+                                     //////////////
+                              }
+                              else{
+                                   appConfig.currentuserpassword = result.rows.item(0).password;
+                                   changeuserFeildtext.helperText = result.rows.item(0).type;
+                              }
+                          });
+                          password.text="";
+                      }
+              }
+             TextField{
+                        id:password
+                        floatingLabel:true;
+                        anchors.top:changeuserFeildtext.bottom
+                        anchors.topMargin: 10;
+                        width: parent.width-20;
+                        placeholderText:qsTr("密码:");
+                        characterLimit: 8;
+                        onTextChanged:{
+                                if(password.text=== appConfig.currentuserpassword){
+                                       changeuserDialog.positiveButtonEnabled=true;
+                                       password.helperText.color="green";
+                                       password.helperText=qsTr("密码正确");
+                                }
+                                else{
+                                        changeuserDialog.positiveButtonEnabled=false;
+                                       password.helperText=qsTr("请输入密码...");
+                                }
+                        }
+                        onHasErrorChanged: {
+                            if(password.hasError === true){
+                                 console.log("length changed");
+                                  password.helperText =qsTr( "密码超过最大限制");
+                            }
+                        }
+                }
+              }
+        }
+    }
+    OverlayLayer{
           id:window
+
           anchors{
                 left:parent.left
                 right:parent.right
@@ -46,20 +149,20 @@ Window{
                              iconName:"awesome/user";
                              color: Theme.lightDark(theme.backgroundColor, Theme.light.iconColor,
                                                                                            Theme.dark.iconColor);
-                             onClicked: {changeuser.show();password.enabled=false;password.text=""}
+                             onClicked: {changeuserDialog.show();password.enabled=false;password.text=""}
                         }
                         Text{id:accountname; text:appConfig.currentusername;}
                         Text{id:datetime ;}
                         Icon{ id:powerIcon;name:"awesome/power_off"}
                         ThinDivider{anchors.bottom: parent.bottom;}
                 }
-
                 Button{
+                    id:bb;
                     x:150;
                     y:100;
                     width:100;
                     height:80;
-                /*  Canvas{
+                  Canvas{
                           id:canvas
                           height:80;
                           width: 100;
@@ -96,103 +199,21 @@ Window{
                                         ctx.stroke();
                                        ctx.restore();
                             }
-                    }*/
+                    }
+                }
+                Text{
+                    x:250
+                    y:200
+                    text:changeuserDialog.overlayLayer;
+                }
+                Text{
+                    x:250;
+                    y:220;
+                    text:;
                 }
            }
-      Dialog {
-              id: landscapeDatePickerDialog
-              hasActions: true
-              contentMargins: 0
-              floatingActions: true
-              DatePicker {
-                  frameVisible: false
-                  dayAreaBottomMargin : Units.dp(48)
-                  isLandscape: true
-              }
-      }
-      ListModel{
-            id:usrnamemodel;
-            ListElement{
-            text:"user";
-            }
-      }
-      Dialog{
-            id:changeuser;
-            title:qsTr("更改用户");
-            hasActions: true;
-            floatingActions: false;
-            negativeButtonText:qsTr("取消");
-            positiveButtonText:qsTr("确定");
-            positiveButtonEnabled:false;
-            contentMargins: 12;
-            onAccepted: {
-                appConfig.currentusername = changeuserid.selectedText;
-                appConfig.currentusertype = changeuserid.helperText;
-            }
-            onRejected: {
-                changeuserid.helperText = appConfig.currentusertype;
-                 for(var i=0;i<100;i++){
-                     if(accountname.text === usrnamemodel.get(i).text ){
-                            changeuserid.selectedIndex = i;
-                           break;
-                     }
-                 }
-            }
-            Rectangle{
-                height:changeuserid.height+3*changeuser.contentMargins+password.height;
-                width:parent.width
-                MenuField{
-                      id:changeuserid
-                      anchors.top:parent.top
-                      floatingLabel:true;
-                      width: parent.width
-                      placeholderText:qsTr("用户名:");
-                      model:usrnamemodel;
-                      onItemSelected:  {
-                          password.enabled=true;
-                          var data=usrnamemodel.get(index);
-                          DB.db.transaction ( function(tx) {
-                              var result = tx.executeSql("select * from AccountTable where name = " + "\'"+data.text+"\'");
-                              if(result.rows.length === 0) {
-                                     //////////////
-                              }
-                              else{
-                           //     appConfig.currentusername = result.rows.item(0).name;
-                                   appConfig.currentuserpassword = result.rows.item(0).password;
-                                   changeuserid.helperText = result.rows.item(0).type;
-                              }
-                          });
-                          password.text="";
-                      }
-              }
-             TextField{
-                        id:password
-                        floatingLabel:true;
-                        anchors.top:changeuserid.bottom
-                        anchors.topMargin: 10;
-                        width: parent.width
-                        placeholderText:qsTr("密码:");
-                        characterLimit: 8;
-                        onTextChanged:{
-                                if(password.text=== appConfig.currentuserpassword){
-                                       changeuser.positiveButtonEnabled=true;
-                                       password.helperText=qsTr("密码正确");
-                                }
-                                else{
-                                        changeuser.positiveButtonEnabled=false;
-                                       password.helperText=qsTr("请输入密码...");
-                                }
-                        }
-                        onHasErrorChanged: {
-                            if(password.hasError === true){
-                                 console.log("length changed");
-                                  password.helperText =qsTr( "密码超过最大限制");
-                            }
-                        }
-                }
-              }
-        }
-      Component.onCompleted: {
+
+    Component.onCompleted: {
             DB.openDatabase();
             var  name;
             DB.db.transaction ( function(tx) {
@@ -205,8 +226,8 @@ Window{
                       name = result.rows.item(i).name;
                       usrnamemodel.append( {"text":name});
                       if(name === accountname.text){
-                           changeuserid.selectedIndex = i+1;
-                           changeuserid.helperText=result.rows.item(i).type;
+                           changeuserFeildtext.selectedIndex = i+1;
+                           changeuserFeildtext.helperText=result.rows.item(i).type;
                       }
                   }
                    usrnamemodel.remove(0);
@@ -214,3 +235,4 @@ Window{
           });
       }
 }
+

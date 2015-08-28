@@ -1,7 +1,7 @@
 [eRoboWeldSysAppConfig]
-Current_User_Name=Admin
-Current_User_PassWord=5
-Current_User_Type=SuperUser
+Current_User_Name=2
+Current_User_PassWord=2
+Current_User_Type=User
 Last_User=SuperUser
 Screen_Height=480
 Screen_Width=640

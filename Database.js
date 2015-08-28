@@ -4343,66 +4343,6 @@ function gettablelegth(table) {
     return error;
 }
 
-function checkusername(username) {
-    var str;
-    var error;
-    if (db === null){
-        return error = "database bad";
-    }
-   // str = "select * from AccountTable where name = " + "\'"+username+"\'";
-    str ="select * from AccountTable"
-    console.log(str);
-    db.transaction( function(tx) {
-        var result = tx.executeSql(str);
-        if(result.rows.length === 0) {
-            console.log("username is not exist~");
-            error = "username is not exist~";
-        }
-        else{
-         console.log(result.rows.length);
-            for(var i=0;i<result.rows.length;i++){
-                 console.log(result.rows.item(i).name);
-            }
-        }
-    });
-    return result;
-}
 
 
-function checkuserPassword(username,password) {
-    var str;
-    var error;
-    str = "select * from AccountTable where name = " + "\'"+username+"\'";
-    console.log(str);
-    db.transaction( function(tx) {
-        var result = tx.executeSql(str);
-        if(result.rows.length === 0) {
-            console.log("username is not exist~");
-            error = "username is not exist~"
-        }
-        else{
-            if(result.rows.item(0).name === password){
-                error="";
-            }
-            else{
-                error="password is not right";
-                 console.log(error);
-            }
-        }
-    });
-}
-
-function storeData() {
-    if (db !== null) return;
-    db.transaction( function(tx) {
-        var result = tx.executeSql('SELECT * from data where name = "crazy"');
-        // prepare object to be stored as JSON
-        var obj = { x: crazy.x, y: crazy.y };
-        if(result.rows.length === 1) {// use update
-            result = tx.executeSql('UPDATE data set value=? where name="crazy"', [JSON.stringify(obj)]);
-        } else { // use insert
-            result = tx.executeSql('INSERT INTO data VALUES (?,?)', ['crazy', JSON.stringify(obj)]);
-        }
-    });
-}
 
