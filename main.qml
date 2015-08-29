@@ -23,7 +23,7 @@ Window{
            interval: 500; running: true; repeat: true
            onTriggered: datetime.text = Qt.formatDateTime(new Date(), "yyyy-MM-dd dddd hh:mm:ss")
        }
-    Dialog {
+/*    Dialog {
               id: landscapeDatePickerDialog
               hasActions: true
               contentMargins: 0
@@ -33,94 +33,8 @@ Window{
                   dayAreaBottomMargin : Units.dp(48)
                   isLandscape: true
               }
-      }
-    Dialog{
-         ListModel{
-                id:usrnamemodel;
-                ListElement{
-                text:"user";
-                }
-           }
-            id:changeuserDialog;
-            title:qsTr("更改用户");
-            hasActions: true;
-            floatingActions: false;
-            negativeButtonText:qsTr("取消");
-            positiveButtonText:qsTr("确定");
-            positiveButtonEnabled:false;
-            contentMargins: 12;
-            onAccepted: {
-                appConfig.currentusername = changeuserFeildtext.selectedText;
-                appConfig.currentusertype = changeuserFeildtext.helperText;
-            }
-            onRejected: {
-                changeuserFeildtext.helperText = appConfig.currentusertype;
-                 for(var i=0;i<100;i++){
-                     if(accountname.text === usrnamemodel.get(i).text ){
-                            changeuserFeildtext.selectedIndex = i;
-                           break;
-                     }
-                 }
-            }
-            Rectangle{
-                height:changeuserFeildtext.height+3*changeuserDialog.contentMargins+password.height;
-                width:parent.width
-                anchors{
-                    left:parent.left;
-                    leftMargin: 10;
-                }
-                MenuField{
-                      id:changeuserFeildtext
-                      anchors.top:parent.top
-                      floatingLabel:true;
-                      width: parent.width-20;
-                      placeholderText:qsTr("用户名:");
-                      model:usrnamemodel;
-                      onItemSelected:  {
-                          password.enabled=true;
-                          var data=usrnamemodel.get(index);
-                          DB.db.transaction ( function(tx) {
-                              var result = tx.executeSql("select * from AccountTable where name = " + "\'"+data.text+"\'");
-                              if(result.rows.length === 0) {
-                                     //////////////
-                              }
-                              else{
-                                   appConfig.currentuserpassword = result.rows.item(0).password;
-                                   changeuserFeildtext.helperText = result.rows.item(0).type;
-                              }
-                          });
-                          password.text="";
-                      }
-              }
-             TextField{
-                        id:password
-                        floatingLabel:true;
-                        anchors.top:changeuserFeildtext.bottom
-                        anchors.topMargin: 10;
-                        width: parent.width-20;
-                        placeholderText:qsTr("密码:");
-                        characterLimit: 8;
-                        onTextChanged:{
-                                if(password.text=== appConfig.currentuserpassword){
-                                       changeuserDialog.positiveButtonEnabled=true;
-                                       password.helperText.color="green";
-                                       password.helperText=qsTr("密码正确");
-                                }
-                                else{
-                                        changeuserDialog.positiveButtonEnabled=false;
-                                       password.helperText=qsTr("请输入密码...");
-                                }
-                        }
-                        onHasErrorChanged: {
-                            if(password.hasError === true){
-                                 console.log("length changed");
-                                  password.helperText =qsTr( "密码超过最大限制");
-                            }
-                        }
-                }
-              }
-        }
-    Rectangle{
+      }*/
+   Rectangle{
           id:window
           anchors{
                 left:parent.left
@@ -170,21 +84,43 @@ Window{
                   anchors.top:titlebar.bottom
                   anchors.right:parent.right
                   anchors.left:parent.left
-                  backgroundColor:theme.backgroundColor
+                  backgroundColor:Palette.colors["grey"]["200"];
                    Card{
                     id:bb;
                     anchors.left:parent.left
-                    anchors.leftMargin: 5;
+                    anchors.leftMargin: 10;
                     anchors.top:parent.top
-                    anchors.topMargin: 5;
+                    anchors.topMargin: 10;
                     width:100;
                     height:140;
-                    elevation: 2;
+                    elevation: 1;
                     radius: 10;
+                    Text{
+                        id:text1
+                        anchors.top:parent.top
+                        anchors.horizontalCenter: parent.horizontalCenter
+                            font.pixelSize: 18;
+                            text:"平焊"
+                    }
+                    Text{
+                        id:text2
+                        anchors.top:text1.bottom
+                        anchors.horizontalCenter: parent.horizontalCenter
+                            font.pixelSize: 14;
+                            text:"单边V型坡口"
+                    }
+                    Text{
+                        anchors.top:text2.bottom
+                            font.pixelSize: 14;
+                             anchors.horizontalCenter: parent.horizontalCenter
+                            text:"T接头(I)"
+                    }
                   Canvas{
-                          id:canvas
-                          height:140;
-                          width: 100;
+                          id:canvas             
+                          anchors.left:parent.left
+                          anchors.bottom: parent.bottom
+                          width:100;
+                          height:80;
                             onPaint: {
                                  var ctx = getContext("2d");
                                        ctx.save();
@@ -192,7 +128,7 @@ Window{
                                        ctx.strokeStyle ="black";
                                         ctx.fillStyle="blue";
                                         ctx.antialiasing=false;
-                                       ctx.lineWidth=1.5;
+                                       ctx.lineWidth=1;
                                        ctx.beginPath();
                                        ctx.moveTo(10,10);
                                        ctx.lineTo(20,10);
@@ -210,29 +146,106 @@ Window{
                               //  ctx.fill();
                                        ctx.stroke();
                                         ctx.beginPath();
-                                        ctx.moveTo(44,25);
-                                        ctx.lineTo(90,25);
+                                        ctx.moveTo(44,30);
+                                        ctx.lineTo(90,30);
                                         ctx.lineTo(90,50);
                                         ctx.lineTo(30,50);
-                                        ctx.closePath();
-                                ctx.font="18px Roboto";
-                                        ctx.text("平焊",30,95);
-                                 ctx.font="14px Roboto";
-                                        ctx.text("单边V型坡口",10,115);
-                                       ctx.text("T接头",25,135);
+                                        ctx.closePath();                          
                                         ctx.stroke();
                                       //  ctx.fill();
                                        ctx.restore();
                             }
                     }
                 }
-                   Text{
-                        x:250
-                        y:200
-                        text:changeuserDialog.overlayLayer;
-                }
+
                 }
            }
+   Dialog{
+        ListModel{
+               id:usrnamemodel;
+               ListElement{
+               text:"user";
+               }
+          }
+           id:changeuserDialog;
+           title:qsTr("更改用户");
+           hasActions: true;
+           floatingActions: false;
+           negativeButtonText:qsTr("取消");
+           positiveButtonText:qsTr("确定");
+           positiveButtonEnabled:false;
+           contentMargins: 12;
+           onAccepted: {
+               appConfig.currentusername = changeuserFeildtext.selectedText;
+               appConfig.currentusertype = changeuserFeildtext.helperText;
+           }
+           onRejected: {
+               changeuserFeildtext.helperText = appConfig.currentusertype;
+                for(var i=0;i<100;i++){
+                    if(accountname.text === usrnamemodel.get(i).text ){
+                           changeuserFeildtext.selectedIndex = i;
+                          break;
+                    }
+                }
+           }
+           Rectangle{
+               height:changeuserFeildtext.height+3*changeuserDialog.contentMargins+password.height;
+               width:parent.width
+               anchors{
+                   left:parent.left;
+                   leftMargin: 10;
+               }
+               MenuField{
+                     id:changeuserFeildtext
+                     anchors.top:parent.top
+                     floatingLabel:true;
+                     width: parent.width-20;
+                     placeholderText:qsTr("用户名:");
+                     model:usrnamemodel;
+                     onItemSelected:  {
+                         password.enabled=true;
+                         var data=usrnamemodel.get(index);
+                         DB.db.transaction ( function(tx) {
+                             var result = tx.executeSql("select * from AccountTable where name = " + "\'"+data.text+"\'");
+                             if(result.rows.length === 0) {
+                                    //////////////
+                             }
+                             else{
+                                  appConfig.currentuserpassword = result.rows.item(0).password;
+                                  changeuserFeildtext.helperText = result.rows.item(0).type;
+                             }
+                         });
+                         password.text="";
+                     }
+             }
+            TextField{
+                       id:password
+                       floatingLabel:true;
+                       anchors.top:changeuserFeildtext.bottom
+                       anchors.topMargin: 10;
+                       width: parent.width-20;
+                       placeholderText:qsTr("密码:");
+                       characterLimit: 8;
+                       onTextChanged:{
+                               if(password.text=== appConfig.currentuserpassword){
+                                      changeuserDialog.positiveButtonEnabled=true;
+                                      password.helperText.color="green";
+                                      password.helperText=qsTr("密码正确");
+                               }
+                               else{
+                                       changeuserDialog.positiveButtonEnabled=false;
+                                      password.helperText=qsTr("请输入密码...");
+                               }
+                       }
+                       onHasErrorChanged: {
+                           if(password.hasError === true){
+                                console.log("length changed");
+                                 password.helperText =qsTr( "密码超过最大限制");
+                           }
+                       }
+               }
+             }
+       }
 
     Component.onCompleted: {
             DB.openDatabase();
