@@ -4,19 +4,18 @@ import Material.Extras 0.1
 import WeldSys.APPConfig 1.0
 import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.1
-import "qrc:/Database.js" as DB
 import QtQuick.LocalStorage 2.0
+import "qrc:/Database.js" as DB
 
 Window{
     property  var res;
-
     id: eRoboWeldSysCheck
     visible:true
     width:appConfig.screenWidth
     height: appConfig.screenHeight
     theme.primaryColor: "red";
-    theme.accentColor: "blue";
-    theme.backgroundColor: "yellow"
+    theme.accentColor: "yellow";
+    theme.backgroundColor: "gray"
     APPConfig{
            id:appConfig
        }
@@ -24,9 +23,6 @@ Window{
            interval: 500; running: true; repeat: true
            onTriggered: datetime.text = Qt.formatDateTime(new Date(), "yyyy-MM-dd dddd hh:mm:ss")
        }
-    OverlayLayer{
-        id:dialogOverlayLayer
-        objectName: "dialogOverlayLayer"
     Dialog {
               id: landscapeDatePickerDialog
               hasActions: true
@@ -124,54 +120,76 @@ Window{
                 }
               }
         }
-    }
-    OverlayLayer{
+    Rectangle{
           id:window
-
           anchors{
                 left:parent.left
                 right:parent.right
                 top:parent.top
+                bottom:parent.bottom;
           }
-                RowLayout{
+          View{
+                   id:titlebar
                     height:24
+                    elevation: 1;
                     width: parent.width
-                        Text{
+                    backgroundColor: theme.accentColor
+                    Text{
                             id:appname
-                            text:qsTr("  ER-100:便携式MAG焊接机器人系统");
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.left
+                            anchors.leftMargin: 5;
+                            text:qsTr("ER-100:便携式MAG焊接机器人系统");
+                            font.pixelSize: 14;
                         }
-                        Icon{ id:brighnessIcon;name:"device/brightness_medium" }
-                        Icon{id:warnIcon; name:"awesome/warning" ;}
-                        Icon{id:exchange;name:"awesome/upload";}
-                        Icon{id:lock;name:"awesome/lock";}
+                    RowLayout{
+                            height:parent.height
+                            width:400;
+                            anchors.right:parent.right
+                        Icon{ id:brighnessIcon;name:"device/brightness_medium";anchors.right:warnIcon.left }
+                        Icon{id:warnIcon; name:"awesome/warning" ;anchors.right:exchange.left}
+                        Icon{id:exchange;name:"awesome/upload";anchors.right:lock.left}
+                        Icon{id:lock;name:"awesome/lock"; anchors.right:accountIcon.left}
                         IconButton{
                             id:accountIcon;
                              iconName:"awesome/user";
+                             anchors.right:accountname.left
                              color: Theme.lightDark(theme.backgroundColor, Theme.light.iconColor,
                                                                                            Theme.dark.iconColor);
                              onClicked: {changeuserDialog.show();password.enabled=false;password.text=""}
+
                         }
-                        Text{id:accountname; text:appConfig.currentusername;}
-                        Text{id:datetime ;}
-                        Icon{ id:powerIcon;name:"awesome/power_off"}
-                        ThinDivider{anchors.bottom: parent.bottom;}
+                        Text{id:accountname; text:appConfig.currentusername;anchors.right:datetime.left}
+                        Text{id:datetime;anchors.right:powerIcon.left}
+                        Icon{ id:powerIcon;name:"awesome/power_off";anchors.right:parent.right;anchors.rightMargin: 5}
+                        }
                 }
-                Button{
+              View{
+
+                  anchors.bottom: parent.bottom
+                  anchors.top:titlebar.bottom
+                  anchors.right:parent.right
+                  anchors.left:parent.left
+                  backgroundColor:theme.backgroundColor
+                   Card{
                     id:bb;
-                    x:150;
-                    y:100;
+                    anchors.left:parent.left
+                    anchors.leftMargin: 5;
+                    anchors.top:parent.top
+                    anchors.topMargin: 5;
                     width:100;
-                    height:80;
+                    height:140;
+                    elevation: 2;
+                    radius: 10;
                   Canvas{
                           id:canvas
-                          height:80;
+                          height:140;
                           width: 100;
                             onPaint: {
                                  var ctx = getContext("2d");
                                        ctx.save();
                                        ctx.clearRect(0,0,canvas.width, canvas.height);
-                                       ctx.strokeStyle =theme.primaryColor;
-                                        ctx.font="16px Roboto";
+                                       ctx.strokeStyle ="black";
                                         ctx.fillStyle="blue";
                                         ctx.antialiasing=false;
                                        ctx.lineWidth=1.5;
@@ -181,6 +199,7 @@ Window{
                                        ctx.lineTo(20,70);
                                        ctx.lineTo(10,70);
                                        ctx.closePath();
+                           //     ctx.fill();
                                        ctx.stroke();
                                        ctx.beginPath();
                                        ctx.moveTo(20,50);
@@ -188,6 +207,7 @@ Window{
                                        ctx.lineTo(44,60);
                                        ctx.lineTo(20,60);
                                        ctx.closePath();
+                              //  ctx.fill();
                                        ctx.stroke();
                                         ctx.beginPath();
                                         ctx.moveTo(44,25);
@@ -195,21 +215,22 @@ Window{
                                         ctx.lineTo(90,50);
                                         ctx.lineTo(30,50);
                                         ctx.closePath();
-                                        ctx.text("god",40,70);
+                                ctx.font="18px Roboto";
+                                        ctx.text("平焊",30,95);
+                                 ctx.font="14px Roboto";
+                                        ctx.text("单边V型坡口",10,115);
+                                       ctx.text("T接头",25,135);
                                         ctx.stroke();
+                                      //  ctx.fill();
                                        ctx.restore();
                             }
                     }
                 }
-                Text{
-                    x:250
-                    y:200
-                    text:changeuserDialog.overlayLayer;
+                   Text{
+                        x:250
+                        y:200
+                        text:changeuserDialog.overlayLayer;
                 }
-                Text{
-                    x:250;
-                    y:220;
-                    text:;
                 }
            }
 
