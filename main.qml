@@ -84,17 +84,18 @@ Window{
                   anchors.top:titlebar.bottom
                   anchors.right:parent.right
                   anchors.left:parent.left
-                  backgroundColor:Palette.colors["grey"]["200"];
+                  backgroundColor:Palette.colors["grey"]["300"];
                    Card{
                     id:bb;
+                     backgroundColor:Palette.colors["red"]["500"];
                     anchors.left:parent.left
                     anchors.leftMargin: 10;
                     anchors.top:parent.top
                     anchors.topMargin: 10;
                     width:100;
                     height:140;
-                    elevation: 1;
-                    radius: 10;
+                    elevation: 2;
+                    radius: 4;
                     Text{
                         id:text1
                         anchors.top:parent.top
@@ -157,7 +158,33 @@ Window{
                             }
                     }
                 }
-
+                    Card{
+                        x:10;
+                        y:155;
+                        elevation: 2;
+                        radius: 4;
+                        width: 100;
+                        height:90;
+                        backgroundColor:Palette.colors["green"]["500"];
+                    }
+                    Card{
+                        x:10;
+                       y:255;
+                        elevation: 2;
+                        radius: 4;
+                        width: 100;
+                        height: 90;
+                        backgroundColor:Palette.colors["amber"]["500"];
+                    }
+                    Card{
+                        x:10;
+                        y:355;
+                        elevation: 2;
+                        radius: 4;
+                        width: 100;
+                        height: 90;
+                        backgroundColor:Palette.colors["lime"]["500"];
+                    }
                 }
            }
    Dialog{
