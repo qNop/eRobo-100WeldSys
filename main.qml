@@ -9,7 +9,7 @@ import "qrc:/Database.js" as DB
 
 Window{
     property  var res;
-    id: eRoboWeldSysCheck
+    id: eRoboWeldSys
     visible:true
     width:appConfig.screenWidth
     height: appConfig.screenHeight
@@ -45,7 +45,7 @@ Window{
           View{
                    id:titlebar
                     height:24
-                    elevation: 1;
+                    elevation: 4;
                     width: parent.width
                     backgroundColor: theme.accentColor
                     Text{
@@ -78,40 +78,44 @@ Window{
                         Icon{ id:powerIcon;name:"awesome/power_off";anchors.right:parent.right;anchors.rightMargin: 5}
                         }
                 }
-              View{
 
+              View{
+                  id:background
                   anchors.bottom: parent.bottom
                   anchors.top:titlebar.bottom
                   anchors.right:parent.right
                   anchors.left:parent.left
-                  backgroundColor:Palette.colors["grey"]["300"];
+                  backgroundColor:Palette.colors["grey"]["200"];
+                  ColumnLayout{
+                      id:navgation
+                       anchors.left:parent.left
+                        anchors.leftMargin: 10;
+                        anchors.top:parent.top
+                        anchors.topMargin: 10;
+                        spacing: 10
                    Card{
-                    id:bb;
-                     backgroundColor:Palette.colors["red"]["500"];
-                    anchors.left:parent.left
-                    anchors.leftMargin: 10;
-                    anchors.top:parent.top
-                    anchors.topMargin: 10;
+                    id:groove;
+                    backgroundColor:Palette.colors["red"]["500"];
                     width:100;
                     height:140;
-                    elevation: 2;
+                    elevation: 1;
                     radius: 4;
                     Text{
-                        id:text1
+                        id:groovelocation
                         anchors.top:parent.top
                         anchors.horizontalCenter: parent.horizontalCenter
                             font.pixelSize: 18;
                             text:"平焊"
                     }
                     Text{
-                        id:text2
-                        anchors.top:text1.bottom
+                        id:groovetype
+                        anchors.top:groovelocation.bottom
                         anchors.horizontalCenter: parent.horizontalCenter
                             font.pixelSize: 14;
                             text:"单边V型坡口"
                     }
                     Text{
-                        anchors.top:text2.bottom
+                        anchors.top:groovetype.bottom
                             font.pixelSize: 14;
                              anchors.horizontalCenter: parent.horizontalCenter
                             text:"T接头(I)"
@@ -158,34 +162,44 @@ Window{
                             }
                     }
                 }
-                    Card{
-                        x:10;
-                        y:155;
-                        elevation: 2;
-                        radius: 4;
+                   Card{
+                       id:last
+                        elevation: 5;
+                        radius: 5;
                         width: 100;
-                        height:90;
+                        height:88;
                         backgroundColor:Palette.colors["green"]["500"];
                     }
-                    Card{
-                        x:10;
-                       y:255;
-                        elevation: 2;
-                        radius: 4;
+                   Card{
+                        elevation: 5;
+                        radius: 5;
                         width: 100;
-                        height: 90;
+                        height: last.height;
                         backgroundColor:Palette.colors["amber"]["500"];
                     }
-                    Card{
-                        x:10;
-                        y:355;
-                        elevation: 2;
-                        radius: 4;
+                   Card{
+
+                        elevation: 5;
+                        radius: 5;
                         width: 100;
-                        height: 90;
+                        height: last.height;
                         backgroundColor:Palette.colors["lime"]["500"];
                     }
-                }
+                      }
+                  Card{
+                       anchors.right: parent.right
+                       anchors.rightMargin: 10
+                       anchors.top:parent.top
+                       anchors.topMargin: 10
+                       anchors.left: navgation.right
+                       anchors.leftMargin: 10
+                       anchors.bottom: parent.bottom
+                       anchors.bottomMargin: 10
+                       elevation: 1;
+                       radius: 5;
+                       backgroundColor:Palette.colors["lime"]["100"];
+                   }
+                  }
            }
    Dialog{
         ListModel{
