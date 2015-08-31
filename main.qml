@@ -16,9 +16,7 @@ Window{
     theme.primaryColor: "red";
     theme.accentColor: "yellow";
     theme.backgroundColor: "gray"
-    APPConfig{
-           id:appConfig
-       }
+    APPConfig{ id:appConfig}
     Timer{
            interval: 500; running: true; repeat: true
            onTriggered: datetime.text = Qt.formatDateTime(new Date(), "yyyy-MM-dd dddd hh:mm:ss")
@@ -36,88 +34,42 @@ Window{
       }*/
    Rectangle{
           id:window
-          anchors{
-                left:parent.left
-                right:parent.right
-                top:parent.top
-                bottom:parent.bottom;
-          }
+          anchors{left:parent.left;right:parent.right;top:parent.top;bottom:parent.bottom;}
           View{
-                   id:titlebar
-                    height:24
-                    elevation: 4;
-                    width: parent.width
-                    backgroundColor: theme.accentColor
-                    Text{
-                            id:appname
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.left: parent.left
-                            anchors.leftMargin: 5;
-                            text:qsTr("ER-100:便携式MAG焊接机器人系统");
-                            font.pixelSize: 14;
+                    id:titlebar;height:24;elevation: 10;width: parent.width;backgroundColor: theme.accentColor
+                    Text{id:appname;anchors.verticalCenter: parent.verticalCenter;anchors.left: parent.left;anchors.leftMargin: 5;
+                            text:qsTr("ER-100:便携式MAG焊接机器人系统");font.pixelSize: 14;
                         }
                     RowLayout{
-                            height:parent.height
-                            width:400;
-                            anchors.right:parent.right
+                        height:parent.height;  width:400; anchors.right:parent.right;
                         Icon{ id:brighnessIcon;name:"device/brightness_medium";anchors.right:warnIcon.left }
                         Icon{id:warnIcon; name:"awesome/warning" ;anchors.right:exchange.left}
                         Icon{id:exchange;name:"awesome/upload";anchors.right:lock.left}
                         Icon{id:lock;name:"awesome/lock"; anchors.right:accountIcon.left}
-                        IconButton{
-                            id:accountIcon;
-                             iconName:"awesome/user";
-                             anchors.right:accountname.left
-                             color: Theme.lightDark(theme.backgroundColor, Theme.light.iconColor,
-                                                                                           Theme.dark.iconColor);
+                        IconButton{ id:accountIcon;iconName:"awesome/user";anchors.right:accountname.left
+                             color: Theme.lightDark(theme.backgroundColor, Theme.light.iconColor, Theme.dark.iconColor);
                              onClicked: {changeuserDialog.show();password.enabled=false;password.text=""}
-
                         }
                         Text{id:accountname; text:appConfig.currentusername;anchors.right:datetime.left}
                         Text{id:datetime;anchors.right:powerIcon.left}
                         Icon{ id:powerIcon;name:"awesome/power_off";anchors.right:parent.right;anchors.rightMargin: 5}
                         }
                 }
-
               View{
                   id:background
-                  anchors.bottom: parent.bottom
-                  anchors.top:titlebar.bottom
-                  anchors.right:parent.right
-                  anchors.left:parent.left
-                  backgroundColor:Palette.colors["grey"]["200"];                     
+                  anchors{bottom:parent.bottom;top:titlebar.bottom;right:parent.right;left:parent.left}
+                  backgroundColor:Palette.colors["grey"]["200"];
                    Card{
                     id:groove;
-                    anchors.left:parent.left
-                    anchors.leftMargin: 10;
-                    anchors.top:parent.top
-                    anchors.topMargin: 10;
-                    backgroundColor:Palette.colors["red"]["500"];
-                    width:100;
-                    height:140;
-                    elevation: 1;
-                    radius: 4;
-                    Text{
-                        id:groovelocation
-                        anchors.top:parent.top
-                        anchors.horizontalCenter: parent.horizontalCenter
-                            font.pixelSize: 18;
-                            text:"平焊"
-                    }
-                    Text{
-                        id:groovetype
-                        anchors.top:groovelocation.bottom
-                        anchors.horizontalCenter: parent.horizontalCenter
-                            font.pixelSize: 14;
-                            text:"单边V型坡口"
-                    }
-                    Text{
-                        anchors.top:groovetype.bottom
-                            font.pixelSize: 14;
-                             anchors.horizontalCenter: parent.horizontalCenter
-                            text:"T接头(I)"
-                    }
-                  Canvas{
+                    anchors{left:parent.left;leftMargin: 10;top:parent.top;topMargin: 10;}
+                    width:100;height:140;elevation: 1; radius: 4; backgroundColor:Palette.colors["red"]["500"];
+                    Text{ id:grooveposition;font.pixelSize: 18;text:"平焊";
+                        anchors{top:parent.top;horizontalCenter: parent.horizontalCenter} }
+                    Text{id:groovetype;font.pixelSize: 14;text:"单边V型坡口";
+                            anchors{top:grooveposition.bottom;horizontalCenter: parent.horizontalCenter} }
+                    Text{id:joint;font.pixelSize:14; text:"T接头(I)"
+                             anchors{top:groovetype.bottom;horizontalCenter: parent.horizontalCenter}}
+                     Canvas{
                           id:canvas             
                           anchors.left:parent.left
                           anchors.bottom: parent.bottom
