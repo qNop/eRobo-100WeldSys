@@ -85,16 +85,13 @@ Window{
                   anchors.top:titlebar.bottom
                   anchors.right:parent.right
                   anchors.left:parent.left
-                  backgroundColor:Palette.colors["grey"]["200"];
-                  ColumnLayout{
-                      id:navgation
-                       anchors.left:parent.left
-                        anchors.leftMargin: 10;
-                        anchors.top:parent.top
-                        anchors.topMargin: 10;
-                        spacing: 10
+                  backgroundColor:Palette.colors["grey"]["200"];                     
                    Card{
                     id:groove;
+                    anchors.left:parent.left
+                    anchors.leftMargin: 10;
+                    anchors.top:parent.top
+                    anchors.topMargin: 10;
                     backgroundColor:Palette.colors["red"]["500"];
                     width:100;
                     height:140;
@@ -164,6 +161,10 @@ Window{
                 }
                    Card{
                        id:last
+                       anchors.left:parent.left
+                       anchors.leftMargin: 10;
+                       anchors.top:groove.bottom
+                       anchors.topMargin: 10;
                         elevation: 5;
                         radius: 5;
                         width: 100;
@@ -171,6 +172,11 @@ Window{
                         backgroundColor:Palette.colors["green"]["500"];
                     }
                    Card{
+                       id:last1
+                       anchors.left:parent.left
+                       anchors.leftMargin: 10;
+                       anchors.top:last.bottom
+                       anchors.topMargin: 10;
                         elevation: 5;
                         radius: 5;
                         width: 100;
@@ -178,28 +184,31 @@ Window{
                         backgroundColor:Palette.colors["amber"]["500"];
                     }
                    Card{
-
+                       anchors.left:parent.left
+                       anchors.leftMargin: 10;
+                       anchors.top:last1.bottom
+                       anchors.topMargin: 10;
                         elevation: 5;
                         radius: 5;
                         width: 100;
                         height: last.height;
                         backgroundColor:Palette.colors["lime"]["500"];
                     }
-                      }
+
                   Card{
                        anchors.right: parent.right
                        anchors.rightMargin: 10
                        anchors.top:parent.top
                        anchors.topMargin: 10
-                       anchors.left: navgation.right
+                       anchors.left: groove.right
                        anchors.leftMargin: 10
                        anchors.bottom: parent.bottom
                        anchors.bottomMargin: 10
                        elevation: 1;
                        radius: 5;
-                       backgroundColor:Palette.colors["lime"]["100"];
+                       backgroundColor:Palette.colors["red"]["500"];
                    }
-                  }
+                }
            }
    Dialog{
         ListModel{
