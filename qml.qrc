@@ -3,5 +3,9 @@
         <file>main.qml</file>
         <file>Database.js</file>
         <file>CanvasPaint.js</file>
+        <file>groovepage.qml</file>
+        <file>settingpage.qml</file>
+        <file>dataanalaypage.qml</file>
+        <file>sysinforpage.qml</file>
     </qresource>
 </RCC>
