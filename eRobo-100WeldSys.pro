@@ -4,10 +4,10 @@ QT += qml quick core widgets sql serialport
 
 SOURCES += main.cpp \
     WeldAPI/appconfig.cpp\
-    libmodbus/src/modbus.c\
-    libmodbus/src/modbus-data.c\
-    libmodbus/src/modbus-rtu.c \
-    WeldAPI/modbusport.cpp
+    WeldAPI/modbusport.cpp \
+    libmodbus/modbus.c \
+    libmodbus/modbus-data.c \
+    libmodbus/modbus-rtu.c
 
 RESOURCES += qml.qrc
 
@@ -22,7 +22,11 @@ QML_IMPORT_PATH =
 HEADERS += \
     WeldAPI/appconfig.h \
     WeldAPI/gloabldefine.h \
-    libmodbus/src/modbus.h \
+    libmodbus/modbus.h \
+    libmodbus/modbus-private.h \
+    libmodbus/modbus-rtu.h \
+    libmodbus/modbus-rtu-private.h \
+    libmodbus/modbus-version.h.in \
     WeldAPI/modbusport.h
 
 

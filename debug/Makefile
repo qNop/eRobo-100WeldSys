@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_QML_DEBUG -DQT_DECLARATIVE_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_QML_DEBUG -DQT_DECLARATIVE_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_SERIALPORT_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../../eRobo-100WeldSys -I. -I/usr/local/Qt-5.5.0/include -I/usr/local/Qt-5.5.0/include/QtQuick -I/usr/local/Qt-5.5.0/include/QtWidgets -I/usr/local/Qt-5.5.0/include/QtGui -I/usr/local/Qt-5.5.0/include/QtQml -I/usr/local/Qt-5.5.0/include/QtNetwork -I/usr/local/Qt-5.5.0/include/QtSql -I/usr/local/Qt-5.5.0/include/QtCore -I. -I/usr/local/Qt-5.5.0/mkspecs/linux-g++
+INCPATH       = -I../../eRobo-100WeldSys -I. -I/usr/local/Qt-5.5.0/include -I/usr/local/Qt-5.5.0/include/QtQuick -I/usr/local/Qt-5.5.0/include/QtWidgets -I/usr/local/Qt-5.5.0/include/QtGui -I/usr/local/Qt-5.5.0/include/QtQml -I/usr/local/Qt-5.5.0/include/QtNetwork -I/usr/local/Qt-5.5.0/include/QtSql -I/usr/local/Qt-5.5.0/include/QtSerialPort -I/usr/local/Qt-5.5.0/include/QtCore -I. -I/usr/local/Qt-5.5.0/mkspecs/linux-g++
 QMAKE         = /usr/local/Qt-5.5.0/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -36,7 +36,7 @@ DISTNAME      = eRobo-100WeldSys1.0.0
 DISTDIR = /home/nop/eRobo-100WeldSys/debug/.tmp/eRobo-100WeldSys1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/usr/local/Qt-5.5.0/lib
-LIBS          = $(SUBLIBS) -L/usr/local/Qt-5.5.0/lib -lQt5Quick -lQt5Widgets -lQt5Gui -lQt5Qml -lQt5Network -lQt5Sql -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -L/usr/local/Qt-5.5.0/lib -lQt5Quick -lQt5Widgets -lQt5Gui -lQt5Qml -lQt5Network -lQt5Sql -lQt5SerialPort -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -49,10 +49,18 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../main.cpp \
-		../WeldAPI/appconfig.cpp qrc_qml.cpp \
+		../WeldAPI/appconfig.cpp \
+		../WeldAPI/modbusport.cpp \
+		../libmodbus/modbus.c \
+		../libmodbus/modbus-data.c \
+		../libmodbus/modbus-rtu.c qrc_qml.cpp \
 		moc_appconfig.cpp
 OBJECTS       = main.o \
 		appconfig.o \
+		modbusport.o \
+		modbus.o \
+		modbus-data.o \
+		modbus-rtu.o \
 		qrc_qml.o \
 		moc_appconfig.o
 DIST          = /usr/local/Qt-5.5.0/mkspecs/features/spec_pre.prf \
@@ -182,8 +190,18 @@ DIST          = /usr/local/Qt-5.5.0/mkspecs/features/spec_pre.prf \
 		/usr/local/Qt-5.5.0/mkspecs/features/yacc.prf \
 		/usr/local/Qt-5.5.0/mkspecs/features/lex.prf \
 		../../eRobo-100WeldSys.pro ../WeldAPI/appconfig.h \
-		../WeldAPI/gloabldefine.h ../main.cpp \
-		../WeldAPI/appconfig.cpp
+		../WeldAPI/gloabldefine.h \
+		../libmodbus/modbus.h \
+		../libmodbus/modbus-private.h \
+		../libmodbus/modbus-rtu.h \
+		../libmodbus/modbus-rtu-private.h \
+		../libmodbus/modbus-version.h.in \
+		../WeldAPI/modbusport.h ../main.cpp \
+		../WeldAPI/appconfig.cpp \
+		../WeldAPI/modbusport.cpp \
+		../libmodbus/modbus.c \
+		../libmodbus/modbus-data.c \
+		../libmodbus/modbus-rtu.c
 QMAKE_TARGET  = eRobo-100WeldSys
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = eRobo-100WeldSys
@@ -349,6 +367,7 @@ Makefile: ../eRobo-100WeldSys.pro /usr/local/Qt-5.5.0/mkspecs/linux-g++/qmake.co
 		/usr/local/Qt-5.5.0/lib/libQt5Qml.prl \
 		/usr/local/Qt-5.5.0/lib/libQt5Network.prl \
 		/usr/local/Qt-5.5.0/lib/libQt5Sql.prl \
+		/usr/local/Qt-5.5.0/lib/libQt5SerialPort.prl \
 		/usr/local/Qt-5.5.0/lib/libQt5Core.prl
 	$(QMAKE) -spec linux-g++ CONFIG+=debug CONFIG+=declarative_debug CONFIG+=qml_debug CONFIG+=force_debug_info CONFIG+=separate_debug_info -o Makefile ../eRobo-100WeldSys.pro
 /usr/local/Qt-5.5.0/mkspecs/features/spec_pre.prf:
@@ -485,6 +504,7 @@ Makefile: ../eRobo-100WeldSys.pro /usr/local/Qt-5.5.0/mkspecs/linux-g++/qmake.co
 /usr/local/Qt-5.5.0/lib/libQt5Qml.prl:
 /usr/local/Qt-5.5.0/lib/libQt5Network.prl:
 /usr/local/Qt-5.5.0/lib/libQt5Sql.prl:
+/usr/local/Qt-5.5.0/lib/libQt5SerialPort.prl:
 /usr/local/Qt-5.5.0/lib/libQt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -spec linux-g++ CONFIG+=debug CONFIG+=declarative_debug CONFIG+=qml_debug CONFIG+=force_debug_info CONFIG+=separate_debug_info -o Makefile ../eRobo-100WeldSys.pro
@@ -501,8 +521,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../qml.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents ../WeldAPI/appconfig.h ../WeldAPI/gloabldefine.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../main.cpp ../WeldAPI/appconfig.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../WeldAPI/appconfig.h ../WeldAPI/gloabldefine.h ../libmodbus/modbus.h ../libmodbus/modbus-private.h ../libmodbus/modbus-rtu.h ../libmodbus/modbus-rtu-private.h ../libmodbus/modbus-version.h.in ../WeldAPI/modbusport.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../main.cpp ../WeldAPI/appconfig.cpp ../WeldAPI/modbusport.cpp ../libmodbus/modbus.c ../libmodbus/modbus-data.c ../libmodbus/modbus-rtu.c $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -607,7 +627,7 @@ moc_appconfig.cpp: /usr/local/Qt-5.5.0/include/QtCore/QObject \
 		/usr/local/Qt-5.5.0/include/QtCore/qset.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qcontiguouscache.h \
 		../WeldAPI/appconfig.h
-	/usr/local/Qt-5.5.0/bin/moc $(DEFINES) -I/usr/local/Qt-5.5.0/mkspecs/linux-g++ -I/home/nop/eRobo-100WeldSys -I/usr/local/Qt-5.5.0/include -I/usr/local/Qt-5.5.0/include/QtQuick -I/usr/local/Qt-5.5.0/include/QtWidgets -I/usr/local/Qt-5.5.0/include/QtGui -I/usr/local/Qt-5.5.0/include/QtQml -I/usr/local/Qt-5.5.0/include/QtNetwork -I/usr/local/Qt-5.5.0/include/QtSql -I/usr/local/Qt-5.5.0/include/QtCore -I. -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../WeldAPI/appconfig.h -o moc_appconfig.cpp
+	/usr/local/Qt-5.5.0/bin/moc $(DEFINES) -I/usr/local/Qt-5.5.0/mkspecs/linux-g++ -I/home/nop/eRobo-100WeldSys -I/usr/local/Qt-5.5.0/include -I/usr/local/Qt-5.5.0/include/QtQuick -I/usr/local/Qt-5.5.0/include/QtWidgets -I/usr/local/Qt-5.5.0/include/QtGui -I/usr/local/Qt-5.5.0/include/QtQml -I/usr/local/Qt-5.5.0/include/QtNetwork -I/usr/local/Qt-5.5.0/include/QtSql -I/usr/local/Qt-5.5.0/include/QtSerialPort -I/usr/local/Qt-5.5.0/include/QtCore -I. -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../WeldAPI/appconfig.h -o moc_appconfig.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -988,6 +1008,215 @@ appconfig.o: ../WeldAPI/appconfig.cpp ../WeldAPI/appconfig.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qprocess.h \
 		../WeldAPI/gloabldefine.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o appconfig.o ../WeldAPI/appconfig.cpp
+
+modbusport.o: ../WeldAPI/modbusport.cpp ../WeldAPI/modbusport.h \
+		/usr/local/Qt-5.5.0/include/QtSerialPort/QtSerialPort \
+		/usr/local/Qt-5.5.0/include/QtSerialPort/QtSerialPortDepends \
+		/usr/local/Qt-5.5.0/include/QtCore/QtCore \
+		/usr/local/Qt-5.5.0/include/QtCore/QtCoreDepends \
+		/usr/local/Qt-5.5.0/include/QtCore/qabstractanimation.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qobject.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qobjectdefs.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qnamespace.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qglobal.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qconfig.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qfeatures.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsystemdetection.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qprocessordetection.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qcompilerdetection.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qtypeinfo.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qtypetraits.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsysinfo.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qlogging.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qflags.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qatomic.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qbasicatomic.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qatomic_bootstrap.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qgenericatomic.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qatomic_cxx11.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qatomic_gcc.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qatomic_msvc.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qatomic_armv7.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qatomic_armv6.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qatomic_armv5.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qatomic_ia64.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qatomic_mips.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qatomic_x86.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qatomic_unix.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qglobalstatic.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qmutex.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qnumeric.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qobjectdefs_impl.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qstring.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qchar.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qbytearray.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qrefcount.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qarraydata.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qstringbuilder.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qlist.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qalgorithms.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qiterator.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qbytearraylist.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qstringlist.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qregexp.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qstringmatcher.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qcoreevent.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qscopedpointer.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qmetatype.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qvarlengtharray.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qcontainerfwd.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qisenum.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qobject_impl.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qanimationgroup.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qparallelanimationgroup.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qpauseanimation.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qpropertyanimation.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qvariantanimation.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qeasingcurve.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qvector.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qpoint.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qvariant.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qmap.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qpair.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qdebug.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qhash.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qtextstream.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qiodevice.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qlocale.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qshareddata.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qset.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qcontiguouscache.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsequentialanimationgroup.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qtextcodec.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qendian.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qlibraryinfo.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qdatetime.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qbuffer.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qdatastream.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qdir.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qfileinfo.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qfile.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qfiledevice.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qdiriterator.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qfileselector.h \
+		/usr/local/Qt-5.5.0/include/QtCore/QObject \
+		/usr/local/Qt-5.5.0/include/QtCore/QStringList \
+		/usr/local/Qt-5.5.0/include/QtCore/qfilesystemwatcher.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qlockfile.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qloggingcategory.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qprocess.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qresource.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsavefile.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsettings.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qstandardpaths.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qstorageinfo.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qtemporarydir.h \
+		/usr/local/Qt-5.5.0/include/QtCore/QScopedPointer \
+		/usr/local/Qt-5.5.0/include/QtCore/qtemporaryfile.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qurl.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qurlquery.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qabstractitemmodel.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qabstractproxymodel.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qidentityproxymodel.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qitemselectionmodel.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsortfilterproxymodel.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qstringlistmodel.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qjsonarray.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qjsonvalue.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qjsondocument.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qjsonobject.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qabstracteventdispatcher.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qeventloop.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qabstractnativeeventfilter.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qbasictimer.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qcoreapplication.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qmath.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qmetaobject.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qmimedata.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qobjectcleanuphandler.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qpointer.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsharedpointer.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsharedpointer_impl.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsharedmemory.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsignalmapper.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsocketnotifier.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsystemsemaphore.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qtimer.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qtranslator.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qwineventnotifier.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qmimedatabase.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qmimetype.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qfactoryinterface.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qlibrary.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qplugin.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qpluginloader.h \
+		/usr/local/Qt-5.5.0/include/QtCore/quuid.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qabstractstate.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qabstracttransition.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qeventtransition.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qfinalstate.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qhistorystate.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsignaltransition.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qstate.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qstatemachine.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qexception.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qfuture.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qfutureinterface.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qrunnable.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qresultstore.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qfuturesynchronizer.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qfuturewatcher.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qreadwritelock.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsemaphore.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qthread.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qthreadpool.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qthreadstorage.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qwaitcondition.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qarraydataops.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qarraydatapointer.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qbitarray.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qbytearraymatcher.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qcache.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qcollator.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qcommandlineoption.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qcommandlineparser.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qcryptographichash.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qelapsedtimer.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qline.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qlinkedlist.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qmargins.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qmessageauthenticationcode.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qqueue.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qrect.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsize.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qregularexpression.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qscopedvaluerollback.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qstack.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qtextboundaryfinder.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qtimeline.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qtimezone.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qxmlstream.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qtcoreversion.h \
+		/usr/local/Qt-5.5.0/include/QtSerialPort/qserialport.h \
+		/usr/local/Qt-5.5.0/include/QtSerialPort/qserialportglobal.h \
+		/usr/local/Qt-5.5.0/include/QtSerialPort/qserialportinfo.h \
+		/usr/local/Qt-5.5.0/include/QtSerialPort/qtserialportversion.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o modbusport.o ../WeldAPI/modbusport.cpp
+
+modbus.o: ../libmodbus/modbus.c ../libmodbus/modbus.h \
+		../libmodbus/modbus-rtu.h \
+		../libmodbus/modbus-private.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o modbus.o ../libmodbus/modbus.c
+
+modbus-data.o: ../libmodbus/modbus-data.c ../libmodbus/modbus.h \
+		../libmodbus/modbus-rtu.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o modbus-data.o ../libmodbus/modbus-data.c
+
+modbus-rtu.o: ../libmodbus/modbus-rtu.c ../libmodbus/modbus-private.h \
+		../libmodbus/modbus.h \
+		../libmodbus/modbus-rtu.h \
+		../libmodbus/modbus-rtu-private.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o modbus-rtu.o ../libmodbus/modbus-rtu.c
 
 qrc_qml.o: qrc_qml.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qml.o qrc_qml.cpp
