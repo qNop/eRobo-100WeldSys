@@ -8,21 +8,29 @@ import QtQuick.LocalStorage 2.0
 import "qrc:/Database.js" as DB
 import "CanvasPaint.js" as Paint
 Window{
-    property  var res;
-    id: eRoboWeldSys;visible:true
+    property  var count;
+
+    id: eRoboWeldSys;visible:true;count:0;
     width:appConfig.screenWidth;height: appConfig.screenHeight
     theme{primaryColor: "red";accentColor: "yellow";backgroundColor: "gray"}
     APPConfig{ id:appConfig}
     Timer{ interval: 500; running: true; repeat: true;
-               onTriggered: datetime.text = Qt.formatDateTime(new Date(), "yyyy-MM-dd dddd hh:mm:ss")}
+               onTriggered:{
+                   datetime.text = Qt.formatDateTime(new Date(), "yyyy-MM-dd dddd hh:mm:ss");
+                   count++;
+                        switch(count){
+                        case 4  :groove.elevation=5; sysInfCard.elevation=0;dataAnalayCard.elevation=0;settingCard.elevation=0; break;
+                        case 8  :groove.elevation=0; sysInfCard.elevation=5;dataAnalayCard.elevation=0;settingCard.elevation=0; break;
+                        case 12:groove.elevation=0; sysInfCard.elevation=0;dataAnalayCard.elevation=5;settingCard.elevation=0; break;
+                        case 16:groove.elevation=0; sysInfCard.elevation=0;dataAnalayCard.elevation=0;settingCard.elevation=5; count=0;break;
+                    }}}
    Dialog{id: landscapeDatePickerDialog;hasActions: true;contentMargins: 0;floatingActions: true
               DatePicker { frameVisible: false;dayAreaBottomMargin : Units.dp(48);isLandscape: true }}
    Rectangle{id:window;anchors{left:parent.left;right:parent.right;top:parent.top;bottom:parent.bottom;}border{color:"black";width:2}
-          View{ id:titlebar;height:24;elevation: 5;width: parent.width;backgroundColor: theme.accentColor
+          View{id:titlebar;height:24;elevation: 5;width: parent.width;backgroundColor: theme.accentColor
                     Text{id:appname;anchors{verticalCenter: parent.verticalCenter;left: parent.left;leftMargin: 5;}
                             text:qsTr("ER-100:便携式MAG焊接机器人系统");font.pixelSize: 14;}
-                    RowLayout{
-                        height:parent.height;  width:400; anchors.right:parent.right;
+                    RowLayout{ height:parent.height;  width:400; anchors.right:parent.right;
                         Icon{ id:brighnessIcon;name:"device/brightness_medium";anchors.right:warnIcon.left }
                         Icon{id:warnIcon; name:"awesome/warning" ;anchors.right:exchange.left}
                         Icon{id:exchange;name:"awesome/upload";anchors.right:lock.left}
@@ -33,28 +41,34 @@ Window{
                         Text{id:accountname; text:appConfig.currentusername;anchors.right:datetime.left}
                         Text{id:datetime;anchors.right:powerIcon.left}
                         Icon{id:powerIcon;name:"awesome/power_off";anchors.right:parent.right;anchors.rightMargin: 5}}}
-          View{ id:background;anchors{bottom:parent.bottom;top:titlebar.bottom;right:parent.right;left:parent.left}
-                  backgroundColor:Palette.colors["grey"]["200"];
+          View{id:background;anchors{bottom:parent.bottom;top:titlebar.bottom;right:parent.right;left:parent.left}
+                  backgroundColor:Palette.colors["grey"]["400"];
                    Card{id:groove;anchors{left:parent.left;leftMargin: 10;top:parent.top;topMargin: 10;}
-                         elevation:1;width:100;height:140;radius:5;backgroundColor:Palette.colors["red"]["500"];
+                         elevation:5;width:100;height:140;radius:5;backgroundColor:Palette.colors["red"]["500"];
                         Text{ id:grooveposition;font.pixelSize: 18;text:"平焊";anchors{top:parent.top;horizontalCenter: parent.horizontalCenter} }
                         Text{id:groovetype;font.pixelSize: 14;text:"单边V型坡口";anchors{top:grooveposition.bottom;horizontalCenter: parent.horizontalCenter} }
                         Text{id:joint;font.pixelSize:14; text:"T接头(I)";anchors{top:groovetype.bottom;horizontalCenter: parent.horizontalCenter}}
                         Canvas{id:canvas;anchors.left:parent.left;anchors.bottom: parent.bottom;width:100;height:80;
-                                     onPaint:{Paint.paintflatweld(0,canvas);}}
+                                     onPaint:{Paint.paintflatweld(0,canvas);}}}
                    Card{id:sysInfCard;anchors{left:parent.left;leftMargin: 10;top:groove.bottom;topMargin: 10;}
-                       elevation: 5;radius: 5; width:100;height:88;backgroundColor:Palette.colors["green"]["500"];}
+                       elevation: 0;radius: 5; width:100;height:88;backgroundColor:Palette.colors["green"]["500"];}
                    Card{id:dataAnalayCard;anchors{left:parent.left;leftMargin: 10;top:sysInfCard.bottom;topMargin: 10;}
-                       elevation: 5;radius: 5;width: 100;height: sysInfCard.height;backgroundColor:Palette.colors["amber"]["500"];}
+                       elevation: 0;radius: 5;width: 100;height: sysInfCard.height;backgroundColor:Palette.colors["amber"]["500"];}
                    Card{id:settingCard;anchors{left:parent.left;leftMargin: 10;top:dataAnalayCard.bottom;topMargin: 10;}
-                       elevation: 5;radius: 5;width: 100;height: sysInfCard.height;backgroundColor:Palette.colors["lime"]["500"];}
+                       elevation: 0;radius: 5;width: 100;height: sysInfCard.height;backgroundColor:Palette.colors["lime"]["500"];}
                    Card{ id:displayCard;anchors{right:parent.right;rightMargin:10;top:parent.top;topMargin:10;left:groove.right;leftMargin:10;bottom:parent.bottom;bottomMargin:10}
-                      elevation: 1;radius: 5;
-                      backgroundColor:
-                           (sysInfCard.elevation<dataAnalayCard.elevation)?
-                                       ((sysInfCard.elevation<settingCard.elevation)?sysInfCard.backgroundColor:settingCard.backgroundColor):
-                                                                     ((dataAnalayCard.elevation<settingCard.elevation)?dataAnalayCard.backgroundColor:settingCard.backgroundColor)
-                           }}}}
+                       elevation: 5;radius: 5;
+                       backgroundColor: (displayCard.backgroundColor=="")?(Palette.colors["red"]["500"]):
+                                      ((groove.elevation>sysInfCard.elevation)?
+                                        ((groove.elevation>dataAnalayCard.elevation)?
+                                          ((groove.elevation>settingCard.elevation)?(groove.backgroundColor):((groove.elevation===settingCard.elevation)?(displayCard.backgroundColor):(settingCard.backgroundColor)))
+                                          :((dataAnalayCard>settingCard.elevation)?((groove.elevation===dataAnalayCard.elevation)?(displayCard.backgroundColor):(dataAnalayCard.backgroundColor)):
+                                                                                                                    ((dataAnalayCard.elevation===settingCard.elevation)?(displayCard.backgroundColor):(settingCard.backgroundColor))))
+                                      :((sysInfCard.elevation>dataAnalayCard.elevation)?
+                                          ((sysInfCard.elevation>settingCard.elevation)?(sysInfCard.backgroundColor):((sysInfCard.elevation===settingCard.elevation)?(displayCard.backgroundColor):(settingCard.backgroundColor)))
+                                          :((dataAnalayCard.elevation>settingCard.elevation)?((sysInfCard.elevation===dataAnalayCard.elevation)?(displayCard.backgroundColor):(dataAnalayCard.backgroundColor)):
+                                                                                                                    ((dataAnalayCard.elevation===settingCard.elevation)?(displayCard.backgroundColor):(settingCard.backgroundColor)))))
+                           }}}
    Dialog{id:changeuserDialog;title:qsTr("更改用户");hasActions: true;floatingActions: false;negativeButtonText:qsTr("取消");
         positiveButtonText:qsTr("确定");positiveButtonEnabled:false;contentMargins: 12;
         onAccepted: {
@@ -98,7 +112,6 @@ Window{
                                  password.helperText =qsTr( "密码超过最大限制");}}}}}
     Component.onCompleted: {
             DB.openDatabase();
-            var  name;
             DB.db.transaction ( function(tx) {
               var result = tx.executeSql("select * from AccountTable");
               if(result.rows.length === 0) {
@@ -106,14 +119,12 @@ Window{
               }
               else{
                   for(var i=0;i<result.rows.length;i++){
-                      name = result.rows.item(i).name;
+                     var name = result.rows.item(i).name;
                       usrnamemodel.append( {"text":name});
                       if(name === accountname.text){
                            changeuserFeildtext.selectedIndex = i+1;
-                           changeuserFeildtext.helperText=result.rows.item(i).type;
-                      }
-                  }
-                   usrnamemodel.remove(0);
+                           changeuserFeildtext.helperText=result.rows.item(i).type;} }
+                    usrnamemodel.remove(0);
               }
           });
       }
