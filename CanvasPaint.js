@@ -2,12 +2,11 @@
 
 function paintflatweld(style,can){
    var  ctx=can.getContext("2d");
-  ctx.save();
   ctx.clearRect(0,0,100, 80);
   ctx.strokeStyle ="black";
   ctx.fillStyle="blue";
   ctx.antialiasing=false;
-  ctx.lineWidth=1;
+  ctx.lineWidth=1.5;
    switch(style){
         case 0:
             ctx.beginPath();
@@ -20,21 +19,25 @@ function paintflatweld(style,can){
             ctx.stroke();
             ctx.beginPath();
             ctx.moveTo(20,50);
-            ctx.lineTo(44,50);
-            ctx.lineTo(44,60);
-            ctx.lineTo(20,60);
+            ctx.lineTo(43,50);
+            ctx.lineTo(43,58);
+            ctx.lineTo(20,58);
             ctx.closePath();
    //  ctx.fill();
             ctx.stroke();
              ctx.beginPath();
-             ctx.moveTo(44,30);
-             ctx.lineTo(90,30);
-             ctx.lineTo(90,50);
+             ctx.moveTo(43,28);
+             ctx.lineTo(80,28);
+             ctx.lineTo(80,50);
              ctx.lineTo(30,50);
              ctx.closePath();
              //  ctx.fill();
              ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(43,28,20,10,20);
+            ctx.stroke();
+            console.log("run here")
             break;
     }
-    ctx.restore();
 }

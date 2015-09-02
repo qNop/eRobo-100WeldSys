@@ -17,7 +17,7 @@ Window{
     APPConfig{ id:appConfig}
     Timer{ interval: 500; running: true; repeat: true;
                onTriggered:{ datetime.text = Qt.formatDateTime(new Date(), "yyyy-MM-dd dddd hh:mm:ss");
-                   index++;
+                   //index++;
                    switch(index){
                         case 4  :indexpage=pagename[0];groove.elevation=5; sysInforCard.elevation=0;dataAnalayCard.elevation=0;settingCard.elevation=0; break;
                         case 8  :indexpage=pagename[1];groove.elevation=0; sysInforCard.elevation=5;dataAnalayCard.elevation=0;settingCard.elevation=0; break;
@@ -55,7 +55,7 @@ Window{
                    Card{id:settingCard;anchors{left:parent.left;leftMargin: 10;top:dataAnalayCard.bottom;topMargin: 10;}
                        elevation: 0;radius: 5;width: 100;height: sysInforCard.height;backgroundColor:Palette.colors["lime"]["500"];}
                    Card{ id:displayCard;anchors{right:parent.right;rightMargin:10;top:parent.top;topMargin:10;left:groove.right;leftMargin:10;bottom:parent.bottom;bottomMargin:10}
-                       elevation: 5;radius: 5;
+                       elevation: 0;radius: 5;
                        backgroundColor: ((displayCard.backgroundColor=="")?(Palette.colors["red"]["500"]):
                                       ((groove.elevation>sysInforCard.elevation)?
                                         ((groove.elevation>dataAnalayCard.elevation)?
