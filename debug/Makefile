@@ -551,9 +551,9 @@ qrc_qml.cpp: ../qml.qrc \
 		../CanvasPaint.js \
 		../Database.js \
 		../groovepage.qml \
-		../dataanalaypage.qml \
 		../sysinforpage.qml \
 		../Groovecardview.qml \
+		../dataAnalaypage.qml \
 		../settingpage.qml \
 		../main.qml
 	/usr/local/Qt-5.5.0/bin/rcc -name qml ../qml.qrc -o qrc_qml.cpp

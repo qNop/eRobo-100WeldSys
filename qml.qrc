@@ -5,7 +5,7 @@
         <file>CanvasPaint.js</file>
         <file>groovepage.qml</file>
         <file>settingpage.qml</file>
-        <file>dataanalaypage.qml</file>
+        <file>dataAnalaypage.qml</file>
         <file>sysinforpage.qml</file>
         <file>Groovecardview.qml</file>
     </qresource>

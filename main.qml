@@ -9,7 +9,7 @@ import "qrc:/Database.js" as DB
 import "CanvasPaint.js" as Paint
 Window{
     property  var index;
-    property var  pagename:["groove","sysinfor","dataanalay","setting"]
+    property var  pagename:["groove","sysinfor","dataAnalay","setting"]
     property string indexpage: pagename[0];
     id: eRoboWeldSys;visible:true;index:0;
     width:appConfig.screenWidth;height: appConfig.screenHeight
@@ -33,30 +33,30 @@ Window{
                         Icon{id:warnIcon; name:"awesome/warning" ;anchors.right:exchange.left}
                         Icon{id:exchange;name:"awesome/upload";anchors.right:lock.left}
                         Icon{id:lock;name:"awesome/lock"; anchors.right:accountIcon.left}
-                        IconButton{ id:accountIcon;iconName:"awesome/user";anchors.right:accountname.left
-                             color: Theme.lightDark(theme.backgroundColor, Theme.light.iconColor, Theme.dark.iconColor);
-                             onClicked: {changeuserDialog.show();password.enabled=false;password.text=""}}
+                        Icon{ id:accountIcon;name:"awesome/user";anchors.right:accountname.left}
+                           //  color: Theme.lightDark(theme.backgroundColor, Theme.light.iconColor, Theme.dark.iconColor);}
+                          //   onClicked: {changeuserDialog.show();password.enabled=false;password.text=""}}
                         Text{id:accountname; text:appConfig.currentusername;anchors.right:datetime.left}
                         Text{id:datetime;anchors.right:powerIcon.left}
                         Icon{id:powerIcon;name:"awesome/power_off";anchors.right:parent.right;anchors.rightMargin: 5}}}
           View{id:background;anchors{bottom:parent.bottom;top:titlebar.bottom;right:parent.right;left:parent.left}
-                  backgroundColor:Palette.colors["grey"]["200"];
-                   Card{id:groove;anchors{left:parent.left;leftMargin: 10;top:parent.top;topMargin: 10;}
-                         elevation:5;width:100;height:140;radius:5;backgroundColor:Palette.colors["red"]["500"];
-                        Text{ id:grooveposition;font.pixelSize: 18;text:"平焊";anchors{top:parent.top;horizontalCenter: parent.horizontalCenter} }
+                  backgroundColor:Palette.colors["grey"]["400"];
+                   Button{id:groove;anchors{left:parent.left;leftMargin: 10;top:parent.top;topMargin: 10;}
+                         elevation:0;width:100;height:140;backgroundColor:Palette.colors["red"]["500"];//radius:5;
+                        Text{ id:grooveposition;font.pixelSize: 18;text:"平焊";anchors{top:parent.top;topMargin: 5;horizontalCenter: parent.horizontalCenter} }
                         Text{id:groovetype;font.pixelSize: 14;text:"单边V型坡口";anchors{top:grooveposition.bottom;horizontalCenter: parent.horizontalCenter} }
                         Text{id:joint;font.pixelSize:14; text:"T接头(I)";anchors{top:groovetype.bottom;horizontalCenter: parent.horizontalCenter}}
                         Canvas{id:canvas;anchors.left:parent.left;anchors.bottom: parent.bottom;width:100;height:80;
-                                     onPaint:{Paint.paintflatweld(0,canvas);}}}
-                   Card{id:sysInforCard;anchors{left:parent.left;leftMargin: 10;top:groove.bottom;topMargin: 10;}
-                       elevation: 0;radius: 5; width:100;height:88;backgroundColor:Palette.colors["green"]["500"];}
-                   Card{id:dataAnalayCard;anchors{left:parent.left;leftMargin: 10;top:sysInforCard.bottom;topMargin: 10;}
-                       elevation: 0;radius: 5;width: 100;height: sysInforCard.height;backgroundColor:Palette.colors["amber"]["500"];}
-                   Card{id:settingCard;anchors{left:parent.left;leftMargin: 10;top:dataAnalayCard.bottom;topMargin: 10;}
-                       elevation: 0;radius: 5;width: 100;height: sysInforCard.height;backgroundColor:Palette.colors["lime"]["500"];}
-                   Card{ id:displayCard;anchors{right:parent.right;rightMargin:10;top:parent.top;topMargin:10;left:groove.right;leftMargin:10;bottom:parent.bottom;bottomMargin:10}
-                       elevation: 0;radius: 5;
-                       backgroundColor: ((displayCard.backgroundColor=="")?(Palette.colors["red"]["500"]):
+                                     onPaint:{Paint.paintflatweld(0,canvas);}} onClicked:{indexpage=pagename[0]}}
+                   Button{id:sysInforCard;anchors{left:parent.left;leftMargin: 10;top:groove.bottom;topMargin: 10;}
+                       elevation: 0; width:100;height:88;backgroundColor:Palette.colors["green"]["500"];onClicked:{indexpage=pagename[1]}}//radius: 5;
+                   Button{id:dataAnalayCard;anchors{left:parent.left;leftMargin: 10;top:sysInforCard.bottom;topMargin: 10;}
+                       elevation: 0;width: 100;height: sysInforCard.height;backgroundColor:Palette.colors["amber"]["500"];onClicked:{indexpage=pagename[2]}}//radius: 5;
+                   Button{id:settingCard;anchors{left:parent.left;leftMargin: 10;top:dataAnalayCard.bottom;topMargin: 10;}//radius: 5;
+                       elevation: 0;width: 100;height: sysInforCard.height;backgroundColor:Palette.colors["lime"]["500"];onClicked:{indexpage=pagename[3]}}
+                   Button{ id:displayCard;anchors{right:parent.right;rightMargin:10;top:parent.top;topMargin:10;left:groove.right;leftMargin:10;bottom:parent.bottom;bottomMargin:10}
+                       elevation: 0;//radius: 5;
+                       backgroundColor:Palette.colors["grey"]["100"]/* ((displayCard.backgroundColor=="")?(Palette.colors["red"]["500"]):
                                       ((groove.elevation>sysInforCard.elevation)?
                                         ((groove.elevation>dataAnalayCard.elevation)?
                                           ((groove.elevation>settingCard.elevation)?(groove.backgroundColor):((groove.elevation===settingCard.elevation)?(displayCard.backgroundColor):(settingCard.backgroundColor)))
@@ -65,7 +65,7 @@ Window{
                                       :((sysInforCard.elevation>dataAnalayCard.elevation)?
                                           ((sysInforCard.elevation>settingCard.elevation)?(sysInforCard.backgroundColor):((sysInforCard.elevation===settingCard.elevation)?(displayCard.backgroundColor):(settingCard.backgroundColor)))
                                           :((dataAnalayCard.elevation>settingCard.elevation)?((sysInforCard.elevation===dataAnalayCard.elevation)?(displayCard.backgroundColor):(dataAnalayCard.backgroundColor)):
-                                                                                                                    ((dataAnalayCard.elevation===settingCard.elevation)?(displayCard.backgroundColor):(settingCard.backgroundColor))))))
+                                                                                                                    ((dataAnalayCard.elevation===settingCard.elevation)?(displayCard.backgroundColor):(settingCard.backgroundColor))))))*/
                         Flickable{id:displayFlickable;clip: true;anchors {left:parent.left;right: parent.right;top: parent.top;bottom: parent.bottom}
                             Loader {id: pageloader;anchors.fill: parent;asynchronous: true;visible: status == Loader.Ready;
                                            source: {return Qt.resolvedUrl(("%1page.qml").arg(indexpage.replace("","")))}  }
