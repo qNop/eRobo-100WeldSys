@@ -552,6 +552,7 @@ qrc_qml.cpp: ../qml.qrc \
 		../Database.js \
 		../groovepage.qml \
 		../sysinforpage.qml \
+		../Testqml.qml \
 		../Groovecardview.qml \
 		../dataAnalaypage.qml \
 		../settingpage.qml \

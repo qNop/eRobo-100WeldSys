@@ -14,7 +14,7 @@ Window{
     id: eRoboWeldSys;visible:true;index:0;
     width:appConfig.screenWidth;height: appConfig.screenHeight
     theme{primaryColor: "red";accentColor: "yellow";backgroundColor: "gray"}
-    APPConfig{ id:appConfig}
+    APPConfig{ id:appConfig;}
     Timer{ interval: 500; running: true; repeat: true;
                onTriggered:{ datetime.text = Qt.formatDateTime(new Date(), "yyyy-MM-dd dddd hh:mm:ss");
                    //index++;
@@ -24,7 +24,7 @@ Window{
                         case 12:indexpage=pagename[2];groove.elevation=0; sysInforCard.elevation=0;dataAnalayCard.elevation=5;settingCard.elevation=0; break;
                         case 16:indexpage=pagename[3];groove.elevation=0; sysInforCard.elevation=0;dataAnalayCard.elevation=0;settingCard.elevation=5; index=0;break;
                     }}}
-    Rectangle{id:window;anchors{left:parent.left;right:parent.right;top:parent.top;bottom:parent.bottom;}border{color:"black";width:2}
+    FocusScope{id:window;anchors{left:parent.left;right:parent.right;top:parent.top;bottom:parent.bottom;}
           View{id:titlebar;height:24;elevation: 5;width: parent.width;backgroundColor: theme.accentColor
                     Text{id:appname;anchors{verticalCenter: parent.verticalCenter;left: parent.left;leftMargin: 5;}
                             text:qsTr("ER-100:便携式MAG焊接机器人系统");font.pixelSize: 14;}
@@ -47,14 +47,15 @@ Window{
                         Text{id:groovetype;font.pixelSize: 14;text:"单边V型坡口";anchors{top:grooveposition.bottom;horizontalCenter: parent.horizontalCenter} }
                         Text{id:joint;font.pixelSize:14; text:"T接头(I)";anchors{top:groovetype.bottom;horizontalCenter: parent.horizontalCenter}}
                         Canvas{id:canvas;anchors.left:parent.left;anchors.bottom: parent.bottom;width:100;height:80;
-                                     onPaint:{Paint.paintflatweld(0,canvas);}} onClicked:{indexpage=pagename[0]}}
+                                     onPaint:{Paint.paintflatweld(0,canvas);}} onClicked:{indexpage=pagename[0]; changeuserDialog.show();}
+                    }
                    Button{id:sysInforCard;anchors{left:parent.left;leftMargin: 10;top:groove.bottom;topMargin: 10;}
                        elevation: 0; width:100;height:88;backgroundColor:Palette.colors["green"]["500"];onClicked:{indexpage=pagename[1]}}//radius: 5;
                    Button{id:dataAnalayCard;anchors{left:parent.left;leftMargin: 10;top:sysInforCard.bottom;topMargin: 10;}
                        elevation: 0;width: 100;height: sysInforCard.height;backgroundColor:Palette.colors["amber"]["500"];onClicked:{indexpage=pagename[2]}}//radius: 5;
                    Button{id:settingCard;anchors{left:parent.left;leftMargin: 10;top:dataAnalayCard.bottom;topMargin: 10;}//radius: 5;
                        elevation: 0;width: 100;height: sysInforCard.height;backgroundColor:Palette.colors["lime"]["500"];onClicked:{indexpage=pagename[3]}}
-                   Button{ id:displayCard;anchors{right:parent.right;rightMargin:10;top:parent.top;topMargin:10;left:groove.right;leftMargin:10;bottom:parent.bottom;bottomMargin:10}
+                   Card{ id:displayCard;anchors{right:parent.right;rightMargin:10;top:parent.top;topMargin:10;left:groove.right;leftMargin:10;bottom:parent.bottom;bottomMargin:10}
                        elevation: 0;//radius: 5;
                        backgroundColor:Palette.colors["grey"]["100"]/* ((displayCard.backgroundColor=="")?(Palette.colors["red"]["500"]):
                                       ((groove.elevation>sysInforCard.elevation)?
@@ -126,9 +127,15 @@ Window{
                       if(name === accountname.text){
                            changeuserFeildtext.selectedIndex = i+1;
                            changeuserFeildtext.helperText=result.rows.item(i).type;} }
-                    usrnamemodel.remove(0);
+                    usrnamemodel.remove(0);                
               }
+              for(i=0;i<10;i++)
+              console.log(eRoboWeldSys.data[i]);
+              console.log(Utils.findRootChild(changeuserDialog,"dialogOverlayLayer"))
+            var  parent=Utils.findRootChild(changeuserDialog,"dialogOverlayLayer")
+              // console.log(parent.currentOverlay)
           });
       }
+
 }
 

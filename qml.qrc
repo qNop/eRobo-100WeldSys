@@ -8,5 +8,6 @@
         <file>dataAnalaypage.qml</file>
         <file>sysinforpage.qml</file>
         <file>Groovecardview.qml</file>
+        <file>Testqml.qml</file>
     </qresource>
 </RCC>

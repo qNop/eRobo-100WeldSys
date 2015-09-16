@@ -15,8 +15,11 @@ View {
         elevation:1
         onClicked: {
             landscapeDatePickerDialog.open();
-            console.log("landdate");
+            console.log(Utils.findRootChild(landscapeDatePickerDialog,"dialogOverlayLayer"))
+           var  parent=Utils.findRootChild(landscapeDatePickerDialog,"dialogOverlayLayer")
+             console.log(parent.currentOverlay);
        }
+
     }
 
     Dialog{id: landscapeDatePickerDialog;hasActions: true;contentMargins: 0;floatingActions: true;
