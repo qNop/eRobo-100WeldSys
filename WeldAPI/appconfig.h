@@ -50,8 +50,6 @@ public:
      QString Theme_AccentColor;   //系统组件颜色
      QString Theme_BackgroundColor;//系统背景颜色
 
-
-
  signals:
     void screenWidthChanged(int width);
     void screenHeightChanged(int hight);

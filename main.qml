@@ -25,6 +25,19 @@ Window{
                         case 16:indexpage=pagename[3];groove.elevation=0; sysInforCard.elevation=0;dataAnalayCard.elevation=0;settingCard.elevation=5; index=0;break;
                     }}}
     FocusScope{id:window;anchors{left:parent.left;right:parent.right;top:parent.top;bottom:parent.bottom;}
+            Keys.enabled: ture;
+            Keys.onPressed: {
+                switch(event.key){
+                case Qt.Key_1:
+                       console.log("Keyaccpet Key1");
+                    break;
+                }
+                event.accepted =ture;
+            }
+            Keys.onEscapePressed: {
+                console.log("Qt excit~");
+                Qt.quit();
+            }
           View{id:titlebar;height:24;elevation: 5;width: parent.width;backgroundColor: theme.accentColor
                     Text{id:appname;anchors{verticalCenter: parent.verticalCenter;left: parent.left;leftMargin: 5;}
                             text:qsTr("ER-100:便携式MAG焊接机器人系统");font.pixelSize: 14;}
@@ -36,8 +49,8 @@ Window{
                         Icon{ id:accountIcon;name:"awesome/user";anchors.right:accountname.left}
                            //  color: Theme.lightDark(theme.backgroundColor, Theme.light.iconColor, Theme.dark.iconColor);}
                           //   onClicked: {changeuserDialog.show();password.enabled=false;password.text=""}}
-                        Text{id:accountname; text:appConfig.currentusername;anchors.right:datetime.left}
-                        Text{id:datetime;anchors.right:powerIcon.left}
+                        Text{id:accountname; text:appConfig.currentusername;anchors.right:datetime.left;font.pixelSize: 14;}
+                        Text{id:datetime;anchors.right:powerIcon.left;font.pixelSize: 14;}
                         Icon{id:powerIcon;name:"awesome/power_off";anchors.right:parent.right;anchors.rightMargin: 5}}}
           View{id:background;anchors{bottom:parent.bottom;top:titlebar.bottom;right:parent.right;left:parent.left}
                   backgroundColor:Palette.colors["grey"]["400"];
@@ -129,11 +142,6 @@ Window{
                            changeuserFeildtext.helperText=result.rows.item(i).type;} }
                     usrnamemodel.remove(0);                
               }
-              for(i=0;i<10;i++)
-              console.log(eRoboWeldSys.data[i]);
-              console.log(Utils.findRootChild(changeuserDialog,"dialogOverlayLayer"))
-            var  parent=Utils.findRootChild(changeuserDialog,"dialogOverlayLayer")
-              // console.log(parent.currentOverlay)
           });
       }
 

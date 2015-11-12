@@ -1,11 +1,31 @@
 #ifndef MODBUSPORT_H
 #define MODBUSPORT_H
-#include <QtSerialPort/QtSerialPort>
 
-class modbusport
+
+#include <QObject>
+#include <QString>
+#include <QtQml/QQmlListProperty>
+
+/*
+ *  实现modbus与qml的联合调用
+*/
+
+class ModbusPort : public QObject
 {
-public:
-    modbusport();
-};
+    Q_OBJECT
 
-#endif // MODBUSPORT_H
+
+    public:
+    ModbusPort();
+    ~ModbusPort();
+
+
+     signals:
+
+}
+
+
+
+
+
+#endif

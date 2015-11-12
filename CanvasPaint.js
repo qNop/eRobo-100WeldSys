@@ -34,9 +34,9 @@ function paintflatweld(style,can){
              //  ctx.fill();
              ctx.stroke();
 
-            ctx.beginPath();
-            ctx.arc(14,35,27,(Math.PI/4),(Math.PI/12),false);
-            ctx.stroke();
+          //  ctx.beginPath();
+        //    ctx.arc(14,35,27,(Math.PI/4),(Math.PI/12),false);
+        //    ctx.stroke();
             break;
     }
 }
