@@ -2,11 +2,13 @@ import QtQuick 2.2
 import Material 0.1
 import Material.Extras 0.1
 import WeldSys.APPConfig 1.0
+import WeldSys.ERModbus 1.0
 import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.1
 import QtQuick.LocalStorage 2.0
 import "qrc:/Database.js" as DB
 import "CanvasPaint.js" as Paint
+
 Window{
     property  var index;
     property var  pagename:["groove","sysinfor","dataAnalay","setting"]
@@ -15,8 +17,10 @@ Window{
     width:appConfig.screenWidth;height: appConfig.screenHeight
     theme{primaryColor: "red";accentColor: "yellow";backgroundColor: "gray"}
     APPConfig{ id:appConfig;}
+    ERModbus{id:ermodbus;}
     Timer{ interval: 500; running: true; repeat: true;
                onTriggered:{ datetime.text = Qt.formatDateTime(new Date(), "yyyy-MM-dd dddd hh:mm:ss");
+                   ermodbus.modbus_write_reg=1;
                    //index++;
                    switch(index){
                         case 4  :indexpage=pagename[0];groove.elevation=5; sysInforCard.elevation=0;dataAnalayCard.elevation=0;settingCard.elevation=0; break;
@@ -25,7 +29,7 @@ Window{
                         case 16:indexpage=pagename[3];groove.elevation=0; sysInforCard.elevation=0;dataAnalayCard.elevation=0;settingCard.elevation=5; index=0;break;
                     }}}
     FocusScope{id:window;anchors{left:parent.left;right:parent.right;top:parent.top;bottom:parent.bottom;}
-            Keys.enabled: ture;
+            Keys.enabled: true;
             Keys.onPressed: {
                 switch(event.key){
                 case Qt.Key_1:
@@ -143,7 +147,7 @@ Window{
                     usrnamemodel.remove(0);                
               }
           });
+        ermodbus.modbus_status="setup";
       }
-
 }
 

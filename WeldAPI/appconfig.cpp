@@ -34,7 +34,6 @@ void Write_APP_Config(QSettings *Set){
      Set->beginGroup("eRoboWeldSysAppConfig");
      Set->setValue("Last_User",EROBOWELDSYS_LAST_USER_TYPE);
    //  Set->setValue("Current_Groove",EROBOWELDSYS_CU);
-
      Set->setValue("Current_User_Name",EROBOWELDSYS_CURRENT_USER_NAME);
      Set->setValue("Current_User_PassWord",EROBOWELDSYS_CURRENT_USER_PASSWORD);
      Set->setValue("Current_User_Type",EROBOWELDSYS_CURRENT_USER_TYPE);
