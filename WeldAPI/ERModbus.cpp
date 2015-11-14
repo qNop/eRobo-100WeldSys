@@ -54,10 +54,10 @@ QString ERModbus::getmodus_status(void){
 void ERModbus::setmodbus_write_reg(int num){
     qDebug()<<"modbus send mesg";
      //写modbus
-   if( modbus_write_register(ER_Modbus,1,num)){
-       qDebug()<<"modbus send ok";
+   if( modbus_write_register(ER_Modbus,1,num) == -1){
+       qDebug()<<"modbus send fail";
    }
    else{
-        qDebug()<<"modbus send fail";
+        qDebug()<<"modbus send ok";
    }
 }

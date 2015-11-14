@@ -19,9 +19,7 @@ View {
            var  parent=Utils.findRootChild(landscapeDatePickerDialog,"dialogOverlayLayer")
              console.log(parent.currentOverlay);
        }
-
     }
-
     Dialog{id: landscapeDatePickerDialog;hasActions: true;contentMargins: 0;floatingActions: true;
               DatePicker { frameVisible: false;dayAreaBottomMargin : Units.dp(48);isLandscape: true }}
 }

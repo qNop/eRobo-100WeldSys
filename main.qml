@@ -18,7 +18,7 @@ Window{
     theme{primaryColor: "red";accentColor: "yellow";backgroundColor: "gray"}
     APPConfig{ id:appConfig;}
     ERModbus{id:ermodbus;}
-    Timer{ interval: 500; running: true; repeat: true;
+    Timer{ interval: 100; running: true; repeat: true;
                onTriggered:{ datetime.text = Qt.formatDateTime(new Date(), "yyyy-MM-dd dddd hh:mm:ss");
                    ermodbus.modbus_write_reg=1;
                    //index++;
@@ -57,7 +57,7 @@ Window{
                         Text{id:datetime;anchors.right:powerIcon.left;font.pixelSize: 14;}
                         Icon{id:powerIcon;name:"awesome/power_off";anchors.right:parent.right;anchors.rightMargin: 5}}}
           View{id:background;anchors{bottom:parent.bottom;top:titlebar.bottom;right:parent.right;left:parent.left}
-                  backgroundColor:Palette.colors["grey"]["400"];
+                  backgroundColor:Palette.colors["blue"]["900"];
                    Button{id:groove;anchors{left:parent.left;leftMargin: 10;top:parent.top;topMargin: 10;}
                          elevation:0;width:100;height:140;backgroundColor:Palette.colors["red"]["500"];//radius:5;
                         Text{ id:grooveposition;font.pixelSize: 18;text:"平焊";anchors{top:parent.top;topMargin: 5;horizontalCenter: parent.horizontalCenter} }
