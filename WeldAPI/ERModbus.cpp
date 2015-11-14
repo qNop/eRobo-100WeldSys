@@ -4,7 +4,7 @@
 #include "modbus-rtu-private.h"
 #include "modbus-private.h"
 #include <QDebug>
-#include <qextserialenumerator.h>
+//#include <qextserialenumerator.h>
 //#include <qextserialport.h>
 
 ERModbus::ERModbus(){
