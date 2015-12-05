@@ -53,7 +53,7 @@ static const uint qt_meta_data_ERModbus[] = {
 
  // properties: name, type, flags
        1, QMetaType::QString, 0x00095003,
-       2, QMetaType::Int, 0x00095002,
+       2, QMetaType::Int, 0x00095003,
 
        0        // eod
 };
@@ -68,6 +68,7 @@ void ERModbus::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         void *_v = _a[0];
         switch (_id) {
         case 0: *reinterpret_cast< QString*>(_v) = _t->getmodus_status(); break;
+        case 1: *reinterpret_cast< int*>(_v) = _t->getmodbus_reg(); break;
         default: break;
         }
     } else if (_c == QMetaObject::WriteProperty) {

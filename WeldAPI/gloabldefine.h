@@ -19,6 +19,7 @@
 #define EROBOWELDSYS_THEMEPRIMARYCOLOR            "blue"
 #define EROBOWELDSYS_THEMEBACKGROUNDCOLOR   "white"
 #define EROBOWELDSYS_THEMEACCENTCOLOR               "yellow"
+#define EROBOWELDSYS_BACKLIGHT                                 50
 
 /************************************************************************/
 

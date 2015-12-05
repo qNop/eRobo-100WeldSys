@@ -49,6 +49,8 @@ void Write_APP_Config(QSettings *Set){
      Set->setValue("SoftWare_Company",EROBOWELDSYS_SOFTWARECOMPANY);
      Set->setValue("SoftWare_Description",EROBOWELDSYS_SOFTWAREDESCRIPTION);
      Set->setValue("SoftWare_Version",EROBOWELDSYS_SOFTWAREVREASION);
+
+     Set->setValue("BackLight",EROBOWELDSYS_BACKLIGHT);
      Set->endGroup();
 }
 /*
@@ -187,5 +189,71 @@ void APPConfig::setlastuser(QString username){
     emit lastuserChanged(username);
    qDebug() <<"last user change";
 }
-
-
+QString APPConfig::getthemeprimarycolor(){
+    QString primarycolor;
+    QSettings *Set =getPfromQfile();
+    Set->beginGroup("eRoboWeldSysAppConfig");
+    primarycolor = Set->value("Theme_PrimaryColor").toString();
+    Set->endGroup();
+    qDebug()<<"primary color read"<<primarycolor;
+    return primarycolor;
+}
+void APPConfig::setthemeprimarycolor(QString color){
+    QSettings *Set =getPfromQfile();
+    Set->beginGroup("eRoboWeldSysAppConfig");
+    Set->setValue("Theme_PrimaryColor",color);
+    Set->endGroup();
+    emit themeprimarycolorchanged(color);
+   qDebug() <<"primary color change";
+}
+QString APPConfig::getthemeaccentcolor(){
+    QString accentcolor;
+    QSettings *Set =getPfromQfile();
+    Set->beginGroup("eRoboWeldSysAppConfig");
+    accentcolor = Set->value("Theme_AccentColor").toString();
+    Set->endGroup();
+    qDebug()<<"accent color read"<<accentcolor;
+    return accentcolor;
+}
+void APPConfig::setthemeaccentcolor(QString color){
+    QSettings *Set =getPfromQfile();
+    Set->beginGroup("eRoboWeldSysAppConfig");
+    Set->setValue("Theme_AccentColor",color);
+    Set->endGroup();
+    emit themeaccentcolorchanged(color);
+   qDebug() <<"accent color change";
+}
+QString APPConfig::getthemebackgroundcolor(){
+    QString backgroundcolor;
+    QSettings *Set =getPfromQfile();
+    Set->beginGroup("eRoboWeldSysAppConfig");
+    backgroundcolor = Set->value("Theme_BackgroundColor").toString();
+    Set->endGroup();
+    qDebug()<<"background color read"<<backgroundcolor;
+    return backgroundcolor;
+}
+void APPConfig::setthemebackgroundcolor(QString color){
+    QSettings *Set =getPfromQfile();
+    Set->beginGroup("eRoboWeldSysAppConfig");
+    Set->setValue("Theme_BackgroundColor",color);
+    Set->endGroup();
+    emit themebackgroundcolorchanged(color);
+   qDebug() <<"background color change";
+}
+int APPConfig::getbacklight(){
+    int value;
+    QSettings *Set =getPfromQfile();
+    Set->beginGroup("eRoboWeldSysAppConfig");
+    value = Set->value("BackLight").toInt();
+    Set->endGroup();
+    qDebug()<<"backlight color read"<<value;
+    return value;
+}
+void APPConfig::setbacklight(int value){
+    QSettings *Set =getPfromQfile();
+    Set->beginGroup("eRoboWeldSysAppConfig");
+    Set->setValue("BackLight",value);
+    Set->endGroup();
+    emit backlightchanged(value);
+   qDebug() <<"backlight color change";
+}

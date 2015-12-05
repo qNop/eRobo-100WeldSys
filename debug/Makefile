@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = /opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/bin/arm-fsl-linux-gnueabi-gcc
 CXX           = /opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/bin/arm-fsl-linux-gnueabi-g++
-DEFINES       = -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_SERIALPORT_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_QML_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_SERIALPORT_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -mfloat-abi=softfp -g -march=armv7-a -mfpu=neon -DLINUX=1 -DEGL_API_FB=1 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -Wno-psabi -mfloat-abi=softfp -g -march=armv7-a -mfpu=neon -DLINUX=1 -DEGL_API_FB=1 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../../eRobo-100WeldSys -I. -I../libmodbus -I../libmodbus/src -I../../../ltib/rootfs/opt/Qt5/include -I../../../ltib/rootfs/opt/Qt5/include/QtQuick -I../../../ltib/rootfs/opt/Qt5/include/QtWidgets -I../../../ltib/rootfs/opt/Qt5/include/QtGui -I../../../ltib/rootfs/opt/Qt5/include/QtQml -I../../../ltib/rootfs/opt/Qt5/include/QtNetwork -I../../../ltib/rootfs/opt/Qt5/include/QtSql -I../../../ltib/rootfs/opt/Qt5/include/QtSerialPort -I../../../ltib/rootfs/opt/Qt5/include/QtCore -I. -I../../../ltib/rootfs/usr/include/GLES2 -I../../../ltib/rootfs/opt/tslib/include -I../../../ltib/rootfs/usr/include -I../../../ltib/rootfs/opt/Qt5/mkspecs/devices/linux-imx6-g++
+INCPATH       = -I../../eRobo-100WeldSys-new -I. -I../libmodbus -I../libmodbus/src -I../WeldAPI -I../../../ltib/rootfs/opt/Qt5/include -I../../../ltib/rootfs/opt/Qt5/include/QtQuick -I../../../ltib/rootfs/opt/Qt5/include/QtWidgets -I../../../ltib/rootfs/opt/Qt5/include/QtGui -I../../../ltib/rootfs/opt/Qt5/include/QtQml -I../../../ltib/rootfs/opt/Qt5/include/QtNetwork -I../../../ltib/rootfs/opt/Qt5/include/QtSql -I../../../ltib/rootfs/opt/Qt5/include/QtSerialPort -I../../../ltib/rootfs/opt/Qt5/include/QtCore -I. -I../../../ltib/rootfs/usr/include/GLES2 -I../../../ltib/rootfs/opt/tslib/include -I../../../ltib/rootfs/usr/include -I../../../ltib/rootfs/opt/Qt5/mkspecs/devices/linux-imx6-g++
 QMAKE         = /home/nop/ltib/rootfs/opt/Qt5/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -33,7 +33,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = eRobo-100WeldSys1.0.0
-DISTDIR = /home/nop/DownLoadFiles/eRobo-100WeldSys/debug/.tmp/eRobo-100WeldSys1.0.0
+DISTDIR = /home/nop/DownLoadFiles/eRobo-100WeldSys-new/debug/.tmp/eRobo-100WeldSys1.0.0
 LINK          = /opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/bin/arm-fsl-linux-gnueabi-g++
 LFLAGS        = -Wl,-rpath-link,/home/nop/ltib/rootfs/usr/lib -mfloat-abi=softfp -Wl,-rpath,/opt/Qt5/lib
 LIBS          = $(SUBLIBS) -L/home/nop/ltib/rootfs/opt/tslib/lib -L/home/nop/ltib/rootfs/usr/lib -L/home/nop/ltib/rootfs/opt/Qt5/lib -lQt5Quick -lQt5Widgets -lQt5Gui -lQt5Qml -lQt5Network -lQt5Sql -lQt5SerialPort -lQt5Core -ldbus-1 -lrt -lGLESv2 -lEGL -lGAL -lpthread 
@@ -50,19 +50,25 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../main.cpp \
 		../WeldAPI/appconfig.cpp \
-		../WeldAPI/modbusport.cpp \
 		../libmodbus/src/modbus.c \
 		../libmodbus/src/modbus-data.c \
-		../libmodbus/src/modbus-rtu.c qrc_qml.cpp \
-		moc_appconfig.cpp
+		../libmodbus/src/modbus-rtu.c \
+		../WeldAPI/ERModbus.cpp \
+		../WeldAPI/ERLed.cpp qrc_qml.cpp \
+		moc_appconfig.cpp \
+		moc_ERModbus.cpp \
+		moc_ERLed.cpp
 OBJECTS       = main.o \
 		appconfig.o \
-		modbusport.o \
 		modbus.o \
 		modbus-data.o \
 		modbus-rtu.o \
+		ERModbus.o \
+		ERLed.o \
 		qrc_qml.o \
-		moc_appconfig.o
+		moc_appconfig.o \
+		moc_ERModbus.o \
+		moc_ERLed.o
 DIST          = ../../../../ltib/rootfs/opt/Qt5/mkspecs/features/spec_pre.prf \
 		../../../../ltib/rootfs/opt/Qt5/mkspecs/common/unix.conf \
 		../../../../ltib/rootfs/opt/Qt5/mkspecs/common/linux.conf \
@@ -171,6 +177,7 @@ DIST          = ../../../../ltib/rootfs/opt/Qt5/mkspecs/features/spec_pre.prf \
 		../../../../ltib/rootfs/opt/Qt5/mkspecs/features/default_pre.prf \
 		../../../../ltib/rootfs/opt/Qt5/mkspecs/features/resolve_config.prf \
 		../../../../ltib/rootfs/opt/Qt5/mkspecs/features/default_post.prf \
+		../../../../ltib/rootfs/opt/Qt5/mkspecs/features/qml_debug.prf \
 		../../../../ltib/rootfs/opt/Qt5/mkspecs/features/warn_on.prf \
 		../../../../ltib/rootfs/opt/Qt5/mkspecs/features/qt.prf \
 		../../../../ltib/rootfs/opt/Qt5/mkspecs/features/resources.prf \
@@ -184,17 +191,18 @@ DIST          = ../../../../ltib/rootfs/opt/Qt5/mkspecs/features/spec_pre.prf \
 		../../../../ltib/rootfs/opt/Qt5/mkspecs/features/lex.prf \
 		../../eRobo-100WeldSys.pro ../WeldAPI/appconfig.h \
 		../WeldAPI/gloabldefine.h \
+		WeldAPI/qextserialenumerator.h \
 		../libmodbus/src/modbus.h \
-		../libmodbus/src/modbus-private.h \
 		../libmodbus/src/modbus-rtu.h \
 		../libmodbus/src/modbus-rtu-private.h \
-		../libmodbus/src/modbus-version.h.in \
-		../WeldAPI/modbusport.h ../main.cpp \
+		../WeldAPI/ERModbus.h \
+		../WeldAPI/ERLed.h ../main.cpp \
 		../WeldAPI/appconfig.cpp \
-		../WeldAPI/modbusport.cpp \
 		../libmodbus/src/modbus.c \
 		../libmodbus/src/modbus-data.c \
-		../libmodbus/src/modbus-rtu.c
+		../libmodbus/src/modbus-rtu.c \
+		../WeldAPI/ERModbus.cpp \
+		../WeldAPI/ERLed.cpp
 QMAKE_TARGET  = eRobo-100WeldSys
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = eRobo-100WeldSys
@@ -333,6 +341,7 @@ Makefile: ../eRobo-100WeldSys.pro ../../../ltib/rootfs/opt/Qt5/mkspecs/features/
 		../../../ltib/rootfs/opt/Qt5/mkspecs/features/default_pre.prf \
 		../../../ltib/rootfs/opt/Qt5/mkspecs/features/resolve_config.prf \
 		../../../ltib/rootfs/opt/Qt5/mkspecs/features/default_post.prf \
+		../../../ltib/rootfs/opt/Qt5/mkspecs/features/qml_debug.prf \
 		../../../ltib/rootfs/opt/Qt5/mkspecs/features/warn_on.prf \
 		../../../ltib/rootfs/opt/Qt5/mkspecs/features/qt.prf \
 		../../../ltib/rootfs/opt/Qt5/mkspecs/features/resources.prf \
@@ -463,6 +472,7 @@ Makefile: ../eRobo-100WeldSys.pro ../../../ltib/rootfs/opt/Qt5/mkspecs/features/
 ../../../ltib/rootfs/opt/Qt5/mkspecs/features/default_pre.prf:
 ../../../ltib/rootfs/opt/Qt5/mkspecs/features/resolve_config.prf:
 ../../../ltib/rootfs/opt/Qt5/mkspecs/features/default_post.prf:
+../../../ltib/rootfs/opt/Qt5/mkspecs/features/qml_debug.prf:
 ../../../ltib/rootfs/opt/Qt5/mkspecs/features/warn_on.prf:
 ../../../ltib/rootfs/opt/Qt5/mkspecs/features/qt.prf:
 ../../../ltib/rootfs/opt/Qt5/mkspecs/features/resources.prf:
@@ -499,8 +509,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../qml.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents ../WeldAPI/appconfig.h ../WeldAPI/gloabldefine.h ../libmodbus/src/modbus.h ../libmodbus/src/modbus-private.h ../libmodbus/src/modbus-rtu.h ../libmodbus/src/modbus-rtu-private.h ../libmodbus/src/modbus-version.h.in ../WeldAPI/modbusport.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../main.cpp ../WeldAPI/appconfig.cpp ../WeldAPI/modbusport.cpp ../libmodbus/src/modbus.c ../libmodbus/src/modbus-data.c ../libmodbus/src/modbus-rtu.c $(DISTDIR)/
+	$(COPY_FILE) --parents ../WeldAPI/appconfig.h ../WeldAPI/gloabldefine.h WeldAPI/qextserialenumerator.h ../libmodbus/src/modbus.h ../libmodbus/src/modbus-rtu.h ../libmodbus/src/modbus-rtu-private.h ../WeldAPI/ERModbus.h ../WeldAPI/ERLed.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../main.cpp ../WeldAPI/appconfig.cpp ../libmodbus/src/modbus.c ../libmodbus/src/modbus-data.c ../libmodbus/src/modbus-rtu.c ../WeldAPI/ERModbus.cpp ../WeldAPI/ERLed.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -527,18 +537,16 @@ compiler_rcc_clean:
 qrc_qml.cpp: ../qml.qrc \
 		../CanvasPaint.js \
 		../Database.js \
-		../groovepage.qml \
-		../sysinforpage.qml \
-		../Testqml.qml \
-		../Groovecardview.qml \
-		../dataAnalaypage.qml \
-		../settingpage.qml \
-		../main.qml
+		../groove.png \
+		../welding.qml \
+		../weldset.qml \
+		../main.qml \
+		../grooveset.qml
 	/home/nop/ltib/rootfs/opt/Qt5/bin/rcc -name qml ../qml.qrc -o qrc_qml.cpp
 
-compiler_moc_header_make_all: moc_appconfig.cpp
+compiler_moc_header_make_all: moc_appconfig.cpp moc_ERModbus.cpp moc_ERLed.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_appconfig.cpp
+	-$(DEL_FILE) moc_appconfig.cpp moc_ERModbus.cpp moc_ERLed.cpp
 moc_appconfig.cpp: ../../../ltib/rootfs/opt/Qt5/include/QtCore/QObject \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobject.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobjectdefs.h \
@@ -610,7 +618,157 @@ moc_appconfig.cpp: ../../../ltib/rootfs/opt/Qt5/include/QtCore/QObject \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qset.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcontiguouscache.h \
 		../WeldAPI/appconfig.h
-	/home/nop/ltib/rootfs/opt/Qt5/bin/moc $(DEFINES) -I/home/nop/ltib/rootfs/opt/Qt5/mkspecs/devices/linux-imx6-g++ -I/home/nop/DownLoadFiles/eRobo-100WeldSys -I/home/nop/DownLoadFiles/eRobo-100WeldSys/libmodbus -I/home/nop/DownLoadFiles/eRobo-100WeldSys/libmodbus/src -I/home/nop/ltib/rootfs/opt/Qt5/include -I/home/nop/ltib/rootfs/opt/Qt5/include/QtQuick -I/home/nop/ltib/rootfs/opt/Qt5/include/QtWidgets -I/home/nop/ltib/rootfs/opt/Qt5/include/QtGui -I/home/nop/ltib/rootfs/opt/Qt5/include/QtQml -I/home/nop/ltib/rootfs/opt/Qt5/include/QtNetwork -I/home/nop/ltib/rootfs/opt/Qt5/include/QtSql -I/home/nop/ltib/rootfs/opt/Qt5/include/QtSerialPort -I/home/nop/ltib/rootfs/opt/Qt5/include/QtCore -I. -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include/c++/4.6.2 -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include/c++/4.6.2/arm-fsl-linux-gnueabi -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include/c++/4.6.2/backward -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/lib/gcc/arm-fsl-linux-gnueabi/4.6.2/include -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/lib/gcc/arm-fsl-linux-gnueabi/4.6.2/include-fixed -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/multi-libs/usr/include ../WeldAPI/appconfig.h -o moc_appconfig.cpp
+	/home/nop/ltib/rootfs/opt/Qt5/bin/moc $(DEFINES) -I/home/nop/ltib/rootfs/opt/Qt5/mkspecs/devices/linux-imx6-g++ -I/home/nop/DownLoadFiles/eRobo-100WeldSys-new -I/home/nop/DownLoadFiles/eRobo-100WeldSys-new/libmodbus -I/home/nop/DownLoadFiles/eRobo-100WeldSys-new/libmodbus/src -I/home/nop/DownLoadFiles/eRobo-100WeldSys-new/WeldAPI -I/home/nop/ltib/rootfs/opt/Qt5/include -I/home/nop/ltib/rootfs/opt/Qt5/include/QtQuick -I/home/nop/ltib/rootfs/opt/Qt5/include/QtWidgets -I/home/nop/ltib/rootfs/opt/Qt5/include/QtGui -I/home/nop/ltib/rootfs/opt/Qt5/include/QtQml -I/home/nop/ltib/rootfs/opt/Qt5/include/QtNetwork -I/home/nop/ltib/rootfs/opt/Qt5/include/QtSql -I/home/nop/ltib/rootfs/opt/Qt5/include/QtSerialPort -I/home/nop/ltib/rootfs/opt/Qt5/include/QtCore -I. -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include/c++/4.6.2 -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include/c++/4.6.2/arm-fsl-linux-gnueabi -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include/c++/4.6.2/backward -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/lib/gcc/arm-fsl-linux-gnueabi/4.6.2/include -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/lib/gcc/arm-fsl-linux-gnueabi/4.6.2/include-fixed -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/multi-libs/usr/include ../WeldAPI/appconfig.h -o moc_appconfig.cpp
+
+moc_ERModbus.cpp: ../../../ltib/rootfs/opt/Qt5/include/QtCore/QObject \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobject.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobjectdefs.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qnamespace.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qglobal.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qconfig.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfeatures.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsystemdetection.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qprocessordetection.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcompilerdetection.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtypeinfo.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtypetraits.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsysinfo.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlogging.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qflags.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qbasicatomic.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_bootstrap.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qgenericatomic.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_cxx11.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_gcc.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_msvc.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_armv7.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_armv6.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_armv5.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_ia64.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_mips.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_x86.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_unix.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qglobalstatic.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmutex.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qnumeric.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobjectdefs_impl.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstring.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qchar.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qbytearray.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qrefcount.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qarraydata.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstringbuilder.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlist.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qalgorithms.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qiterator.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qbytearraylist.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstringlist.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qregexp.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstringmatcher.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcoreevent.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qscopedpointer.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmetatype.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvarlengtharray.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcontainerfwd.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qisenum.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobject_impl.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/QString \
+		../../../ltib/rootfs/opt/Qt5/include/QtQml/QQmlListProperty \
+		../../../ltib/rootfs/opt/Qt5/include/QtQml/qqmllist.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtQml/qtqmlglobal.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvariant.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmap.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpair.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qdebug.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qhash.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtextstream.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qiodevice.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlocale.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qshareddata.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvector.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpoint.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qset.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcontiguouscache.h \
+		../libmodbus/src/modbus.h \
+		../libmodbus/src/modbus-version.h \
+		../libmodbus/src/modbus-tcp.h \
+		../libmodbus/src/modbus-rtu.h \
+		../WeldAPI/ERModbus.h
+	/home/nop/ltib/rootfs/opt/Qt5/bin/moc $(DEFINES) -I/home/nop/ltib/rootfs/opt/Qt5/mkspecs/devices/linux-imx6-g++ -I/home/nop/DownLoadFiles/eRobo-100WeldSys-new -I/home/nop/DownLoadFiles/eRobo-100WeldSys-new/libmodbus -I/home/nop/DownLoadFiles/eRobo-100WeldSys-new/libmodbus/src -I/home/nop/DownLoadFiles/eRobo-100WeldSys-new/WeldAPI -I/home/nop/ltib/rootfs/opt/Qt5/include -I/home/nop/ltib/rootfs/opt/Qt5/include/QtQuick -I/home/nop/ltib/rootfs/opt/Qt5/include/QtWidgets -I/home/nop/ltib/rootfs/opt/Qt5/include/QtGui -I/home/nop/ltib/rootfs/opt/Qt5/include/QtQml -I/home/nop/ltib/rootfs/opt/Qt5/include/QtNetwork -I/home/nop/ltib/rootfs/opt/Qt5/include/QtSql -I/home/nop/ltib/rootfs/opt/Qt5/include/QtSerialPort -I/home/nop/ltib/rootfs/opt/Qt5/include/QtCore -I. -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include/c++/4.6.2 -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include/c++/4.6.2/arm-fsl-linux-gnueabi -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include/c++/4.6.2/backward -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/lib/gcc/arm-fsl-linux-gnueabi/4.6.2/include -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/lib/gcc/arm-fsl-linux-gnueabi/4.6.2/include-fixed -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/multi-libs/usr/include ../WeldAPI/ERModbus.h -o moc_ERModbus.cpp
+
+moc_ERLed.cpp: ../../../ltib/rootfs/opt/Qt5/include/QtCore/QObject \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobject.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobjectdefs.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qnamespace.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qglobal.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qconfig.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfeatures.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsystemdetection.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qprocessordetection.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcompilerdetection.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtypeinfo.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtypetraits.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsysinfo.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlogging.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qflags.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qbasicatomic.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_bootstrap.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qgenericatomic.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_cxx11.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_gcc.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_msvc.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_armv7.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_armv6.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_armv5.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_ia64.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_mips.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_x86.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_unix.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qglobalstatic.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmutex.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qnumeric.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobjectdefs_impl.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstring.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qchar.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qbytearray.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qrefcount.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qarraydata.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstringbuilder.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlist.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qalgorithms.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qiterator.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qbytearraylist.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstringlist.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qregexp.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstringmatcher.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcoreevent.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qscopedpointer.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmetatype.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvarlengtharray.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcontainerfwd.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qisenum.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobject_impl.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/QString \
+		../../../ltib/rootfs/opt/Qt5/include/QtQml/QQmlListProperty \
+		../../../ltib/rootfs/opt/Qt5/include/QtQml/qqmllist.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtQml/qtqmlglobal.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvariant.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmap.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpair.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qdebug.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qhash.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtextstream.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qiodevice.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlocale.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qshareddata.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvector.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpoint.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qset.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcontiguouscache.h \
+		../WeldAPI/ERLed.h
+	/home/nop/ltib/rootfs/opt/Qt5/bin/moc $(DEFINES) -I/home/nop/ltib/rootfs/opt/Qt5/mkspecs/devices/linux-imx6-g++ -I/home/nop/DownLoadFiles/eRobo-100WeldSys-new -I/home/nop/DownLoadFiles/eRobo-100WeldSys-new/libmodbus -I/home/nop/DownLoadFiles/eRobo-100WeldSys-new/libmodbus/src -I/home/nop/DownLoadFiles/eRobo-100WeldSys-new/WeldAPI -I/home/nop/ltib/rootfs/opt/Qt5/include -I/home/nop/ltib/rootfs/opt/Qt5/include/QtQuick -I/home/nop/ltib/rootfs/opt/Qt5/include/QtWidgets -I/home/nop/ltib/rootfs/opt/Qt5/include/QtGui -I/home/nop/ltib/rootfs/opt/Qt5/include/QtQml -I/home/nop/ltib/rootfs/opt/Qt5/include/QtNetwork -I/home/nop/ltib/rootfs/opt/Qt5/include/QtSql -I/home/nop/ltib/rootfs/opt/Qt5/include/QtSerialPort -I/home/nop/ltib/rootfs/opt/Qt5/include/QtCore -I. -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include/c++/4.6.2 -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include/c++/4.6.2/arm-fsl-linux-gnueabi -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include/c++/4.6.2/backward -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/lib/gcc/arm-fsl-linux-gnueabi/4.6.2/include -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/lib/gcc/arm-fsl-linux-gnueabi/4.6.2/include-fixed -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include -I/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/multi-libs/usr/include ../WeldAPI/ERLed.h -o moc_ERLed.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -626,8 +784,8 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 
 ####### Compile
 
-main.o: ../main.cpp ../../../ltib/rootfs/opt/Qt5/include/QtGui/QGuiApplication \
-		../../../ltib/rootfs/opt/Qt5/include/QtGui/qguiapplication.h \
+main.o: ../main.cpp ../../../ltib/rootfs/opt/Qt5/include/QtWidgets/QApplication \
+		../../../ltib/rootfs/opt/Qt5/include/QtWidgets/qapplication.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcoreapplication.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qglobal.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qconfig.h \
@@ -684,29 +842,60 @@ main.o: ../main.cpp ../../../ltib/rootfs/opt/Qt5/include/QtGui/QGuiApplication \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qeventloop.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtGui/qwindowdefs.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtGui/qwindowdefs_win.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtGui/qinputmethod.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlocale.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpoint.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsize.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qcursor.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtWidgets/qdesktopwidget.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtWidgets/qwidget.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmargins.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qpaintdevice.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qrect.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qpalette.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qcolor.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qrgb.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qbrush.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpair.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvector.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qmatrix.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qpolygon.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qregion.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qdatastream.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qiodevice.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qline.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qtransform.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qpainterpath.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qimage.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qpixelformat.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qpixmap.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsharedpointer.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qshareddata.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qhash.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsharedpointer_impl.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qfont.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qfontmetrics.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qfontinfo.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtWidgets/qsizepolicy.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qkeysequence.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qevent.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvariant.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmap.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpair.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qdebug.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qhash.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtextstream.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qiodevice.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvector.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpoint.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlocale.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qset.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcontiguouscache.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qshareddata.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsize.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qurl.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qurlquery.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfile.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfiledevice.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qvector2d.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qtouchdevice.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qguiapplication.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtGui/qinputmethod.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtQml/QQmlApplicationEngine \
 		../../../ltib/rootfs/opt/Qt5/include/QtQml/qqmlapplicationengine.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtQml/qqmlengine.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qurl.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qurlquery.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtQml/qjsengine.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsharedpointer.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsharedpointer_impl.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtQml/qjsvalue.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtQml/qtqmlglobal.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtQml/qqmlerror.h \
@@ -717,6 +906,12 @@ main.o: ../main.cpp ../../../ltib/rootfs/opt/Qt5/include/QtGui/QGuiApplication \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/QString \
 		../../../ltib/rootfs/opt/Qt5/include/QtQml/QQmlListProperty \
 		../../../ltib/rootfs/opt/Qt5/include/QtQml/qqmllist.h \
+		../WeldAPI/ERModbus.h \
+		../libmodbus/src/modbus.h \
+		../libmodbus/src/modbus-version.h \
+		../libmodbus/src/modbus-tcp.h \
+		../libmodbus/src/modbus-rtu.h \
+		../WeldAPI/ERLed.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../main.cpp
 
@@ -808,12 +1003,31 @@ appconfig.o: ../WeldAPI/appconfig.cpp ../WeldAPI/appconfig.h \
 		../WeldAPI/gloabldefine.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o appconfig.o ../WeldAPI/appconfig.cpp
 
-modbusport.o: ../WeldAPI/modbusport.cpp ../WeldAPI/modbusport.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtSerialPort/QtSerialPort \
-		../../../ltib/rootfs/opt/Qt5/include/QtSerialPort/QtSerialPortDepends \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/QtCore \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/QtCoreDepends \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qabstractanimation.h \
+modbus.o: ../libmodbus/src/modbus.c ../libmodbus/config.h \
+		../libmodbus/src/modbus.h \
+		../libmodbus/src/modbus-version.h \
+		../libmodbus/src/modbus-tcp.h \
+		../libmodbus/src/modbus-rtu.h \
+		../libmodbus/src/modbus-private.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o modbus.o ../libmodbus/src/modbus.c
+
+modbus-data.o: ../libmodbus/src/modbus-data.c ../libmodbus/src/modbus.h \
+		../libmodbus/src/modbus-version.h \
+		../libmodbus/src/modbus-tcp.h \
+		../libmodbus/src/modbus-rtu.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o modbus-data.o ../libmodbus/src/modbus-data.c
+
+modbus-rtu.o: ../libmodbus/src/modbus-rtu.c ../libmodbus/src/modbus-private.h \
+		../libmodbus/config.h \
+		../libmodbus/src/modbus.h \
+		../libmodbus/src/modbus-version.h \
+		../libmodbus/src/modbus-tcp.h \
+		../libmodbus/src/modbus-rtu.h \
+		../libmodbus/src/modbus-rtu-private.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o modbus-rtu.o ../libmodbus/src/modbus-rtu.c
+
+ERModbus.o: ../WeldAPI/ERModbus.cpp ../WeldAPI/ERModbus.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/QObject \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobject.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobjectdefs.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qnamespace.h \
@@ -866,14 +1080,10 @@ modbusport.o: ../WeldAPI/modbusport.cpp ../WeldAPI/modbusport.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcontainerfwd.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qisenum.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobject_impl.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qanimationgroup.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qparallelanimationgroup.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpauseanimation.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpropertyanimation.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvariantanimation.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qeasingcurve.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvector.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpoint.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/QString \
+		../../../ltib/rootfs/opt/Qt5/include/QtQml/QQmlListProperty \
+		../../../ltib/rootfs/opt/Qt5/include/QtQml/qqmllist.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtQml/qtqmlglobal.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvariant.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmap.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpair.h \
@@ -883,153 +1093,107 @@ modbusport.o: ../WeldAPI/modbusport.cpp ../WeldAPI/modbusport.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qiodevice.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlocale.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qshareddata.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvector.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpoint.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qset.h \
 		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcontiguouscache.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsequentialanimationgroup.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtextcodec.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qendian.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlibraryinfo.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qdatetime.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qbuffer.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qdatastream.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qdir.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfileinfo.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfile.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfiledevice.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qdiriterator.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfileselector.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/QObject \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/QStringList \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfilesystemwatcher.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlockfile.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qloggingcategory.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qprocess.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qresource.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsavefile.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsettings.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstandardpaths.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstorageinfo.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtemporarydir.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/QScopedPointer \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtemporaryfile.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qurl.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qurlquery.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qabstractitemmodel.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qabstractproxymodel.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qidentityproxymodel.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qitemselectionmodel.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsortfilterproxymodel.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstringlistmodel.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qjsonarray.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qjsonvalue.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qjsondocument.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qjsonobject.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qabstracteventdispatcher.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qeventloop.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qabstractnativeeventfilter.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qbasictimer.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcoreapplication.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmath.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmetaobject.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmimedata.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobjectcleanuphandler.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpointer.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsharedpointer.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsharedpointer_impl.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsharedmemory.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsignalmapper.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsocketnotifier.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsystemsemaphore.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtimer.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtranslator.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qwineventnotifier.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmimedatabase.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmimetype.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfactoryinterface.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlibrary.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qplugin.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpluginloader.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/quuid.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qabstractstate.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qabstracttransition.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qeventtransition.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfinalstate.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qhistorystate.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsignaltransition.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstate.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstatemachine.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qexception.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfuture.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfutureinterface.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qrunnable.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qresultstore.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfuturesynchronizer.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfuturewatcher.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qreadwritelock.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsemaphore.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qthread.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qthreadpool.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qthreadstorage.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qwaitcondition.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qarraydataops.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qarraydatapointer.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qbitarray.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qbytearraymatcher.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcache.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcollator.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcommandlineoption.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcommandlineparser.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcryptographichash.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qelapsedtimer.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qline.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlinkedlist.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmargins.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmessageauthenticationcode.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qqueue.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qrect.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsize.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qregularexpression.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qscopedvaluerollback.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstack.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtextboundaryfinder.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtimeline.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtimezone.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qxmlstream.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtcoreversion.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtSerialPort/qserialport.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtSerialPort/qserialportglobal.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtSerialPort/qserialportinfo.h \
-		../../../ltib/rootfs/opt/Qt5/include/QtSerialPort/qtserialportversion.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o modbusport.o ../WeldAPI/modbusport.cpp
-
-modbus.o: ../libmodbus/src/modbus.c ../libmodbus/config.h \
 		../libmodbus/src/modbus.h \
 		../libmodbus/src/modbus-version.h \
 		../libmodbus/src/modbus-tcp.h \
 		../libmodbus/src/modbus-rtu.h \
-		../libmodbus/src/modbus-private.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o modbus.o ../libmodbus/src/modbus.c
-
-modbus-data.o: ../libmodbus/src/modbus-data.c ../libmodbus/src/modbus.h \
-		../libmodbus/src/modbus-version.h \
-		../libmodbus/src/modbus-tcp.h \
-		../libmodbus/src/modbus-rtu.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o modbus-data.o ../libmodbus/src/modbus-data.c
-
-modbus-rtu.o: ../libmodbus/src/modbus-rtu.c ../libmodbus/src/modbus-private.h \
+		../libmodbus/src/modbus-rtu-private.h \
+		../libmodbus/src/modbus-private.h \
 		../libmodbus/config.h \
-		../libmodbus/src/modbus.h \
-		../libmodbus/src/modbus-version.h \
-		../libmodbus/src/modbus-tcp.h \
-		../libmodbus/src/modbus-rtu.h \
-		../libmodbus/src/modbus-rtu-private.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o modbus-rtu.o ../libmodbus/src/modbus-rtu.c
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/QDebug
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ERModbus.o ../WeldAPI/ERModbus.cpp
+
+ERLed.o: ../WeldAPI/ERLed.cpp ../WeldAPI/ERLed.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/QObject \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobject.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobjectdefs.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qnamespace.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qglobal.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qconfig.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qfeatures.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsystemdetection.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qprocessordetection.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcompilerdetection.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtypeinfo.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtypetraits.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qsysinfo.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlogging.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qflags.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qbasicatomic.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_bootstrap.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qgenericatomic.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_cxx11.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_gcc.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_msvc.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_armv7.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_armv6.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_armv5.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_ia64.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_mips.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_x86.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qatomic_unix.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qglobalstatic.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmutex.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qnumeric.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobjectdefs_impl.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstring.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qchar.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qbytearray.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qrefcount.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qarraydata.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstringbuilder.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlist.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qalgorithms.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qiterator.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qbytearraylist.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstringlist.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qregexp.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qstringmatcher.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcoreevent.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qscopedpointer.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmetatype.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvarlengtharray.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcontainerfwd.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qisenum.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qobject_impl.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/QString \
+		../../../ltib/rootfs/opt/Qt5/include/QtQml/QQmlListProperty \
+		../../../ltib/rootfs/opt/Qt5/include/QtQml/qqmllist.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtQml/qtqmlglobal.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvariant.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qmap.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpair.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qdebug.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qhash.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qtextstream.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qiodevice.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qlocale.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qshareddata.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qvector.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qpoint.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qset.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qcontiguouscache.h \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/QDebug \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/QProcess \
+		../../../ltib/rootfs/opt/Qt5/include/QtCore/qprocess.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ERLed.o ../WeldAPI/ERLed.cpp
 
 qrc_qml.o: qrc_qml.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qml.o qrc_qml.cpp
 
 moc_appconfig.o: moc_appconfig.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_appconfig.o moc_appconfig.cpp
+
+moc_ERModbus.o: moc_ERModbus.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ERModbus.o moc_ERModbus.cpp
+
+moc_ERLed.o: moc_ERLed.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ERLed.o moc_ERLed.cpp
 
 ####### Install
 

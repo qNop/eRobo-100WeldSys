@@ -7,11 +7,11 @@ SOURCES += main.cpp \
     libmodbus/src/modbus.c \
    libmodbus/src/modbus-data.c \
     libmodbus/src/modbus-rtu.c \
-    WeldAPI/ERModbus.cpp
+    WeldAPI/ERModbus.cpp \
+    WeldAPI/ERLed.cpp
 
-    WeldAPI/ERModbus.cpp
-
-RESOURCES += qml.qrc
+RESOURCES += \
+    qml.qrc
 
 CONFIG += console qml_debug
 
@@ -28,11 +28,13 @@ HEADERS += \
     libmodbus/src/modbus.h \
     libmodbus/src/modbus-rtu.h \
     libmodbus/src/modbus-rtu-private.h \
-    WeldAPI/ERModbus.h
+    WeldAPI/ERModbus.h \
+    WeldAPI/ERLed.h
 
 INCLUDEPATH +=libmodbus \
               libmodbus/src \
               WeldAPI\
+
 
 
 

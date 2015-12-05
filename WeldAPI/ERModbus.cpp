@@ -22,7 +22,7 @@ void ERModbus::setmodbus_status(QString Status){
            status=Status;
           if(Status=="setup"){
                /*获取RTU结构体*/
-               ER_Modbus =  modbus_new_rtu("/dev/ttyUSB0",115200,'N',8,1);
+               ER_Modbus =  modbus_new_rtu("/dev/ttymxc1",115200,'N',8,1);
                /*设置modbus为232模式*/
                modbus_rtu_set_serial_mode(ER_Modbus,MODBUS_RTU_RS232);
                /*为0输出调试信息*/
@@ -32,10 +32,8 @@ void ERModbus::setmodbus_status(QString Status){
               /*设置从机地址*/
                modbus_set_slave(ER_Modbus,0x0001);
                /*连接串口*/
-               if(modbus_connect(ER_Modbus) == -1)
-                   qDebug()<<"modbus connect fail ...";
-               else
-                   qDebug()<<"modbus connect OK ...";
+               modbus_connect(ER_Modbus);
+               qDebug()<<"modbus opened~";
          }
         else  if(Status=="stop"){
               /*关闭modbus*/
@@ -44,7 +42,7 @@ void ERModbus::setmodbus_status(QString Status){
               modbus_free(ER_Modbus);
               /*清楚modbus指针*/
               ER_Modbus = NULL;
-               qDebug()<<"modbus closed";
+               qDebug()<<"modbus closed~";
             }
 }
 
@@ -52,12 +50,30 @@ QString ERModbus::getmodus_status(void){
     return status;
 }
 void ERModbus::setmodbus_write_reg(int num){
-    qDebug()<<"modbus send mesg";
-     //写modbus
-   if( modbus_write_register(ER_Modbus,1,num) == -1){
-       qDebug()<<"modbus send fail";
-   }
-   else{
-        qDebug()<<"modbus send ok";
-   }
+    int s;
+    if(ER_Modbus != NULL){
+      qDebug()<<"modbus send mesg";
+         //写modbus
+           s=modbus_write_register(ER_Modbus,1,num);
+          qDebug()<<"modbus send "<<s;
+    }
+    else
+    {
+        qDebug()<<"modbus is closed ~";
+    }
+}
+int ERModbus::getmodbus_reg(void){
+    int s;
+    uint16_t data;
+     if(ER_Modbus != NULL){
+    qDebug()<<"modbus send get mesg";
+    //写modbus
+    s=modbus_read_registers(ER_Modbus,1,1,&data);
+      qDebug()<<"modbus send get mesg"<<s;
+       }
+     else{
+         qDebug()<<"modbus is closed ~";
+     }
+    return data;
+
 }

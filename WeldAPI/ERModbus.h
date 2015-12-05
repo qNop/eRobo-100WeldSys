@@ -17,12 +17,14 @@ class ERModbus : public QObject
     /*modbus_status */
     Q_PROPERTY(QString  modbus_status  READ getmodus_status WRITE  setmodbus_status)
     /*modbus_write_reg*/
-    Q_PROPERTY(int modbus_write_reg WRITE setmodbus_write_reg)
+    Q_PROPERTY(int modbus_write_reg READ getmodbus_reg WRITE setmodbus_write_reg)
     public:
     ERModbus();
     ~ERModbus();
 
     void setmodbus_write_reg(int num);
+    int getmodbus_reg(void);
+
     void setmodbus_status(QString Status);
     QString getmodus_status(void );
     /*modbus 结构体指针，用于操作modbus*/

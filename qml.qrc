@@ -3,11 +3,9 @@
         <file>main.qml</file>
         <file>Database.js</file>
         <file>CanvasPaint.js</file>
-        <file>groovepage.qml</file>
-        <file>settingpage.qml</file>
-        <file>dataAnalaypage.qml</file>
-        <file>sysinforpage.qml</file>
-        <file>Groovecardview.qml</file>
-        <file>Testqml.qml</file>
+        <file>grooveset.qml</file>
+        <file>weldset.qml</file>
+        <file>groove.png</file>
+        <file>welding.qml</file>
     </qresource>
 </RCC>
