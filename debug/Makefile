@@ -540,6 +540,7 @@ qrc_qml.cpp: ../qml.qrc \
 		../groove.png \
 		../welding.qml \
 		../weldset.qml \
+		../Popslider.qml \
 		../main.qml \
 		../grooveset.qml
 	/home/nop/ltib/rootfs/opt/Qt5/bin/rcc -name qml ../qml.qrc -o qrc_qml.cpp

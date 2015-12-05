@@ -29,21 +29,22 @@ ApplicationWindow{
     property string currentgroove;
     /*更新时间定时器*/
     Timer{ interval: 600; running: true; repeat: true;
-                  onTriggered:{
-                      datetime.text= new Date().toLocaleDateString(Qt.locale(app.local),"MMMdd ddd ")+new Date().toLocaleTimeString(Qt.locale(app.local),"h:mm");
-                                        console.log(datetime.text)}}
+                  onTriggered:{datetime.text= new Date().toLocaleDateString(Qt.locale(app.local),"MMMdd ddd ")+new Date().toLocaleTimeString(Qt.locale(app.local),"h:mm");}}
     /*高压action*/
-    ActionButton{id:highv;anchors {right: robot.left;top: parent.top;rightMargin: Units.dp(12);topMargin: page.actionBar.height-highv.height/2}iconName:"image/flash_off"
-                visible: !page.actionBar.overflowMenuShowing}
+//   ActionButton{id:highv;anchors {right: robot.left;top: parent.top;rightMargin: Units.dp(12);topMargin: page.actionBar.height-highv.height/2}iconName:"image/flash_off"
+//                visible: !page.actionBar.overflowMenuShowing}
     /*机器人action*/
-    ActionButton{id:robot;anchors { right: handle.left;top: parent.top;rightMargin: Units.dp(12);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2  }iconName:"action/android"
-                visible: !page.actionBar.overflowMenuShowing}
+//    ActionButton{id:robot;anchors { right: handle.left;top: parent.top;rightMargin: Units.dp(12);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2  }iconName:"action/android"
+//                visible: !page.actionBar.overflowMenuShowing}
     /*操作盒action*/
-    ActionButton{id:handle;anchors { right: power.left;top: parent.top;rightMargin: Units.dp(12);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2 }iconName:"awesome/calculator"
-                visible: !page.actionBar.overflowMenuShowing}
+//    ActionButton{id:handle;anchors { right: power.left;top: parent.top;rightMargin: Units.dp(12);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2 }iconName:"awesome/calculator"
+//                visible: !page.actionBar.overflowMenuShowing}
     /*电源action*/
-    ActionButton{id:power;anchors {right: parent.right;top: parent.top;rightMargin: Units.dp(24);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2 }iconName:"awesome/heartbeat"
-                visible: !page.actionBar.overflowMenuShowing}
+//    ActionButton{id:power;anchors {right: parent.right;top: parent.top;rightMargin: Units.dp(24);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2 }iconName:"awesome/heartbeat"
+//                visible: !page.actionBar.overflowMenuShowing}
+    /*发送action*/
+    ActionButton{id:send;anchors {right: parent.right;top: parent.top;margins: Units.dp(24);leftMargin: Units.dp(24);topMargin: page.actionBar.height-send.height/2 }iconName:"awesome/send"
+                    visible: !slider.showing && !page.actionBar.overflowMenuShowing;onClicked: slider.show()}
     /*初始化Ｔabpage*/
     initialPage: TabbedPage {
         id: page
@@ -201,7 +202,6 @@ ApplicationWindow{
         id:changeuser;
         title:qsTr("更换用户");negativeButtonText:qsTr("取消");positiveButtonText:qsTr("确定");
         positiveButtonEnabled:false;
-        focus: true;
         onAccepted: {
                    appconfig.currentusername = changeuserFeildtext.selectedText;
                    appconfig.currentusertype = changeuserFeildtext.helperText; }
@@ -274,5 +274,8 @@ ApplicationWindow{
                     }
                }
             }
+    }
+    Popslider{
+        id:slider
     }
 }

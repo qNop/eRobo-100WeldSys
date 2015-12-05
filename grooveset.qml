@@ -9,6 +9,7 @@ import QtQuick.Controls 1.3 as QuickControls
 import QtQuick.LocalStorage 2.0
 import "qrc:/Database.js" as DB
 import "CanvasPaint.js" as Paint
+//import "Popslider.qml"
 
 Rectangle{
     id:grooveset
@@ -94,14 +95,11 @@ Rectangle{
                     anchors.centerIn: parent
                     iconName: "awesome/gears"
                     size:Units.dp(45)
-                    onClicked: {
-                    teachmodedialog.show();
-                    }
+                    onClicked: {teachmodedialog.show();}
            }
        }
    }
    Dialog{
        id:teachmodedialog
-       title: qsTr("示教模式设置")
    }
 }
