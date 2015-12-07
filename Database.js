@@ -23,16 +23,65 @@
  *                                                                【WHERE】
 */
 .import QtQuick.LocalStorage 2.0 as Data
+
+/**/
+function getuserpassword(name){
+    var db;
+    var result;
+    db = Data.LocalStorage.openDatabaseSync("ERoboWeldSysDataBase","1.0","DataBase", 100000);
+    if (!db){
+        return;
+    }
+    db.transaction ( function(tx) {
+         result = tx.executeSql("select * from AccountTable where name = " + "\'"+name+"\'");
+        if(result.rows.length === 0) {
+            //////////////
+        }})
+    return result;
+}
+/**/
+function getusrname(){
+    var db;
+    var result;
+    db = Data.LocalStorage.openDatabaseSync("ERoboWeldSysDataBase","1.0","DataBase", 100000);
+    if (!db){
+        return;
+    }
+    db.transaction ( function(tx) {
+         result = tx.executeSql("select * from AccountTable");
+        if(result.rows.length === 0) {
+            //////////////
+        }})
+    return result;
+}
+
+/**/
+function gettablelegth(table) {
+    var db;
+    var str;
+    var error;
+    db = Data.LocalStorage.openDatabaseSync("ERoboWeldSysDataBase","1.0","DataBase", 100000);
+    if (!db){
+        return error = "database bad";
+    }
+    str = "select * from "+ table ;
+    console.log(str);
+    db.transaction( function(tx) {
+        var result = tx.executeSql(str);
+        error = result.rows.length;
+    });
+    return error;
+}
 /*
   *打开数据库 输入参数 数据名称 版本 描述 类型
   */
-var db;
 function openDatabase() {
+    var db;
     var table;
     var error;
     //创建链接
     db = Data.LocalStorage.openDatabaseSync("ERoboWeldSysDataBase","1.0","DataBase", 100000);
-    if(db === null)  {
+    if(!db)  {
         console.log("create db is bad~");
         error = "Open DB Fail !"
         return error;
@@ -4328,20 +4377,7 @@ function openDatabase() {
      return error;
 }
 
-function gettablelegth(table) {
-    var str;
-    var error;
-    if (db === null){
-        return error = "database bad";
-    }
-    str = "select * from "+ table ;
-    console.log(str);
-    db.transaction( function(tx) {
-        var result = tx.executeSql(str);
-        error = result.rows.length;
-    });
-    return error;
-}
+
 
 
 

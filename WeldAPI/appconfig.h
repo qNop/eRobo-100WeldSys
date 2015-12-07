@@ -23,9 +23,15 @@ class APPConfig : public QObject
     Q_PROPERTY(QString themebackgroundcolor READ  getthemebackgroundcolor WRITE setthemebackgroundcolor NOTIFY themebackgroundcolorchanged )
     /*系统背光*/
      Q_PROPERTY(int backlight READ  getbacklight WRITE setbacklight NOTIFY backlightchanged )
+    /*当前坡口*/
+    Q_PROPERTY(int currentgroove READ  getcurrentgroove WRITE setcurrentgroove NOTIFY currentgroovechanged)
 public:
     APPConfig();
     ~APPConfig();
+
+    int getcurrentgroove(); // 当前坡口
+    void setcurrentgroove(int);
+
     QString currentusername();  // 当前用户名称
     void  setcurrentusername(QString username);
 
@@ -35,19 +41,19 @@ public:
     QString currentusertype();     //当前用户类型
     void setcurrentusertype(QString usertype);
 
-    QString lastuser();
+    QString lastuser();//上一次使用用户
     void setlastuser(QString username);
 
-    QString localdatetime();
+    QString localdatetime();//本地系统时间
     void setlocaldatetime(QString datetime);
 
-    int screenWidth();
+    int screenWidth();//屏幕宽度
     void setScreenWidth(int width);
 
     int screenHeight();       //屏幕长度
     void setScreenHeight(int height);
 
-     QString Current_Groove; // 当前坡口
+
 
      QString SoftWare_Description; // 软件描述
      QString SoftWare_Author;         //软件作者
@@ -61,7 +67,7 @@ public:
      QString getthemebackgroundcolor();  //系统主题前景颜色
      void setthemebackgroundcolor(QString color);
 
-     int getbacklight();
+     int getbacklight();//系统背光
      void setbacklight(int value);
 
  signals:
@@ -76,6 +82,8 @@ public:
     void themeaccentcolorchanged(QString color);
     void themebackgroundcolorchanged(QString color);
     void backlightchanged(int value);
+    void currentgroovechanged(int value);
+
 };
 
 #endif // APPCONFIG_H

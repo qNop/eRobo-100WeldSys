@@ -549,12 +549,12 @@ compiler_rcc_clean:
 qrc_qml.cpp: ../qml.qrc \
 		../CanvasPaint.js \
 		../Database.js \
-		../groovepage.qml \
-		../sysinforpage.qml \
-		../Groovecardview.qml \
-		../dataAnalaypage.qml \
-		../settingpage.qml \
-		../main.qml
+		../groove.png \
+		../welding.qml \
+		../weldset.qml \
+		../Popslider.qml \
+		../main.qml \
+		../grooveset.qml
 	/usr/local/Qt-5.5.0/bin/rcc -name qml ../qml.qrc -o qrc_qml.cpp
 
 compiler_moc_header_make_all: moc_appconfig.cpp moc_ERModbus.cpp moc_ERLed.cpp
@@ -797,8 +797,8 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 
 ####### Compile
 
-main.o: ../main.cpp /usr/local/Qt-5.5.0/include/QtGui/QGuiApplication \
-		/usr/local/Qt-5.5.0/include/QtGui/qguiapplication.h \
+main.o: ../main.cpp /usr/local/Qt-5.5.0/include/QtWidgets/QApplication \
+		/usr/local/Qt-5.5.0/include/QtWidgets/qapplication.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qcoreapplication.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qglobal.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qconfig.h \
@@ -855,29 +855,60 @@ main.o: ../main.cpp /usr/local/Qt-5.5.0/include/QtGui/QGuiApplication \
 		/usr/local/Qt-5.5.0/include/QtCore/qeventloop.h \
 		/usr/local/Qt-5.5.0/include/QtGui/qwindowdefs.h \
 		/usr/local/Qt-5.5.0/include/QtGui/qwindowdefs_win.h \
-		/usr/local/Qt-5.5.0/include/QtGui/qinputmethod.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qlocale.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qpoint.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsize.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qcursor.h \
+		/usr/local/Qt-5.5.0/include/QtWidgets/qdesktopwidget.h \
+		/usr/local/Qt-5.5.0/include/QtWidgets/qwidget.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qmargins.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qpaintdevice.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qrect.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qpalette.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qcolor.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qrgb.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qbrush.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qpair.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qvector.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qmatrix.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qpolygon.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qregion.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qdatastream.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qiodevice.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qline.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qtransform.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qpainterpath.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qimage.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qpixelformat.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qpixmap.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsharedpointer.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qshareddata.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qhash.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qsharedpointer_impl.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qfont.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qfontmetrics.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qfontinfo.h \
+		/usr/local/Qt-5.5.0/include/QtWidgets/qsizepolicy.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qkeysequence.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qevent.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qvariant.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qmap.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qpair.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qdebug.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qhash.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qtextstream.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qiodevice.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qvector.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qpoint.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qlocale.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qset.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qcontiguouscache.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qshareddata.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qsize.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qurl.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qurlquery.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qfile.h \
+		/usr/local/Qt-5.5.0/include/QtCore/qfiledevice.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qvector2d.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qtouchdevice.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qguiapplication.h \
+		/usr/local/Qt-5.5.0/include/QtGui/qinputmethod.h \
 		/usr/local/Qt-5.5.0/include/QtQml/QQmlApplicationEngine \
 		/usr/local/Qt-5.5.0/include/QtQml/qqmlapplicationengine.h \
 		/usr/local/Qt-5.5.0/include/QtQml/qqmlengine.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qurl.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qurlquery.h \
 		/usr/local/Qt-5.5.0/include/QtQml/qjsengine.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qsharedpointer.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qsharedpointer_impl.h \
 		/usr/local/Qt-5.5.0/include/QtQml/qjsvalue.h \
 		/usr/local/Qt-5.5.0/include/QtQml/qtqmlglobal.h \
 		/usr/local/Qt-5.5.0/include/QtQml/qqmlerror.h \
@@ -899,11 +930,8 @@ main.o: ../main.cpp /usr/local/Qt-5.5.0/include/QtGui/QGuiApplication \
 		/usr/local/Qt-5.5.0/include/QtCore/qlibraryinfo.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qdatetime.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qbuffer.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qdatastream.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qdir.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qfileinfo.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qfile.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qfiledevice.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qdiriterator.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qfileselector.h \
 		/usr/local/Qt-5.5.0/include/QtCore/QObject \
@@ -983,12 +1011,9 @@ main.o: ../main.cpp /usr/local/Qt-5.5.0/include/QtGui/QGuiApplication \
 		/usr/local/Qt-5.5.0/include/QtCore/qcommandlineparser.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qcryptographichash.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qelapsedtimer.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qline.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qlinkedlist.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qmargins.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qmessageauthenticationcode.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qqueue.h \
-		/usr/local/Qt-5.5.0/include/QtCore/qrect.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qregularexpression.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qscopedvaluerollback.h \
 		/usr/local/Qt-5.5.0/include/QtCore/qstack.h \

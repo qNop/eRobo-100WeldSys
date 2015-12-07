@@ -33,7 +33,7 @@ bool File_Is_Exist(QString Qfilename){
 void Write_APP_Config(QSettings *Set){
      Set->beginGroup("eRoboWeldSysAppConfig");
      Set->setValue("Last_User",EROBOWELDSYS_LAST_USER_TYPE);
-   //  Set->setValue("Current_Groove",EROBOWELDSYS_CU);
+     Set->setValue("Current_Groove",0);
      Set->setValue("Current_User_Name",EROBOWELDSYS_CURRENT_USER_NAME);
      Set->setValue("Current_User_PassWord",EROBOWELDSYS_CURRENT_USER_PASSWORD);
      Set->setValue("Current_User_Type",EROBOWELDSYS_CURRENT_USER_TYPE);
@@ -189,6 +189,9 @@ void APPConfig::setlastuser(QString username){
     emit lastuserChanged(username);
    qDebug() <<"last user change";
 }
+/*
+ ************************************************************************************基本色
+ */
 QString APPConfig::getthemeprimarycolor(){
     QString primarycolor;
     QSettings *Set =getPfromQfile();
@@ -206,6 +209,9 @@ void APPConfig::setthemeprimarycolor(QString color){
     emit themeprimarycolorchanged(color);
    qDebug() <<"primary color change";
 }
+/*
+ ************************************************************************************前景色
+ */
 QString APPConfig::getthemeaccentcolor(){
     QString accentcolor;
     QSettings *Set =getPfromQfile();
@@ -223,6 +229,9 @@ void APPConfig::setthemeaccentcolor(QString color){
     emit themeaccentcolorchanged(color);
    qDebug() <<"accent color change";
 }
+/*
+ ************************************************************************************背景色
+ */
 QString APPConfig::getthemebackgroundcolor(){
     QString backgroundcolor;
     QSettings *Set =getPfromQfile();
@@ -240,13 +249,16 @@ void APPConfig::setthemebackgroundcolor(QString color){
     emit themebackgroundcolorchanged(color);
    qDebug() <<"background color change";
 }
+/*
+ ************************************************************************************系统背光
+ */
 int APPConfig::getbacklight(){
     int value;
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
     value = Set->value("BackLight").toInt();
     Set->endGroup();
-    qDebug()<<"backlight color read"<<value;
+    qDebug()<<"backlight value read"<<value;
     return value;
 }
 void APPConfig::setbacklight(int value){
@@ -255,5 +267,25 @@ void APPConfig::setbacklight(int value){
     Set->setValue("BackLight",value);
     Set->endGroup();
     emit backlightchanged(value);
-   qDebug() <<"backlight color change";
+   qDebug() <<"backlight  change";
+}
+/*
+ ************************************************************************************当前坡口形状
+ */
+int APPConfig::getcurrentgroove(){
+    int value;
+    QSettings *Set =getPfromQfile();
+    Set->beginGroup("eRoboWeldSysAppConfig");
+    value = Set->value("Current_Groove").toInt();
+    Set->endGroup();
+    qDebug()<<"Current Groove read"<<value;
+    return value;
+}
+void APPConfig::setcurrentgroove(int value){
+    QSettings *Set =getPfromQfile();
+    Set->beginGroup("eRoboWeldSysAppConfig");
+    Set->setValue("Current_Groove",value);
+    Set->endGroup();
+    emit currentgroovechanged(value);
+   qDebug() <<"Current Groove change";
 }

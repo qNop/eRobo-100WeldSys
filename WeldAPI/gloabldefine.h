@@ -21,11 +21,14 @@
 #define EROBOWELDSYS_THEMEACCENTCOLOR               "yellow"
 #define EROBOWELDSYS_BACKLIGHT                                 50
 
+
 /************************************************************************/
 
 #define EROBOWELDSYS_MODE                                           "Auto"
 //#define EROBOWELDSYS_WELDSTART
-
+//平焊单边V型坡口T接头
+#define GROOVE_SIGNEL_V_T                                               0
+//平焊单边V型坡口平对接
 
 /*
  * 串口配置

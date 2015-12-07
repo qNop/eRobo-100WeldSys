@@ -16,23 +16,23 @@ PopupBase {
               NumberAnimation { duration: 200 }
           }
       }
-
       Behavior on opacity {
           NumberAnimation { duration: 200 }
       }
       function show() {
-          open()
+          open();
+           slider.value=0;
       }
-    Slider{
-        id:slider;width:480;anchors.centerIn: popslider//Layout.alignment:  Qt.AlignCenter;
-        value:0;stepSize: 2;focus: true;//numericValueLabel: true;
-        minimumValue: 0;maximumValue: 100; activeFocusOnPress: true;
-    }
+       Slider{
+        id:slider;width:480;anchors.centerIn:  popslider//Layout.alignment:  Qt.AlignCenter;
+        value:0;stepSize: 1;focus: true;//numericValueLabel: true;
+        minimumValue: 0;maximumValue: 100; //activeFocusOnPress: true;
+   }
     Timer{ interval: 100; running: true; repeat: true;
         onTriggered: {
-           slider.value+=2;
-            if(slider.value>99){
-                slider.value=0;
+           slider.value+=1;
+            if(slider.value === slider.maximumValue){
+                slider.value=100;
                 close()
             }
         }}

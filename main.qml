@@ -17,11 +17,14 @@ ApplicationWindow{
     APPConfig{id:appconfig;}
     /*led与背光驱动C++函数*/
     ERLed{ id:led;lcdbacklight:backlightslider.value*2}
+    /*Modbus*/
+    ERModbus{id:ermodbus;}
     /*主题默认颜色*/
     theme { primaryColor: appconfig.themeprimarycolor;accentColor: appconfig.themeaccentcolor;backgroundColor:appconfig.themebackgroundcolor
         tabHighlightColor: "white"  }
     property var sections: [ "grooveset", "weldset", "welding" ]
-    property var sectionTitles: [ "坡口条件(I)", "焊接条件(II)", "焊接分析(III)" ]
+    property var sectionTitles: [ "坡口条件(I)", "焊接分析(II)", "系统信息(III)" ]
+    property var tabiconname: ["awesome/windows","awesome/line_chart","awesome/tasks"]
     property string selectedComponent: sections[0]
     /*当前本地化语言*/
     property string local: "zh_CN"
@@ -29,22 +32,22 @@ ApplicationWindow{
     property string currentgroove;
     /*更新时间定时器*/
     Timer{ interval: 600; running: true; repeat: true;
-                  onTriggered:{datetime.text= new Date().toLocaleDateString(Qt.locale(app.local),"MMMdd ddd ")+new Date().toLocaleTimeString(Qt.locale(app.local),"h:mm");}}
+        onTriggered:{datetime.name= new Date().toLocaleDateString(Qt.locale(app.local),"MMMdd ddd ")+new Date().toLocaleTimeString(Qt.locale(app.local),"h:mm");}}
     /*高压action*/
-//   ActionButton{id:highv;anchors {right: robot.left;top: parent.top;rightMargin: Units.dp(12);topMargin: page.actionBar.height-highv.height/2}iconName:"image/flash_off"
-//                visible: !page.actionBar.overflowMenuShowing}
+    //   ActionButton{id:highv;anchors {right: robot.left;top: parent.top;rightMargin: Units.dp(12);topMargin: page.actionBar.height-highv.height/2}iconName:"image/flash_off"
+    //                visible: !page.actionBar.overflowMenuShowing}
     /*机器人action*/
-//    ActionButton{id:robot;anchors { right: handle.left;top: parent.top;rightMargin: Units.dp(12);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2  }iconName:"action/android"
-//                visible: !page.actionBar.overflowMenuShowing}
+    //    ActionButton{id:robot;anchors { right: handle.left;top: parent.top;rightMargin: Units.dp(12);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2  }iconName:"action/android"
+    //                visible: !page.actionBar.overflowMenuShowing}
     /*操作盒action*/
-//    ActionButton{id:handle;anchors { right: power.left;top: parent.top;rightMargin: Units.dp(12);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2 }iconName:"awesome/calculator"
-//                visible: !page.actionBar.overflowMenuShowing}
+    //    ActionButton{id:handle;anchors { right: power.left;top: parent.top;rightMargin: Units.dp(12);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2 }iconName:"awesome/calculator"
+    //                visible: !page.actionBar.overflowMenuShowing}
     /*电源action*/
-//    ActionButton{id:power;anchors {right: parent.right;top: parent.top;rightMargin: Units.dp(24);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2 }iconName:"awesome/heartbeat"
-//                visible: !page.actionBar.overflowMenuShowing}
+    //    ActionButton{id:power;anchors {right: parent.right;top: parent.top;rightMargin: Units.dp(24);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2 }iconName:"awesome/heartbeat"
+    //                visible: !page.actionBar.overflowMenuShowing}
     /*发送action*/
     ActionButton{id:send;anchors {right: parent.right;top: parent.top;margins: Units.dp(24);leftMargin: Units.dp(24);topMargin: page.actionBar.height-send.height/2 }iconName:"awesome/send"
-                    visible: !slider.showing && !page.actionBar.overflowMenuShowing;onClicked: slider.show()}
+        ;visible: !slider.visible && !page.actionBar.overflowMenuShowing;onClicked: slider.show()}
     /*初始化Ｔabpage*/
     initialPage: TabbedPage {
         id: page
@@ -60,7 +63,7 @@ ApplicationWindow{
             },
             /*背光控制插件action*/
             Action{name: qsTr("背光"); iconName: "device/brightness_medium";text:"a"; hoverAnimation: true
-                onTriggered:backlight.show(); 
+                onTriggered:backlight.show();
             },
             /*系统选择颜色action*/
             Action {iconName: "image/color_lens";name: qsTr("色彩") ;text:"a";
@@ -72,11 +75,11 @@ ApplicationWindow{
             },
             /*时间action*/
             Action{name: qsTr("时间"); id:datetime;hasText:true;
-               onTriggered:datePickerDialog.show();
+                onTriggered:datePickerDialog.show();
             },
             /*账户*/
-            Action {iconName: "action/account_circle";name: qsTr("帐户")
-                onTriggered:changeuser.show();
+            Action {id:accountname;iconName: "action/account_circle";name: qsTr("帐户")
+                onTriggered:changeuser.show();text:appconfig.currentusername;
             },
             /*语言*/
             Action {iconName: "action/language";name: qsTr("语言");
@@ -92,7 +95,9 @@ ApplicationWindow{
             delegate: Tab {
                 title: sectionTitles[index]
                 property string selectedComponent: modelData
+                iconName:tabiconname[index];
                 Item {
+                    objectName: "ls"
                     Flickable {
                         id: flickable
                         anchors {
@@ -101,6 +106,8 @@ ApplicationWindow{
                             top: parent.top
                             bottom: parent.bottom
                         }
+                        property bool actionbutton:true
+                        objectName: "parent"
                         clip: true
                         contentHeight: Math.max(loader.implicitHeight + 40, height)
                         Loader {
@@ -124,9 +131,22 @@ ApplicationWindow{
         Keys.onDigit1Pressed: page.selectedTab=0;
         Keys.onDigit2Pressed: page.selectedTab=1;
         Keys.onDigit3Pressed: page.selectedTab=2;
+    }/**/
+    Component.onCompleted: {
+        var result = DB.getusrname();
+        for(var i=0;i<result.rows.length;i++){
+            var name = result.rows.item(i).name;
+            usrnamemodel.append( {"text":name});
+            if(name === accountname.text){
+                changeuserFeildtext.selectedIndex = i+1;
+                changeuserFeildtext.helperText=result.rows.item(i).type;}
+        }
+        usrnamemodel.remove(0);
     }
+
     /*日历*/
     Dialog {
+        focus:true;
         id:datePickerDialog; hasActions: true; contentMargins: 0;floatingActions: true
         negativeButtonText:qsTr("取消");positiveButtonText: qsTr("完成");
         DatePicker {
@@ -136,6 +156,7 @@ ApplicationWindow{
     /*背光调节*/
     Dialog{
         id:backlight
+        focus:true;
         title: qsTr("背光调节");negativeButtonText:qsTr("取消");positiveButtonText: qsTr("完成");
         Slider {
             id:backlightslider;height:Units.dp(64);width:Units.dp(240);Layout.alignment: Qt.AlignCenter;
@@ -153,12 +174,13 @@ ApplicationWindow{
     /*颜色选择对话框*/
     Dialog {
         id: colorPicker;title: qsTr("主题");negativeButtonText:qsTr("取消");positiveButtonText: qsTr("完成");
+        focus:true;
         /*接受则存储系统颜色*/
-      onAccepted:{appconfig.themeprimarycolor=theme.primaryColor;appconfig.themeaccentcolor=theme.accentColor;appconfig.themebackgroundcolor=theme.backgroundColor; }
-         /*不接受则释放系统颜色*/
-      onRejected: {theme.primaryColor=appconfig.themeprimarycolor;theme.accentColor=appconfig.themeaccentcolor;theme.backgroundColor=appconfig.themebackgroundcolor; }
-      /*下拉菜单*/
-      MenuField { id: selection; model: ["基本色彩", "前景色彩", "背景色彩"]; width: Units.dp(160)}
+        onAccepted:{appconfig.themeprimarycolor=theme.primaryColor;appconfig.themeaccentcolor=theme.accentColor;appconfig.themebackgroundcolor=theme.backgroundColor; }
+        /*不接受则释放系统颜色*/
+        onRejected: {theme.primaryColor=appconfig.themeprimarycolor;theme.accentColor=appconfig.themeaccentcolor;theme.backgroundColor=appconfig.themebackgroundcolor; }
+        /*下拉菜单*/
+        MenuField { id: selection; model: ["基本色彩", "前景色彩", "背景色彩"]; width: Units.dp(160)}
         Grid {
             columns: 7
             spacing: Units.dp(8)
@@ -181,15 +203,15 @@ ApplicationWindow{
                         anchors.fill: parent
                         onPressed: {
                             switch(selection.selectedIndex) {
-                                case 0:
-                                    theme.primaryColor = parent.color
-                                    break;
-                                case 1:
-                                    theme.accentColor = parent.color
-                                    break;
-                                case 2:
-                                    theme.backgroundColor = parent.color
-                                    break;
+                            case 0:
+                                theme.primaryColor = parent.color
+                                break;
+                            case 1:
+                                theme.accentColor = parent.color
+                                break;
+                            case 2:
+                                theme.backgroundColor = parent.color
+                                break;
                             }
                         }
                     }
@@ -201,80 +223,78 @@ ApplicationWindow{
     Dialog{
         id:changeuser;
         title:qsTr("更换用户");negativeButtonText:qsTr("取消");positiveButtonText:qsTr("确定");
+        focus:true;
         positiveButtonEnabled:false;
         onAccepted: {
-                   appconfig.currentusername = changeuserFeildtext.selectedText;
-                   appconfig.currentusertype = changeuserFeildtext.helperText; }
+            appconfig.currentusername = changeuserFeildtext.selectedText;
+            appconfig.currentusertype = changeuserFeildtext.helperText; }
         onRejected: {
-                   changeuserFeildtext.helperText = appconfig.currentusertype;
-                    for(var i=0;i<100;i++){
-                        if(accountname.text === usrnamemodel.get(i).text ){
-                               changeuserFeildtext.selectedIndex = i;
-                              break; }
-                    }
-             }
+            changeuserFeildtext.helperText = appconfig.currentusertype;
+            for(var i=0;i<100;i++){
+                if(accountname.text === usrnamemodel.get(i).text ){
+                    changeuserFeildtext.selectedIndex = i;
+                    break; }
+            }
+        }
         ListModel{id:usrnamemodel;ListElement{text:"user";}}
         MenuField{id:changeuserFeildtext;
-                floatingLabel:true;
-                placeholderText:qsTr("用户名:");
-                model:usrnamemodel;
-                onItemSelected:  {
-                       password.enabled=true;
-                       var data=usrnamemodel.get(index);
-                             DB.db.transaction ( function(tx) {
-                                 var result = tx.executeSql("select * from AccountTable where name = " + "\'"+data.text+"\'");
-                                 if(result.rows.length === 0) {
-                                        //////////////
-                                 }
-                                 else{ appconfig.currentuserpassword = result.rows.item(0).password;
-                                         changeuserFeildtext.helperText = result.rows.item(0).type;
-                                 }});
-                             password.text="";}}
+            floatingLabel:true;
+            placeholderText:qsTr("用户名:");
+            model:usrnamemodel;
+            width:password.width
+            onItemSelected:  {
+                password.enabled=true;
+                var data=usrnamemodel.get(index);
+                var result =  DB.getuserpassword(data.text);
+                appconfig.currentuserpassword = result.rows.item(0).password;
+                changeuserFeildtext.helperText = result.rows.item(0).type;
+                password.text="";}}
         TextField{id:password;
-                        floatingLabel:true;
-                        placeholderText:qsTr("密码:");
-                        characterLimit: 8;
-                        onTextChanged:{
-                                   if(password.text=== appconfig.currentuserpassword){
-                                          changeuserDialog.positiveButtonEnabled=true;
-                                          password.helperText.color="green";
-                                          password.helperText=qsTr("密码正确");}
-                                   else{changeuserDialog.positiveButtonEnabled=false;
-                                          password.helperText=qsTr("请输入密码...");}}
-                        onHasErrorChanged: {
-                               if(password.hasError === true){
-                                    console.log("length changed");
-                                     password.helperText =qsTr( "密码超过最大限制");}}
-                       Keys.onPressed: {
-                             switch(event.key){
-                             case Qt.Key_F1:
-                                 password.insert(password.length,"1");         
-                                 event.accepted=true;
-                                 break;
-                             case Qt.Key_F2:
-                                 password.insert(password.length,"2");
-                                 event.accepted=true;
-                                 break;
-                             }
-                         }
-                   }
+            floatingLabel:true;
+            placeholderText:qsTr("密码:");
+            characterLimit: 8;
+            onTextChanged:{
+                if(password.text=== appconfig.currentuserpassword){
+                    changeuser.positiveButtonEnabled=true;
+                    password.helperText.color="green";
+                    password.helperText=qsTr("密码正确");}
+                else{changeuser.positiveButtonEnabled=false;
+                    password.helperText=qsTr("请输入密码...");}}
+            onHasErrorChanged: {
+                if(password.hasError === true){
+                    console.log("length changed");
+                    password.helperText =qsTr( "密码超过最大限制");}}
+            Keys.onPressed: {
+                switch(event.key){
+                case Qt.Key_F1:
+                    password.insert(password.length,"1");
+                    event.accepted=true;
+                    break;
+                case Qt.Key_F2:
+                    password.insert(password.length,"2");
+                    event.accepted=true;
+                    break;
+                }
+            }
+        }
     }
     /*语言对话框*/
     Dialog{  id:languagePicker;
-          title:qsTr("更换语言");negativeButtonText:qsTr("取消");positiveButtonText:qsTr("确定");
-           Column{
-               width: parent.width
-               spacing: 0
+        title:qsTr("更换语言");negativeButtonText:qsTr("取消");positiveButtonText:qsTr("确定");
+        focus:true;
+        Column{
+            width: parent.width
+            spacing: 0
             Repeater{
                 model: [qsTr("汉语"),qsTr("英语")];
                 ListItem.Standard{
-                       text:modelData;
-                        showDivider: true;
-                        selected:true;
-                    }
-               }
+                    text:modelData;
+                    showDivider: true;
+                }
             }
+        }
     }
+    /*send*/
     Popslider{
         id:slider
     }
