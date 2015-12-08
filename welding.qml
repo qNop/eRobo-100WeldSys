@@ -1,7 +1,17 @@
 import QtQuick 2.0
+import Material 0.1
+import Material.Extras 0.1
 
 Rectangle {
-    width: 100
-    height: 62
+    color: Theme.backgroundColor
+    anchors.leftMargin: title.visible ? 0 :100
+    Behavior on anchors.leftMargin {
+        NumberAnimation { duration: 200 }
+    }
+
+    Text {
+        id: title
+        text: "shezhi:"
+    }
 }
 

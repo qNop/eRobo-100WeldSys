@@ -46,8 +46,8 @@ ApplicationWindow{
     //    ActionButton{id:power;anchors {right: parent.right;top: parent.top;rightMargin: Units.dp(24);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2 }iconName:"awesome/heartbeat"
     //                visible: !page.actionBar.overflowMenuShowing}
     /*发送action*/
-    ActionButton{id:send;anchors {right: parent.right;top: parent.top;margins: Units.dp(24);leftMargin: Units.dp(24);topMargin: page.actionBar.height-send.height/2 }iconName:"awesome/send"
-        ;visible: !slider.visible && !page.actionBar.overflowMenuShowing;onClicked: slider.show()}
+    ActionButton{id:send;anchors {right: parent.right;bottom: parent.bottom;margins: Units.dp(32); }iconName:"awesome/send";
+        visible: !slider.visible && !page.actionBar.overflowMenuShowing;onClicked: slider.show()}
     /*初始化Ｔabpage*/
     initialPage: TabbedPage {
         id: page
@@ -133,6 +133,7 @@ ApplicationWindow{
         Keys.onDigit3Pressed: page.selectedTab=2;
     }/**/
     Component.onCompleted: {
+        DB.openDatabase();
         var result = DB.getusrname();
         for(var i=0;i<result.rows.length;i++){
             var name = result.rows.item(i).name;
@@ -143,7 +144,6 @@ ApplicationWindow{
         }
         usrnamemodel.remove(0);
     }
-
     /*日历*/
     Dialog {
         focus:true;

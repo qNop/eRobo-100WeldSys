@@ -14,39 +14,43 @@ Rectangle{
     id:grooveset
     color:Theme.backgroundColor
     APPConfig{id:appconfig}
-    property int currentgroove: appconfig.currentgroove
+    property int currentgroove:appconfig.currentgroove;
+    property var teachmodename: ["自动","半自动","手动"];
+    property var teachfisrtpointmodel: ["右方","左方"];
+    //property var pagedata:DB.getPageFunctionAndValueFromTable(grooveset.currentgroove,255);
     anchors.left: parent.left
     anchors.leftMargin: grooveset.visible ? 0 :100
     Behavior on anchors.leftMargin {
         NumberAnimation { duration: 200 }
     }
-    Component.onCompleted: {
-    console.log( DB.gettablelegth("FlatWeldSingleBevelGrooveT")   )
+    /*当前坡口改变即处理数据*/
+    onCurrentgrooveChanged: {
+        switch(DB.getValueFromFuncOfTable(grooveset.currentgroove,"function","示教模式")){
+        case "自动":teachmodegroup.current=teachmoderepeater.itemAt(0);break;
+        case "半自动":teachmodegroup.current=teachmoderepeater.itemAt(1);break;
+        case "手动":teachmodegroup.current=teachmoderepeater.itemAt(2);break;
+        };
+        switch(DB.getValueFromFuncOfTable(grooveset.currentgroove,"function","示教第1点位置")){
+        case "左方":teachfisrtpointgroup.current=teachfirstpointrepeater.itemAt(0);break;
+        case "右方":teachfisrtpointgroup.current=teachfirstpointrepeater.itemAt(1);break;
+        }
     }
     /*坡口列表*/
     property var groovestyles: [
         qsTr( "平焊单边V型坡口T接头"), qsTr( "平焊单边V型坡口平对接"),  qsTr("平焊V型坡口平对接"),  qsTr("水平角焊"),
         qsTr("横焊单边V型坡口T接头"), qsTr( "横焊单边V型坡口平对接"),  qsTr("横焊V型坡口平对接"),  qsTr("立焊单边V型坡口平对接"), qsTr("立焊V型坡口平对接")  ]
-    Card{
+    Sidebar{
         id:groovelist
-        elevation:2;
         anchors{
             left:parent.left
             top:parent.top
+            bottom: parent.bottom
         }
-        backgroundColor: parent.color
-        width:Units.dp(260);
-        height: header.height +stand.height
-        ListItem.Subheader{
-            id:header
-            width:parent.width
-            text:qsTr("坡口");
-            style: "subheading"
-            showDivider: true;
-        }
+        style: "dark"
+        width:Units.dp(255);
+        focus: true
         Column{
             id:stand
-            anchors.top:header.bottom
             width:parent.width
             Repeater{
                 id:repeat
@@ -57,12 +61,9 @@ Rectangle{
                     textColor: groove.selected ? Theme.lightDark(groovelist.backgroundColor,Theme.light.accentColor,Theme.dark.textColor)
                                                :Theme.lightDark(groovelist.backgroundColor,Theme.light.shade(0.6),Theme.dark.shade(0.6))
                     onClicked: {
-                        var i;
-                        for(i=0;i<9;i++){
-                            if(i===index)
-                                groove.selected=true;
-                            else
-                                repeat.itemAt(i).selected=false
+                        for(var i=0;i<9;i++){
+                            if(i===index) groove.selected=true;
+                            else repeat.itemAt(i).selected=false
                         }
                         appconfig.currentgroove=index;
                     }
@@ -71,73 +72,67 @@ Rectangle{
             }
         }
     }
-    ListItem.Subheader{
-        id:modelist
-        text:qsTr("示教模式")
+    Column{
         anchors.left: groovelist.right
-        anchors.leftMargin: 24
         anchors.top:parent.top
         anchors.right: parent.right
-        style: "subheading"
-        showDivider: true;
+        ListItem.SectionHeader{
+            id:teachmodeset
+            text:qsTr("示教设置")
+            style: "subheading"
+            showDivider: true;
+            iconName: "awesome/gears"
+        }
+        /*示教模式设置*/
+        ListItem.Subtitled{
+            id:teachmode
+            text:qsTr("示教模式:");
+            anchors.left: parent.left
+            anchors.leftMargin: Units.dp(48)
+            backgroundColor: Theme.backgroundColor
+            height:teachmodeset.height
+            visible: teachmodeset.expanded
+            secondaryItem:Row{
+                anchors.verticalCenter: parent.verticalCenter
+                QuickControls.ExclusiveGroup { id: teachmodegroup;onCurrentChanged:
+                        DB.setValueFromFuncOfTable(grooveset.currentgroove,"示教模式",teachmodegroup.current.text)}
+                Repeater{
+                    id:teachmoderepeater
+                    model:teachmodename
+                    delegate:RadioButton{
+                        text:modelData
+                        darkBackground:Theme.isDarkColor(Theme.backgroundColor)
+                        exclusiveGroup: teachmodegroup
+                    }
+                }
+            }
+        }
+        /*示教第一点位置*/
+        ListItem.Subtitled{
+            id:teachfirstpoint
+            text:qsTr("示教第一点位置:");
+            anchors.left: parent.left
+            anchors.leftMargin: Units.dp(48)
+            backgroundColor: Theme.backgroundColor
+            height:teachmodeset.height
+            visible: teachmodeset.expanded
+            secondaryItem:Row{
+                anchors.verticalCenter: parent.verticalCenter
+                QuickControls.ExclusiveGroup { id: teachfisrtpointgroup;onCurrentChanged:
+                        DB.setValueFromFuncOfTable(grooveset.currentgroove,"示教第1点位置",teachfisrtpointgroup.current.text)}
+                Repeater{
+                    id:teachfirstpointrepeater
+                    model:teachfisrtpointmodel
+                    delegate:RadioButton{
+                        text:modelData
+                        darkBackground:Theme.isDarkColor(Theme.backgroundColor)
+                        exclusiveGroup: teachfisrtpointgroup
+                    }
+                }
+            }
+        }
     }
-
-
-        //            Row{
-        //                anchors.verticalCenter: parent.verticalCenter
-        //                QuickControls.ExclusiveGroup { id: mode }
-        //                RadioButton {
-        //                    id:auto
-        //                    text: qsTr("全自动")
-        //                    checked: true
-        //                    exclusiveGroup: mode
-        //                }
-        //                RadioButton {
-        //                    id:handleauto
-        //                    text:qsTr("半自动")
-        //                    exclusiveGroup: mode
-        //                }
-        //                RadioButton {
-        //                    id:handle
-        //                    text: qsTr("手动")
-        //                    exclusiveGroup: mode
-        //                }
-        //            }
-        //            onClicked: {
-        //                if(auto.checked){
-        //                    handleauto.checked=true;
-        //                }else if(handleauto.checked){
-        //                    handle.checked=true;
-        //                }else if(handle){
-        //                    auto.checked=true;
-        //                }
-        //            }
-        //            action:IconButton{
-        //                anchors.centerIn: parent
-        //                iconName: "awesome/gears"
-        //                size:Units.dp(45)
-        //                onClicked: {teachmodedialog.show();}
-        //            }
-        //   }
     Dialog{
         id:teachmodedialog
     }
-//    BottomSheet{
-//        id:bottom
-//        anchors.left: parent.left
-//        anchors.right: parent.right
-//        anchors.bottom: parent.bottom
-//        anchors.top:groovelist.bottom
-//        //backgroundColor: Theme.primaryDarkColor
-//        //radius: 0
-//        Label{
-//            id:groovetext
-//            anchors.left: parent.left
-//            anchors.leftMargin: Units.dp(16)
-//            anchors.verticalCenter: parent.verticalCenter
-//            text:qsTr("系统状态:")
-//            style: "subheading"
-//            color: Theme.lightDark(bottom.backgroundColor,Theme.light.textColor,Theme.dark.textColor)
-//        }
-//    }
 }
