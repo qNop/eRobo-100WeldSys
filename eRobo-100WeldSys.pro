@@ -33,6 +33,9 @@ INCLUDEPATH +=libmodbus \
               libmodbus/src \
               WeldAPI\
 
+DISTFILES += \
+    Files/MyData.xls
+
 
 
 

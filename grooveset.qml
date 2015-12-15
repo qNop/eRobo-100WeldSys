@@ -46,7 +46,6 @@ Rectangle{
               //  groovelist.visible=!groovelist.visible;
                event.accepted = true;
             }
-
             break;
         }
     }
