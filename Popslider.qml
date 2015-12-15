@@ -2,6 +2,7 @@ import QtQuick 2.4
 import Material 0.1
 import QtQuick.Controls 1.3 as Controls
 import QtQuick.Controls.Styles.Material 0.1 as MaterialStyle
+import QtQuick.Window 2.2
 /*仅显示进度条*/
 PopupBase {
     id:popslider
@@ -26,18 +27,23 @@ PopupBase {
     }
     /*重写close函数解决焦点丢失问题*/
     function close(){
-        showing = false
+        showing = false;
         if (parent.hasOwnProperty("currentOverlay")) {
             parent.currentOverlay = null
         }
+        if (__lastFocusedItem !== null) {
+                    __lastFocusedItem.forceActiveFocus()
+                }
         closed()
     }
     Timer{ interval: 100; running: true; repeat: true;
         onTriggered: {
-            progressbar.value+=1;
+            progressbar.value+=10;
             if(progressbar.value === progressbar.maximumValue){
                 progressbar.value=100;
-                close();
+                if(popslider.showing){
+                         close();
+                }
             }
         }}
     Controls.ProgressBar {
@@ -76,7 +82,6 @@ PopupBase {
                 property bool horizontal: control.orientation === Qt.Horizontal
                 implicitWidth: horizontal ? backgroundLoader.implicitWidth : backgroundLoader.implicitHeight
                 implicitHeight: horizontal ? backgroundLoader.implicitHeight : backgroundLoader.implicitWidth
-
                 Item {
                     width: horizontal ? parent.width : parent.height
                     height: !horizontal ? parent.width : parent.height
@@ -96,7 +101,6 @@ PopupBase {
                         anchors.leftMargin: padding.left
                         anchors.rightMargin: padding.right
                         anchors.bottomMargin: padding.bottom
-
                         anchors.top: parent.top
                         anchors.left: parent.left
                         anchors.bottom: parent.bottom

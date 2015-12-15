@@ -10,39 +10,44 @@ class APPConfig : public QObject
     Q_OBJECT
     Q_PROPERTY(int screenWidth READ  screenWidth WRITE setScreenWidth NOTIFY screenWidthChanged )
     Q_PROPERTY(int screenHeight READ  screenHeight WRITE setScreenHeight NOTIFY screenHeightChanged)
-    Q_PROPERTY(QString currentusername READ  currentusername WRITE setcurrentusername NOTIFY currentusernameChanged )
-    Q_PROPERTY(QString currentuserpassword READ  currentuserpassword WRITE setcurrentuserpassword NOTIFY currentuserpasswordChanged)
-    Q_PROPERTY(QString currentusertype READ  currentusertype WRITE setcurrentusertype NOTIFY currentusertypeChanged)
-    Q_PROPERTY(QString lastusertype READ  lastuser WRITE setlastuser NOTIFY lastuserChanged)
-  //  Q_PROPERTY(QString localdatetime READ  localdatetime WRITE setlocaldatetime NOTIFY localdatetimeChanged)
+    Q_PROPERTY(QString currentUserName READ  currentUserName WRITE setcurrentUserName NOTIFY currentUserNameChanged )
+    Q_PROPERTY(QString currentUserPassword READ  currentUserPassword WRITE setcurrentUserPassword NOTIFY currentUserPasswordChanged)
+    Q_PROPERTY(QString currentUserType READ  currentUserType WRITE setcurrentUserType NOTIFY currentUserTypeChanged)
+    Q_PROPERTY(QString lastUser READ  lastUser WRITE setlastUser NOTIFY lastUserChanged)
+    //  Q_PROPERTY(QString localdatetime READ  localdatetime WRITE setlocaldatetime NOTIFY localdatetimeChanged)
     /*当前基础色彩*/
-    Q_PROPERTY(QString themeprimarycolor READ  getthemeprimarycolor WRITE setthemeprimarycolor NOTIFY themeprimarycolorchanged )
+    Q_PROPERTY(QString themePrimaryColor READ  getthemePrimaryColor WRITE setthemePrimaryColor NOTIFY themePrimaryColorchanged )
     /*当前前景色彩*/
-    Q_PROPERTY(QString themeaccentcolor READ  getthemeaccentcolor WRITE setthemeaccentcolor NOTIFY themeaccentcolorchanged)
+    Q_PROPERTY(QString themeAccentColor READ  getthemeAccentColor WRITE setthemeAccentColor NOTIFY themeAccentColorchanged)
     /*当前背景色彩*/
-    Q_PROPERTY(QString themebackgroundcolor READ  getthemebackgroundcolor WRITE setthemebackgroundcolor NOTIFY themebackgroundcolorchanged )
+    Q_PROPERTY(QString themeBackgroundColor READ  getthemeBackgroundColor WRITE setthemeBackgroundColor NOTIFY themeBackgroundColorchanged )
     /*系统背光*/
-     Q_PROPERTY(int backlight READ  getbacklight WRITE setbacklight NOTIFY backlightchanged )
+    Q_PROPERTY(int backLight READ  getbackLight WRITE setbackLight NOTIFY backLightchanged )
     /*当前坡口*/
-    Q_PROPERTY(int currentgroove READ  getcurrentgroove WRITE setcurrentgroove NOTIFY currentgroovechanged)
+    Q_PROPERTY(int currentGroove READ  getcurrentGroove WRITE setcurrentGroove NOTIFY currentGroovechanged)
+    /*系统led*/
+    Q_PROPERTY(QString leds READ getleds WRITE setleds)
 public:
     APPConfig();
     ~APPConfig();
 
-    int getcurrentgroove(); // 当前坡口
-    void setcurrentgroove(int);
+    void setleds(QString status);//leds
+    QString getleds();
 
-    QString currentusername();  // 当前用户名称
-    void  setcurrentusername(QString username);
+    int getcurrentGroove(); // 当前坡口
+    void setcurrentGroove(int);
 
-    QString currentuserpassword();//当前用户密码
-    void  setcurrentuserpassword(QString userpassword);
+    QString currentUserName();  // 当前用户名称
+    void  setcurrentUserName(QString username);
 
-    QString currentusertype();     //当前用户类型
-    void setcurrentusertype(QString usertype);
+    QString currentUserPassword();//当前用户密码
+    void  setcurrentUserPassword(QString userpassword);
 
-    QString lastuser();//上一次使用用户
-    void setlastuser(QString username);
+    QString currentUserType();     //当前用户类型
+    void setcurrentUserType(QString usertype);
+
+    QString lastUser();//上一次使用用户
+    void setlastUser(QString username);
 
     QString localdatetime();//本地系统时间
     void setlocaldatetime(QString datetime);
@@ -53,36 +58,36 @@ public:
     int screenHeight();       //屏幕长度
     void setScreenHeight(int height);
 
+    QString getthemePrimaryColor();  //系统主题前景颜色
+    void setthemePrimaryColor(QString color);
 
+    QString getthemeAccentColor();  //系统主题前景颜色
+    void setthemeAccentColor(QString color);
 
-     QString SoftWare_Description; // 软件描述
-     QString SoftWare_Author;         //软件作者
-     QString SoftWare_Company;    //软件公司
-     QString SoftWare_Version;                //软件版本
+    QString getthemeBackgroundColor();  //系统主题前景颜色
+    void setthemeBackgroundColor(QString color);
 
-     QString getthemeprimarycolor();  //系统主题前景颜色
-     void setthemeprimarycolor(QString color);
-     QString getthemeaccentcolor();  //系统主题前景颜色
-     void setthemeaccentcolor(QString color);
-     QString getthemebackgroundcolor();  //系统主题前景颜色
-     void setthemebackgroundcolor(QString color);
-
-     int getbacklight();//系统背光
-     void setbacklight(int value);
-
- signals:
+    int getbackLight();//系统背光
+    void setbackLight(int value);
+private:
+    QString led_status;
+    QString SoftWare_Description; // 软件描述
+    QString SoftWare_Author;         //软件作者
+    QString SoftWare_Company;    //软件公司
+    QString SoftWare_Version;                //软件版本
+signals:
     void screenWidthChanged(int width);
     void screenHeightChanged(int hight);
-    void currentusernameChanged(QString username);
-    void currentuserpasswordChanged(QString userpassword);
-    void currentusertypeChanged(QString usertype);
-    void lastuserChanged(QString username);
+    void currentUserNameChanged(QString username);
+    void currentUserPasswordChanged(QString userpassword);
+    void currentUserTypeChanged(QString usertype);
+    void lastUserChanged(QString username);
     void localdatetimeChanged(QString datetime);
-    void themeprimarycolorchanged(QString color);
-    void themeaccentcolorchanged(QString color);
-    void themebackgroundcolorchanged(QString color);
-    void backlightchanged(int value);
-    void currentgroovechanged(int value);
+    void themePrimaryColorchanged(QString color);
+    void themeAccentColorchanged(QString color);
+    void themeBackgroundColorchanged(QString color);
+    void backLightchanged(int value);
+    void currentGroovechanged(int value);
 
 };
 

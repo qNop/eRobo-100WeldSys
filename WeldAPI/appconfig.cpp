@@ -13,6 +13,12 @@
 #include <QDateTime>
 #include <QProcess>
 #include "gloabldefine.h"
+#include <sys/ioctl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <string.h>
 
 APPConfig::APPConfig(){
 
@@ -112,7 +118,7 @@ void APPConfig::setScreenHeight(int height){
 /*
  ************************************************************************************当前用户称
  */
-QString APPConfig::currentusername(){
+QString APPConfig::currentUserName(){
     QString name;
    QSettings *Set =getPfromQfile();
    Set->beginGroup("eRoboWeldSysAppConfig");
@@ -121,18 +127,18 @@ QString APPConfig::currentusername(){
    qDebug()<<"current user name read"<<name;
    return name;
 }
-void APPConfig::setcurrentusername(QString username){
+void APPConfig::setcurrentUserName(QString username){
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
     Set->setValue("Current_User_Name",username);
     Set->endGroup();
-    emit currentusernameChanged(username);
+    emit currentUserNameChanged(username);
    qDebug() <<"current user name change";
 }
 /*
  ************************************************************************************当前密码
  */
-QString APPConfig::currentuserpassword(){
+QString APPConfig::currentUserPassword(){
     QString password;
    QSettings *Set =getPfromQfile();
    Set->beginGroup("eRoboWeldSysAppConfig");
@@ -141,18 +147,18 @@ QString APPConfig::currentuserpassword(){
    qDebug()<<"current password read"<<password;
    return password;
 }
-void APPConfig::setcurrentuserpassword(QString userpassword){
+void APPConfig::setcurrentUserPassword(QString userpassword){
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
     Set->setValue("Current_User_PassWord",userpassword);
     Set->endGroup();
-    emit currentuserpasswordChanged(userpassword);
+    emit currentUserPasswordChanged(userpassword);
    qDebug() <<"current password change";
 }
 /*
  ************************************************************************************当前用户类型
  */
-QString APPConfig::currentusertype(){
+QString APPConfig::currentUserType(){
    QString type;
    QSettings *Set =getPfromQfile();
    Set->beginGroup("eRoboWeldSysAppConfig");
@@ -161,18 +167,18 @@ QString APPConfig::currentusertype(){
    qDebug()<<"current type read"<<type;
    return type;
 }
-void APPConfig::setcurrentusertype(QString usertype){
+void APPConfig::setcurrentUserType(QString usertype){
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
     Set->setValue("Current_User_Type",usertype);
     Set->endGroup();
-    emit currentusertypeChanged(usertype);
+    emit currentUserTypeChanged(usertype);
    qDebug() <<"current type change";
 }
 /*
  ************************************************************************************当前用户类型
  */
-QString APPConfig::lastuser(){
+QString APPConfig::lastUser(){
    QString username;
    QSettings *Set =getPfromQfile();
    Set->beginGroup("eRoboWeldSysAppConfig");
@@ -181,18 +187,18 @@ QString APPConfig::lastuser(){
    qDebug()<<"last user read"<<username;
    return username;
 }
-void APPConfig::setlastuser(QString username){
+void APPConfig::setlastUser(QString username){
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
     Set->setValue("Last_User",username);
     Set->endGroup();
-    emit lastuserChanged(username);
+    emit lastUserChanged(username);
    qDebug() <<"last user change";
 }
 /*
  ************************************************************************************基本色
  */
-QString APPConfig::getthemeprimarycolor(){
+QString APPConfig::getthemePrimaryColor(){
     QString primarycolor;
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
@@ -201,18 +207,18 @@ QString APPConfig::getthemeprimarycolor(){
     qDebug()<<"primary color read"<<primarycolor;
     return primarycolor;
 }
-void APPConfig::setthemeprimarycolor(QString color){
+void APPConfig::setthemePrimaryColor(QString color){
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
     Set->setValue("Theme_PrimaryColor",color);
     Set->endGroup();
-    emit themeprimarycolorchanged(color);
+    emit themePrimaryColorchanged(color);
    qDebug() <<"primary color change";
 }
 /*
  ************************************************************************************前景色
  */
-QString APPConfig::getthemeaccentcolor(){
+QString APPConfig::getthemeAccentColor(){
     QString accentcolor;
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
@@ -221,18 +227,18 @@ QString APPConfig::getthemeaccentcolor(){
     qDebug()<<"accent color read"<<accentcolor;
     return accentcolor;
 }
-void APPConfig::setthemeaccentcolor(QString color){
+void APPConfig::setthemeAccentColor(QString color){
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
     Set->setValue("Theme_AccentColor",color);
     Set->endGroup();
-    emit themeaccentcolorchanged(color);
+    emit themeAccentColorchanged(color);
    qDebug() <<"accent color change";
 }
 /*
  ************************************************************************************背景色
  */
-QString APPConfig::getthemebackgroundcolor(){
+QString APPConfig::getthemeBackgroundColor(){
     QString backgroundcolor;
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
@@ -241,18 +247,18 @@ QString APPConfig::getthemebackgroundcolor(){
     qDebug()<<"background color read"<<backgroundcolor;
     return backgroundcolor;
 }
-void APPConfig::setthemebackgroundcolor(QString color){
+void APPConfig::setthemeBackgroundColor(QString color){
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
     Set->setValue("Theme_BackgroundColor",color);
     Set->endGroup();
-    emit themebackgroundcolorchanged(color);
+    emit themeBackgroundColorchanged(color);
    qDebug() <<"background color change";
 }
 /*
  ************************************************************************************系统背光
  */
-int APPConfig::getbacklight(){
+int APPConfig::getbackLight(){
     int value;
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
@@ -261,18 +267,23 @@ int APPConfig::getbacklight(){
     qDebug()<<"backlight value read"<<value;
     return value;
 }
-void APPConfig::setbacklight(int value){
+void APPConfig::setbackLight(int value){
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
     Set->setValue("BackLight",value);
     Set->endGroup();
-    emit backlightchanged(value);
+    QString s;
+    QProcess *poc = new QProcess;
+    s="/Nop/backlight ";
+    s+=QString::number(value);
+    poc->start(s);
+    emit backLightchanged(value);
    qDebug() <<"backlight  change";
 }
 /*
  ************************************************************************************当前坡口形状
  */
-int APPConfig::getcurrentgroove(){
+int APPConfig::getcurrentGroove(){
     int value;
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
@@ -281,11 +292,26 @@ int APPConfig::getcurrentgroove(){
     qDebug()<<"Current Groove read"<<value;
     return value;
 }
-void APPConfig::setcurrentgroove(int value){
+void APPConfig::setcurrentGroove(int value){
     QSettings *Set =getPfromQfile();
     Set->beginGroup("eRoboWeldSysAppConfig");
     Set->setValue("Current_Groove",value);
     Set->endGroup();
-    emit currentgroovechanged(value);
+    emit currentGroovechanged(value);
    qDebug() <<"Current Groove change";
+}
+/*
+ * set led status
+ */
+void APPConfig::setleds(QString status){
+       QString s;
+       QProcess *poc = new QProcess;
+       s="/Nop/leds ";
+       s+=status;
+       qDebug()<<s;
+       poc->start(s);
+       led_status=status;
+}
+QString APPConfig::getleds(void){
+    return led_status;
 }

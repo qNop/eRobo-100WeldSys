@@ -7,8 +7,7 @@ SOURCES += main.cpp \
     libmodbus/src/modbus.c \
    libmodbus/src/modbus-data.c \
     libmodbus/src/modbus-rtu.c \
-    WeldAPI/ERModbus.cpp \
-    WeldAPI/ERLed.cpp
+    WeldAPI/ERModbus.cpp
 
 RESOURCES += \
     qml.qrc
@@ -28,8 +27,7 @@ HEADERS += \
     libmodbus/src/modbus.h \
     libmodbus/src/modbus-rtu.h \
     libmodbus/src/modbus-rtu-private.h \
-    WeldAPI/ERModbus.h \
-    WeldAPI/ERLed.h
+    WeldAPI/ERModbus.h
 
 INCLUDEPATH +=libmodbus \
               libmodbus/src \

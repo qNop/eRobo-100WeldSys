@@ -3,7 +3,6 @@ import Material 0.1
 import Material.Extras 0.1
 import WeldSys.APPConfig 1.0
 import WeldSys.ERModbus 1.0
-import WeldSys.ERLed 1.0
 import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.1
 import QtQuick.LocalStorage 2.0
@@ -13,14 +12,15 @@ import "CanvasPaint.js" as Paint
 /*应用程序窗口*/
 ApplicationWindow{
     id: app;title: "app";visible: true
-    /*APP配置文件存储格式为txt*/
-    APPConfig{id:appconfig;}
-    /*led与背光驱动C++函数*/
-    ERLed{ id:led;lcdbacklight:backlightslider.value*2}
     /*Modbus*/
-    ERModbus{id:ermodbus;}
+    ERModbus{id:ermodbus;
+        onModbus_statusChanged: {
+            console.log(status);
+        }
+    }
+    APPConfig{id:appconfig}
     /*主题默认颜色*/
-    theme { primaryColor: appconfig.themeprimarycolor;accentColor: appconfig.themeaccentcolor;backgroundColor:appconfig.themebackgroundcolor
+    theme { primaryColor: appconfig.themePrimaryColor;accentColor: appconfig.themeAccentColor;backgroundColor:appconfig.themeBackgroundColor
         tabHighlightColor: "white"  }
     property var sections: [ "grooveset", "weldset", "welding" ]
     property var sectionTitles: [ "坡口条件(I)", "焊接分析(II)", "系统信息(III)" ]
@@ -31,8 +31,10 @@ ApplicationWindow{
     /*当前坡口形状*/
     property string currentgroove;
     /*更新时间定时器*/
-    Timer{ interval: 600; running: true; repeat: true;
-        onTriggered:{datetime.name= new Date().toLocaleDateString(Qt.locale(app.local),"MMMdd ddd ")+new Date().toLocaleTimeString(Qt.locale(app.local),"h:mm");}}
+    Timer{ interval: 500; running: true; repeat: true;
+        onTriggered:{datetime.name= new Date().toLocaleDateString(Qt.locale(app.local),"MMMdd ddd ")+new Date().toLocaleTimeString(Qt.locale(app.local),"h:mm");
+        }
+    }
     /*高压action*/
     //   ActionButton{id:highv;anchors {right: robot.left;top: parent.top;rightMargin: Units.dp(12);topMargin: page.actionBar.height-highv.height/2}iconName:"image/flash_off"
     //                visible: !page.actionBar.overflowMenuShowing}
@@ -46,8 +48,18 @@ ApplicationWindow{
     //    ActionButton{id:power;anchors {right: parent.right;top: parent.top;rightMargin: Units.dp(24);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2 }iconName:"awesome/heartbeat"
     //                visible: !page.actionBar.overflowMenuShowing}
     /*发送action*/
-    ActionButton{id:send;anchors {right: parent.right;bottom: parent.bottom;margins: Units.dp(32); }iconName:"awesome/send";
-        visible: !slider.visible && !page.actionBar.overflowMenuShowing;onClicked: slider.show()}
+    ActionButton{id:send;anchors {left: parent.left;bottom: parent.bottom;bottomMargin:  Units.dp(16);
+            leftMargin: visible ? Units.dp(16):Units.dp(600)}iconName:"awesome/send";
+        visible: if(page.selectedTab === 0) return true; else return false ;
+        Behavior on anchors.leftMargin {
+            NumberAnimation { duration: 600 }
+        }
+        onClicked: {
+            /*显示进度条*/
+            slider.show();
+            /*发送数据*/
+
+        }}
     /*初始化Ｔabpage*/
     initialPage: TabbedPage {
         id: page
@@ -79,7 +91,7 @@ ApplicationWindow{
             },
             /*账户*/
             Action {id:accountname;iconName: "action/account_circle";name: qsTr("帐户")
-                onTriggered:changeuser.show();text:appconfig.currentusername;
+                onTriggered:changeuser.show();text:appconfig.currentUserName;
             },
             /*语言*/
             Action {iconName: "action/language";name: qsTr("语言");
@@ -133,6 +145,7 @@ ApplicationWindow{
         Keys.onDigit3Pressed: page.selectedTab=2;
     }/**/
     Component.onCompleted: {
+        /*打开数据库*/
         DB.openDatabase();
         var result = DB.getusrname();
         for(var i=0;i<result.rows.length;i++){
@@ -143,6 +156,9 @@ ApplicationWindow{
                 changeuserFeildtext.helperText=result.rows.item(i).type;}
         }
         usrnamemodel.remove(0);
+        /*建立modbus*/
+        ermodbus.modbus_status="setup";
+        console.log(page.activeFocus);
     }
     /*日历*/
     Dialog {
@@ -160,25 +176,25 @@ ApplicationWindow{
         title: qsTr("背光调节");negativeButtonText:qsTr("取消");positiveButtonText: qsTr("完成");
         Slider {
             id:backlightslider;height:Units.dp(64);width:Units.dp(240);Layout.alignment: Qt.AlignCenter;
-            value:appconfig.backlight;stepSize: 5;focus: true;numericValueLabel: true;
-            minimumValue: 0;maximumValue: 100; activeFocusOnPress: true;
+            value:appconfig.backLight;stepSize: 5;focus: true;numericValueLabel: true;
+            minimumValue: 0;maximumValue: 220; activeFocusOnPress: true;
         }
         Rectangle{
             width:Units.dp(240);
             height:Units.dp(10);
         }
 
-        onAccepted: {appconfig.backlight=backlightslider.value}
-        onRejected: {backlightslider.value=appconfig.backlight}
+        onAccepted: {appconfig.backLight=backlightslider.value}
+        onRejected: {backlightslider.value=appconfig.backLight}
     }
     /*颜色选择对话框*/
     Dialog {
         id: colorPicker;title: qsTr("主题");negativeButtonText:qsTr("取消");positiveButtonText: qsTr("完成");
         focus:true;
         /*接受则存储系统颜色*/
-        onAccepted:{appconfig.themeprimarycolor=theme.primaryColor;appconfig.themeaccentcolor=theme.accentColor;appconfig.themebackgroundcolor=theme.backgroundColor; }
+        onAccepted:{appconfig.themePrimaryColor=theme.primaryColor;appconfig.themeAccentColor=theme.accentColor;appconfig.themeBackgroundColor=theme.backgroundColor; }
         /*不接受则释放系统颜色*/
-        onRejected: {theme.primaryColor=appconfig.themeprimarycolor;theme.accentColor=appconfig.themeaccentcolor;theme.backgroundColor=appconfig.themebackgroundcolor; }
+        onRejected: {theme.primaryColor=appconfig.themePrimaryColor;theme.accentColor=appconfig.themeAccentColor;theme.backgroundColor=appconfig.themeBackgroundColor; }
         /*下拉菜单*/
         MenuField { id: selection; model: ["基本色彩", "前景色彩", "背景色彩"]; width: Units.dp(160)}
         Grid {
@@ -226,10 +242,10 @@ ApplicationWindow{
         focus:true;
         positiveButtonEnabled:false;
         onAccepted: {
-            appconfig.currentusername = changeuserFeildtext.selectedText;
-            appconfig.currentusertype = changeuserFeildtext.helperText; }
+            appconfig.currentUserName = changeuserFeildtext.selectedText;
+            appconfig.currentUserType = changeuserFeildtext.helperText; }
         onRejected: {
-            changeuserFeildtext.helperText = appconfig.currentusertype;
+            changeuserFeildtext.helperText = appconfig.currentUserType;
             for(var i=0;i<100;i++){
                 if(accountname.text === usrnamemodel.get(i).text ){
                     changeuserFeildtext.selectedIndex = i;
@@ -246,7 +262,7 @@ ApplicationWindow{
                 password.enabled=true;
                 var data=usrnamemodel.get(index);
                 var result =  DB.getuserpassword(data.text);
-                appconfig.currentuserpassword = result.rows.item(0).password;
+                appconfig.currentUserPassword = result.rows.item(0).password;
                 changeuserFeildtext.helperText = result.rows.item(0).type;
                 password.text="";}}
         TextField{id:password;
@@ -254,7 +270,7 @@ ApplicationWindow{
             placeholderText:qsTr("密码:");
             characterLimit: 8;
             onTextChanged:{
-                if(password.text=== appconfig.currentuserpassword){
+                if(password.text=== appconfig.currentUserPassword){
                     changeuser.positiveButtonEnabled=true;
                     password.helperText.color="green";
                     password.helperText=qsTr("密码正确");}

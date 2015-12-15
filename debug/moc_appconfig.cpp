@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_APPConfig_t {
-    QByteArrayData data[33];
-    char stringdata0[509];
+    QByteArrayData data[34];
+    char stringdata0[510];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,50 +35,51 @@ QT_MOC_LITERAL(2, 29, 0), // ""
 QT_MOC_LITERAL(3, 30, 5), // "width"
 QT_MOC_LITERAL(4, 36, 19), // "screenHeightChanged"
 QT_MOC_LITERAL(5, 56, 5), // "hight"
-QT_MOC_LITERAL(6, 62, 22), // "currentusernameChanged"
+QT_MOC_LITERAL(6, 62, 22), // "currentUserNameChanged"
 QT_MOC_LITERAL(7, 85, 8), // "username"
-QT_MOC_LITERAL(8, 94, 26), // "currentuserpasswordChanged"
+QT_MOC_LITERAL(8, 94, 26), // "currentUserPasswordChanged"
 QT_MOC_LITERAL(9, 121, 12), // "userpassword"
-QT_MOC_LITERAL(10, 134, 22), // "currentusertypeChanged"
+QT_MOC_LITERAL(10, 134, 22), // "currentUserTypeChanged"
 QT_MOC_LITERAL(11, 157, 8), // "usertype"
-QT_MOC_LITERAL(12, 166, 15), // "lastuserChanged"
+QT_MOC_LITERAL(12, 166, 15), // "lastUserChanged"
 QT_MOC_LITERAL(13, 182, 20), // "localdatetimeChanged"
 QT_MOC_LITERAL(14, 203, 8), // "datetime"
-QT_MOC_LITERAL(15, 212, 24), // "themeprimarycolorchanged"
+QT_MOC_LITERAL(15, 212, 24), // "themePrimaryColorchanged"
 QT_MOC_LITERAL(16, 237, 5), // "color"
-QT_MOC_LITERAL(17, 243, 23), // "themeaccentcolorchanged"
-QT_MOC_LITERAL(18, 267, 27), // "themebackgroundcolorchanged"
-QT_MOC_LITERAL(19, 295, 16), // "backlightchanged"
+QT_MOC_LITERAL(17, 243, 23), // "themeAccentColorchanged"
+QT_MOC_LITERAL(18, 267, 27), // "themeBackgroundColorchanged"
+QT_MOC_LITERAL(19, 295, 16), // "backLightchanged"
 QT_MOC_LITERAL(20, 312, 5), // "value"
-QT_MOC_LITERAL(21, 318, 20), // "currentgroovechanged"
+QT_MOC_LITERAL(21, 318, 20), // "currentGroovechanged"
 QT_MOC_LITERAL(22, 339, 11), // "screenWidth"
 QT_MOC_LITERAL(23, 351, 12), // "screenHeight"
-QT_MOC_LITERAL(24, 364, 15), // "currentusername"
-QT_MOC_LITERAL(25, 380, 19), // "currentuserpassword"
-QT_MOC_LITERAL(26, 400, 15), // "currentusertype"
-QT_MOC_LITERAL(27, 416, 12), // "lastusertype"
-QT_MOC_LITERAL(28, 429, 17), // "themeprimarycolor"
-QT_MOC_LITERAL(29, 447, 16), // "themeaccentcolor"
-QT_MOC_LITERAL(30, 464, 20), // "themebackgroundcolor"
-QT_MOC_LITERAL(31, 485, 9), // "backlight"
-QT_MOC_LITERAL(32, 495, 13) // "currentgroove"
+QT_MOC_LITERAL(24, 364, 15), // "currentUserName"
+QT_MOC_LITERAL(25, 380, 19), // "currentUserPassword"
+QT_MOC_LITERAL(26, 400, 15), // "currentUserType"
+QT_MOC_LITERAL(27, 416, 8), // "lastUser"
+QT_MOC_LITERAL(28, 425, 17), // "themePrimaryColor"
+QT_MOC_LITERAL(29, 443, 16), // "themeAccentColor"
+QT_MOC_LITERAL(30, 460, 20), // "themeBackgroundColor"
+QT_MOC_LITERAL(31, 481, 9), // "backLight"
+QT_MOC_LITERAL(32, 491, 13), // "currentGroove"
+QT_MOC_LITERAL(33, 505, 4) // "leds"
 
     },
     "APPConfig\0screenWidthChanged\0\0width\0"
     "screenHeightChanged\0hight\0"
-    "currentusernameChanged\0username\0"
-    "currentuserpasswordChanged\0userpassword\0"
-    "currentusertypeChanged\0usertype\0"
-    "lastuserChanged\0localdatetimeChanged\0"
-    "datetime\0themeprimarycolorchanged\0"
-    "color\0themeaccentcolorchanged\0"
-    "themebackgroundcolorchanged\0"
-    "backlightchanged\0value\0currentgroovechanged\0"
-    "screenWidth\0screenHeight\0currentusername\0"
-    "currentuserpassword\0currentusertype\0"
-    "lastusertype\0themeprimarycolor\0"
-    "themeaccentcolor\0themebackgroundcolor\0"
-    "backlight\0currentgroove"
+    "currentUserNameChanged\0username\0"
+    "currentUserPasswordChanged\0userpassword\0"
+    "currentUserTypeChanged\0usertype\0"
+    "lastUserChanged\0localdatetimeChanged\0"
+    "datetime\0themePrimaryColorchanged\0"
+    "color\0themeAccentColorchanged\0"
+    "themeBackgroundColorchanged\0"
+    "backLightchanged\0value\0currentGroovechanged\0"
+    "screenWidth\0screenHeight\0currentUserName\0"
+    "currentUserPassword\0currentUserType\0"
+    "lastUser\0themePrimaryColor\0themeAccentColor\0"
+    "themeBackgroundColor\0backLight\0"
+    "currentGroove\0leds"
 };
 #undef QT_MOC_LITERAL
 
@@ -89,7 +90,7 @@ static const uint qt_meta_data_APPConfig[] = {
        0,       // classname
        0,    0, // classinfo
       12,   14, // methods
-      11,  110, // properties
+      12,  110, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
@@ -135,6 +136,7 @@ static const uint qt_meta_data_APPConfig[] = {
       30, QMetaType::QString, 0x00495003,
       31, QMetaType::Int, 0x00495003,
       32, QMetaType::Int, 0x00495003,
+      33, QMetaType::QString, 0x00095003,
 
  // properties: notify_signal_id
        0,
@@ -148,6 +150,7 @@ static const uint qt_meta_data_APPConfig[] = {
        9,
       10,
       11,
+       0,
 
        0        // eod
 };
@@ -160,16 +163,16 @@ void APPConfig::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         switch (_id) {
         case 0: _t->screenWidthChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 1: _t->screenHeightChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 2: _t->currentusernameChanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 3: _t->currentuserpasswordChanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 4: _t->currentusertypeChanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 5: _t->lastuserChanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 2: _t->currentUserNameChanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 3: _t->currentUserPasswordChanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 4: _t->currentUserTypeChanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 5: _t->lastUserChanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 6: _t->localdatetimeChanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 7: _t->themeprimarycolorchanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 8: _t->themeaccentcolorchanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 9: _t->themebackgroundcolorchanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 10: _t->backlightchanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 11: _t->currentgroovechanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 7: _t->themePrimaryColorchanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 8: _t->themeAccentColorchanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 9: _t->themeBackgroundColorchanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 10: _t->backLightchanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 11: _t->currentGroovechanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -189,25 +192,25 @@ void APPConfig::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         }
         {
             typedef void (APPConfig::*_t)(QString );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::currentusernameChanged)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::currentUserNameChanged)) {
                 *result = 2;
             }
         }
         {
             typedef void (APPConfig::*_t)(QString );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::currentuserpasswordChanged)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::currentUserPasswordChanged)) {
                 *result = 3;
             }
         }
         {
             typedef void (APPConfig::*_t)(QString );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::currentusertypeChanged)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::currentUserTypeChanged)) {
                 *result = 4;
             }
         }
         {
             typedef void (APPConfig::*_t)(QString );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::lastuserChanged)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::lastUserChanged)) {
                 *result = 5;
             }
         }
@@ -219,31 +222,31 @@ void APPConfig::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         }
         {
             typedef void (APPConfig::*_t)(QString );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::themeprimarycolorchanged)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::themePrimaryColorchanged)) {
                 *result = 7;
             }
         }
         {
             typedef void (APPConfig::*_t)(QString );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::themeaccentcolorchanged)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::themeAccentColorchanged)) {
                 *result = 8;
             }
         }
         {
             typedef void (APPConfig::*_t)(QString );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::themebackgroundcolorchanged)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::themeBackgroundColorchanged)) {
                 *result = 9;
             }
         }
         {
             typedef void (APPConfig::*_t)(int );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::backlightchanged)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::backLightchanged)) {
                 *result = 10;
             }
         }
         {
             typedef void (APPConfig::*_t)(int );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::currentgroovechanged)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&APPConfig::currentGroovechanged)) {
                 *result = 11;
             }
         }
@@ -256,15 +259,16 @@ void APPConfig::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         switch (_id) {
         case 0: *reinterpret_cast< int*>(_v) = _t->screenWidth(); break;
         case 1: *reinterpret_cast< int*>(_v) = _t->screenHeight(); break;
-        case 2: *reinterpret_cast< QString*>(_v) = _t->currentusername(); break;
-        case 3: *reinterpret_cast< QString*>(_v) = _t->currentuserpassword(); break;
-        case 4: *reinterpret_cast< QString*>(_v) = _t->currentusertype(); break;
-        case 5: *reinterpret_cast< QString*>(_v) = _t->lastuser(); break;
-        case 6: *reinterpret_cast< QString*>(_v) = _t->getthemeprimarycolor(); break;
-        case 7: *reinterpret_cast< QString*>(_v) = _t->getthemeaccentcolor(); break;
-        case 8: *reinterpret_cast< QString*>(_v) = _t->getthemebackgroundcolor(); break;
-        case 9: *reinterpret_cast< int*>(_v) = _t->getbacklight(); break;
-        case 10: *reinterpret_cast< int*>(_v) = _t->getcurrentgroove(); break;
+        case 2: *reinterpret_cast< QString*>(_v) = _t->currentUserName(); break;
+        case 3: *reinterpret_cast< QString*>(_v) = _t->currentUserPassword(); break;
+        case 4: *reinterpret_cast< QString*>(_v) = _t->currentUserType(); break;
+        case 5: *reinterpret_cast< QString*>(_v) = _t->lastUser(); break;
+        case 6: *reinterpret_cast< QString*>(_v) = _t->getthemePrimaryColor(); break;
+        case 7: *reinterpret_cast< QString*>(_v) = _t->getthemeAccentColor(); break;
+        case 8: *reinterpret_cast< QString*>(_v) = _t->getthemeBackgroundColor(); break;
+        case 9: *reinterpret_cast< int*>(_v) = _t->getbackLight(); break;
+        case 10: *reinterpret_cast< int*>(_v) = _t->getcurrentGroove(); break;
+        case 11: *reinterpret_cast< QString*>(_v) = _t->getleds(); break;
         default: break;
         }
     } else if (_c == QMetaObject::WriteProperty) {
@@ -274,15 +278,16 @@ void APPConfig::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         switch (_id) {
         case 0: _t->setScreenWidth(*reinterpret_cast< int*>(_v)); break;
         case 1: _t->setScreenHeight(*reinterpret_cast< int*>(_v)); break;
-        case 2: _t->setcurrentusername(*reinterpret_cast< QString*>(_v)); break;
-        case 3: _t->setcurrentuserpassword(*reinterpret_cast< QString*>(_v)); break;
-        case 4: _t->setcurrentusertype(*reinterpret_cast< QString*>(_v)); break;
-        case 5: _t->setlastuser(*reinterpret_cast< QString*>(_v)); break;
-        case 6: _t->setthemeprimarycolor(*reinterpret_cast< QString*>(_v)); break;
-        case 7: _t->setthemeaccentcolor(*reinterpret_cast< QString*>(_v)); break;
-        case 8: _t->setthemebackgroundcolor(*reinterpret_cast< QString*>(_v)); break;
-        case 9: _t->setbacklight(*reinterpret_cast< int*>(_v)); break;
-        case 10: _t->setcurrentgroove(*reinterpret_cast< int*>(_v)); break;
+        case 2: _t->setcurrentUserName(*reinterpret_cast< QString*>(_v)); break;
+        case 3: _t->setcurrentUserPassword(*reinterpret_cast< QString*>(_v)); break;
+        case 4: _t->setcurrentUserType(*reinterpret_cast< QString*>(_v)); break;
+        case 5: _t->setlastUser(*reinterpret_cast< QString*>(_v)); break;
+        case 6: _t->setthemePrimaryColor(*reinterpret_cast< QString*>(_v)); break;
+        case 7: _t->setthemeAccentColor(*reinterpret_cast< QString*>(_v)); break;
+        case 8: _t->setthemeBackgroundColor(*reinterpret_cast< QString*>(_v)); break;
+        case 9: _t->setbackLight(*reinterpret_cast< int*>(_v)); break;
+        case 10: _t->setcurrentGroove(*reinterpret_cast< int*>(_v)); break;
+        case 11: _t->setleds(*reinterpret_cast< QString*>(_v)); break;
         default: break;
         }
     } else if (_c == QMetaObject::ResetProperty) {
@@ -327,17 +332,17 @@ int APPConfig::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
    else if (_c == QMetaObject::ReadProperty || _c == QMetaObject::WriteProperty
             || _c == QMetaObject::ResetProperty || _c == QMetaObject::RegisterPropertyMetaType) {
         qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 12;
     } else if (_c == QMetaObject::QueryPropertyDesignable) {
-        _id -= 11;
+        _id -= 12;
     } else if (_c == QMetaObject::QueryPropertyScriptable) {
-        _id -= 11;
+        _id -= 12;
     } else if (_c == QMetaObject::QueryPropertyStored) {
-        _id -= 11;
+        _id -= 12;
     } else if (_c == QMetaObject::QueryPropertyEditable) {
-        _id -= 11;
+        _id -= 12;
     } else if (_c == QMetaObject::QueryPropertyUser) {
-        _id -= 11;
+        _id -= 12;
     }
 #endif // QT_NO_PROPERTIES
     return _id;
@@ -358,28 +363,28 @@ void APPConfig::screenHeightChanged(int _t1)
 }
 
 // SIGNAL 2
-void APPConfig::currentusernameChanged(QString _t1)
+void APPConfig::currentUserNameChanged(QString _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
 // SIGNAL 3
-void APPConfig::currentuserpasswordChanged(QString _t1)
+void APPConfig::currentUserPasswordChanged(QString _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 
 // SIGNAL 4
-void APPConfig::currentusertypeChanged(QString _t1)
+void APPConfig::currentUserTypeChanged(QString _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 4, _a);
 }
 
 // SIGNAL 5
-void APPConfig::lastuserChanged(QString _t1)
+void APPConfig::lastUserChanged(QString _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 5, _a);
@@ -393,35 +398,35 @@ void APPConfig::localdatetimeChanged(QString _t1)
 }
 
 // SIGNAL 7
-void APPConfig::themeprimarycolorchanged(QString _t1)
+void APPConfig::themePrimaryColorchanged(QString _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 7, _a);
 }
 
 // SIGNAL 8
-void APPConfig::themeaccentcolorchanged(QString _t1)
+void APPConfig::themeAccentColorchanged(QString _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 8, _a);
 }
 
 // SIGNAL 9
-void APPConfig::themebackgroundcolorchanged(QString _t1)
+void APPConfig::themeBackgroundColorchanged(QString _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 9, _a);
 }
 
 // SIGNAL 10
-void APPConfig::backlightchanged(int _t1)
+void APPConfig::backLightchanged(int _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 10, _a);
 }
 
 // SIGNAL 11
-void APPConfig::currentgroovechanged(int _t1)
+void APPConfig::currentGroovechanged(int _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 11, _a);

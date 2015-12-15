@@ -1,6 +1,6 @@
 [eRoboWeldSysAppConfig]
 BackLight=50
-Current_Groove=2
+Current_Groove=1
 Current_User_Name=Admin
 Current_User_PassWord=Admin
 Current_User_Type=SuperUser
@@ -13,4 +13,4 @@ SoftWare_Description=\x4fbf\x643a\x5f0fMAG\x710a\x63a5\x673a\x5668\x4eba\x7cfb\x
 SoftWare_Version=0.1
 Theme_AccentColor=#3f51b5
 Theme_BackgroundColor=#ffeb3b
-Theme_PrimaryColor=#ffeb3b
+Theme_PrimaryColor=#ffc107
