@@ -22,5 +22,4 @@ then
    echo "创建/Nop 并复制leds shell"
    mkdir /Nop
    cp leds /Nop
-   cp backlight /Nop
 fi

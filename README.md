@@ -2,7 +2,6 @@
 debug文件夹 ：存放下位机调试所需数据
 files文件夹：存放系统说明及杂项
 libmodbus文件夹：存放modbus相关程序代码
-Material文件夹：存放经过处理修改的material风格代码
 PCdebug文件夹：存放上位机调试所需数据
 rootfs文件夹：存放linux文件系统初始化配置文件
 weldAPI文件夹：存放系统程序调用程序代码
