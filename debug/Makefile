@@ -65,7 +65,8 @@ OBJECTS       = main.o \
 		qrc_qml.o \
 		moc_appconfig.o \
 		moc_ERModbus.o
-DIST          = ../../../../ltib/rootfs/opt/Qt5/mkspecs/features/spec_pre.prf \
+DIST          = ../Files/MyData.xls \
+		../../../../ltib/rootfs/opt/Qt5/mkspecs/features/spec_pre.prf \
 		../../../../ltib/rootfs/opt/Qt5/mkspecs/common/unix.conf \
 		../../../../ltib/rootfs/opt/Qt5/mkspecs/common/linux.conf \
 		../../../../ltib/rootfs/opt/Qt5/mkspecs/common/sanitize.conf \

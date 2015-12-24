@@ -9,9 +9,18 @@ Rectangle {
         NumberAnimation { duration: 200 }
     }
 
-    Text {
-        id: title
-        text: "shezhi:"
+    IconButton{
+        iconSource: "icon://user/MAG"
     }
+    Image{
+        x:100;
+        y:100;
+        source: "MAG.png"
+        sourceSize {
+            width:24;
+            height:24;
+        }
+    }
+
 }
 

@@ -23,7 +23,7 @@ ApplicationWindow{
     theme { primaryColor: appconfig.themePrimaryColor;accentColor: appconfig.themeAccentColor;backgroundColor:appconfig.themeBackgroundColor
         tabHighlightColor: "white"  }
     property var sections: [ "grooveset", "weldset", "welding" ]
-    property var sectionTitles: [ "坡口条件(I)", "焊接分析(II)", "系统信息(III)" ]
+    property var sectionTitles: [ "焊接预置(I)", "焊接分析(II)", "系统信息(III)" ]
     property var tabiconname: ["awesome/windows","awesome/line_chart","awesome/tasks"]
     property string selectedComponent: sections[0]
     /*当前本地化语言*/
@@ -35,18 +35,6 @@ ApplicationWindow{
         onTriggered:{datetime.name= new Date().toLocaleDateString(Qt.locale(app.local),"MMMdd ddd ")+new Date().toLocaleTimeString(Qt.locale(app.local),"h:mm");
         }
     }
-    /*高压action*/
-    //   ActionButton{id:highv;anchors {right: robot.left;top: parent.top;rightMargin: Units.dp(12);topMargin: page.actionBar.height-highv.height/2}iconName:"image/flash_off"
-    //                visible: !page.actionBar.overflowMenuShowing}
-    /*机器人action*/
-    //    ActionButton{id:robot;anchors { right: handle.left;top: parent.top;rightMargin: Units.dp(12);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2  }iconName:"action/android"
-    //                visible: !page.actionBar.overflowMenuShowing}
-    /*操作盒action*/
-    //    ActionButton{id:handle;anchors { right: power.left;top: parent.top;rightMargin: Units.dp(12);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2 }iconName:"awesome/calculator"
-    //                visible: !page.actionBar.overflowMenuShowing}
-    /*电源action*/
-    //    ActionButton{id:power;anchors {right: parent.right;top: parent.top;rightMargin: Units.dp(24);leftMargin: Units.dp(24);topMargin: page.actionBar.height-highv.height/2 }iconName:"awesome/heartbeat"
-    //                visible: !page.actionBar.overflowMenuShowing}
     /*发送action*/
     ActionButton{id:send;anchors {left: parent.left;bottom: parent.bottom;bottomMargin:  Units.dp(16);
             leftMargin: visible ? Units.dp(16):Units.dp(600)}iconName:"awesome/send";
@@ -70,27 +58,30 @@ ApplicationWindow{
         /*actions列表*/
         actions: [
             /*危险报警action*/
-            Action {iconName: "alert/warning";name: qsTr("警告");hoverAnimation: true;text:"a";
+            Action {iconName:"action/android" // "alert/warning";
+                name: qsTr("警告");
                 //onTriggered: demo.showError("Something went wrong", "Do you want to retry?", "Close", true)
             },
             /*背光控制插件action*/
-            Action{name: qsTr("背光"); iconName: "device/brightness_medium";text:"a"; hoverAnimation: true
+            Action{name: qsTr("背光"); iconName: "image/flash_off"//"device/brightness_medium";           
                 onTriggered:backlight.show();
             },
             /*系统选择颜色action*/
-            Action {iconName: "image/color_lens";name: qsTr("色彩") ;text:"a";
-                onTriggered: colorPicker.show();hoverAnimation: true
+            Action {iconName: "awesome/calculator"//"image/color_lens";
+                name: qsTr("色彩") ;
+                onTriggered: colorPicker.show();
             },
             /*系统设置action*/
-            Action {iconName: "action/settings";name: qsTr("设置");hoverAnimation: true;text:"a";
+            Action {iconName:"user/MAG";
+                name: qsTr("设置");
                 //onTriggered
             },
             /*时间action*/
-            Action{name: qsTr("时间"); id:datetime;hasText:true;
+            Action{name: qsTr("时间"); id:datetime;
                 onTriggered:datePickerDialog.show();
             },
             /*账户*/
-            Action {id:accountname;iconName: "action/account_circle";name: qsTr("帐户")
+            Action {id:accountname;iconName: "action/account_circle";
                 onTriggered:changeuser.show();text:appconfig.currentUserName;
             },
             /*语言*/
@@ -143,6 +134,14 @@ ApplicationWindow{
         Keys.onDigit1Pressed: page.selectedTab=0;
         Keys.onDigit2Pressed: page.selectedTab=1;
         Keys.onDigit3Pressed: page.selectedTab=2;
+        Keys.onPressed: {
+            switch(event.key){
+            case Qt.Key_F1:
+                 slider.show();
+                event.accepted=true;
+                break;
+            }
+        }
     }/**/
     Component.onCompleted: {
         /*打开数据库*/
@@ -158,11 +157,9 @@ ApplicationWindow{
         usrnamemodel.remove(0);
         /*建立modbus*/
         ermodbus.modbus_status="setup";
-        console.log(page.activeFocus);
     }
     /*日历*/
     Dialog {
-        focus:true;
         id:datePickerDialog; hasActions: true; contentMargins: 0;floatingActions: true
         negativeButtonText:qsTr("取消");positiveButtonText: qsTr("完成");
         DatePicker {
@@ -172,7 +169,6 @@ ApplicationWindow{
     /*背光调节*/
     Dialog{
         id:backlight
-        focus:true;
         title: qsTr("背光调节");negativeButtonText:qsTr("取消");positiveButtonText: qsTr("完成");
         Slider {
             id:backlightslider;height:Units.dp(64);width:Units.dp(240);Layout.alignment: Qt.AlignCenter;
@@ -183,14 +179,12 @@ ApplicationWindow{
             width:Units.dp(240);
             height:Units.dp(10);
         }
-
         onAccepted: {appconfig.backLight=backlightslider.value}
         onRejected: {backlightslider.value=appconfig.backLight}
     }
     /*颜色选择对话框*/
     Dialog {
         id: colorPicker;title: qsTr("主题");negativeButtonText:qsTr("取消");positiveButtonText: qsTr("完成");
-        focus:true;
         /*接受则存储系统颜色*/
         onAccepted:{appconfig.themePrimaryColor=theme.primaryColor;appconfig.themeAccentColor=theme.accentColor;appconfig.themeBackgroundColor=theme.backgroundColor; }
         /*不接受则释放系统颜色*/
@@ -239,7 +233,6 @@ ApplicationWindow{
     Dialog{
         id:changeuser;
         title:qsTr("更换用户");negativeButtonText:qsTr("取消");positiveButtonText:qsTr("确定");
-        focus:true;
         positiveButtonEnabled:false;
         onAccepted: {
             appconfig.currentUserName = changeuserFeildtext.selectedText;
@@ -297,7 +290,6 @@ ApplicationWindow{
     /*语言对话框*/
     Dialog{  id:languagePicker;
         title:qsTr("更换语言");negativeButtonText:qsTr("取消");positiveButtonText:qsTr("确定");
-        focus:true;
         Column{
             width: parent.width
             spacing: 0

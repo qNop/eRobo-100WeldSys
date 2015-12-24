@@ -18,6 +18,7 @@ IconButton 0.1 IconButton.qml
 Ink 0.1 Ink.qml
 InputDialog 0.1 InputDialog.qml
 Label 0.1 Label.qml
+LabelButton 0.1 LabelButton.qml
 MainView 0.1 MainView.qml
 MenuField 0.1 MenuField.qml
 NavigationDrawer 0.1 NavigationDrawer.qml

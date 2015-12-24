@@ -37,8 +37,7 @@ Item {
 
     signal clicked
 
-   // width: action.hasText?label.width:icon.width
-    width:icon.width>label.width? icon.width:label.width
+    width: icon.width
     height: icon.height
     enabled: action ? action.enabled : true
     opacity: enabled ? 1 : 0.6
@@ -67,27 +66,20 @@ Item {
 
     Icon {
         id: icon
+
         anchors.centerIn: parent
-	visible:!action.hasText
+
         source: iconButton.iconSource
         rotation: iconButton.hoverAnimation ? ink.containsMouse ? 90 : 0
                                             : 0
+
         Behavior on rotation {
             NumberAnimation { duration: 200 }
         }
     }
 
-    Label{
-	id: label
-	anchors.centerIn: parent
-	visible:action.hasText
-	text:action.text
-	color:iconButton.color
-	style:"subheading"
-    }
-
     Tooltip {
-        text: action ? action.name: ""
+        text: action ? action.name : ""
         mouseArea: ink
     }
 }

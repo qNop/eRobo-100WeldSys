@@ -8,5 +8,6 @@
         <file>groove.png</file>
         <file>welding.qml</file>
         <file>Popslider.qml</file>
+        <file>MAG.png</file>
     </qresource>
 </RCC>

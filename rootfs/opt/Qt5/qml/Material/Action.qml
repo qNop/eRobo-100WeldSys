@@ -28,7 +28,6 @@ import QtQuick.Controls 1.3 as Controls
  */
 Controls.Action {
     id: action
-     property bool hasText:false
     /*!
        Set to \c true to display a divider between this action and the next action. Used in lists
        or context menus.

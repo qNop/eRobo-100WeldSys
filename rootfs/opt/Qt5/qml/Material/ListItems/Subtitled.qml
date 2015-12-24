@@ -42,7 +42,7 @@ BaseListItem {
     property alias secondaryItem: secondaryItem.children
     property alias content: contentItem.children
 
-    interactive: contentItem.children.length === 0
+    interactive: !contentItem.showing
 
     dividerInset: actionItem.visible ? listItem.height : 0
 
@@ -123,8 +123,9 @@ BaseListItem {
 
                 Layout.fillWidth: true
 
-                visible: visibleChildren.length > 0
-                height: visible ? subLabel.implicitHeight : 0
+                Layout.preferredHeight: showing ? subLabel.implicitHeight : 0
+
+                property bool showing: visibleChildren.length > 0
             }
 
             Label {
@@ -138,7 +139,7 @@ BaseListItem {
                 wrapMode: Text.WordWrap
                 style: "body1"
 
-                visible: text != "" && !contentItem.visible
+                visible: text != "" && !contentItem.showing
                 maximumLineCount: listItem.maximumLineCount - 1
             }
         }

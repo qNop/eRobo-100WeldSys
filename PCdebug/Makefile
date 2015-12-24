@@ -542,6 +542,7 @@ compiler_rcc_make_all: qrc_qml.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) qrc_qml.cpp
 qrc_qml.cpp: ../qml.qrc \
+		../MAG.png \
 		../CanvasPaint.js \
 		../Database.js \
 		../groove.png \

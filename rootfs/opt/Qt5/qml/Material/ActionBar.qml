@@ -270,7 +270,7 @@ Item {
 
         Repeater {
             model: __internal.visibleActions.length > maxActionCount
-                    ? maxActionCount - 1
+                    ? maxActionCount - 2
                     : __internal.visibleActions.length
 
             delegate: IconButton {
@@ -287,7 +287,17 @@ Item {
                 anchors.verticalCenter: parent ? parent.verticalCenter : undefined
             }
         }
-
+	LabelButton {
+            id: time
+	    action: __internal.visibleActions[maxActionCount-2]
+            //iconName: "device/brightness_medium"
+            objectName: "action/datetime"
+            //size: Units.dp(27)
+            //color: Theme.lightDark(actionBar.backgroundColor, Theme.light.iconColor,
+            //                                                  Theme.dark.iconColor)
+            visible: true
+            anchors.verticalCenter: parent.verticalCenter
+        }
 	IconButton {
             id: overflowButton
 

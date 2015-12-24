@@ -294,6 +294,8 @@ int APPConfig::getcurrentGroove(){
 }
 void APPConfig::setcurrentGroove(int value){
     QSettings *Set =getPfromQfile();
+    if(value>8)
+        value=0;
     Set->beginGroup("eRoboWeldSysAppConfig");
     Set->setValue("Current_Groove",value);
     Set->endGroup();

@@ -70,7 +70,7 @@ function getPageFunctionAndValueFromTable(index,mode){
         case 8:str="update verticalweldvgroove set setvalue = ";break;
         }
         str+="\'"+value+"\'"+" where function = "+"\'"+name+"\'";
-        console.log(str);
+     //   console.log(str);
         db.transaction( function(tx) {result = tx.executeSql(str); });
     }
     /*从数据库中获取相关词条的数值*/
@@ -90,9 +90,9 @@ function getPageFunctionAndValueFromTable(index,mode){
         case 8:str="select * from verticalweldvgroove where ";break;
         }
         str+=func+" ="+"\'"+name+"\'";
-        console.log(str);
+    //    console.log(str);
         db.transaction( function(tx) {result = tx.executeSql(str); });
-        console.log(result.rows.item(0).setvalue);
+//        console.log(result.rows.item(0).setvalue);
         return result.rows.item(0).setvalue;
     }
     /*获取用户密码*/
