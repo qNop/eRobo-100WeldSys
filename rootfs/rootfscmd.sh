@@ -111,14 +111,14 @@ case  "$cmd" in
 		if [ -e /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/Material ]
 		then
 			echo "Send Material to /opt/Qt5/qml"
-			cp -R /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/Material /opt/Qt5/qml
+			cp -R -v /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/Material /opt/Qt5/qml
 		else
 			echo "Material is not found"
 		fi
 		if [ -e /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/QtQuick/Controls/Styles/Material ]
 		then
 			echo "Send Styles to /opt/Qt5/qml/QtQuick/Controls/Styles"
-			cp -R /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/QtQuick/Controls/Styles/Material /opt/Qt5/qml/QtQuick/Controls/Styles	
+			cp -R -v /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/QtQuick/Controls/Styles/Material /opt/Qt5/qml/QtQuick/Controls/Styles	
 		else
 			echo "Styles is not found"
 		fi		

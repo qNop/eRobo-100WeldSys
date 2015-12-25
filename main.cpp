@@ -9,6 +9,8 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+     qputenv("QT_IM_MODULE", QByteArray("mockup"));
+
     qmlRegisterType<APPConfig>("WeldSys.APPConfig",1,0,"APPConfig");
     qmlRegisterType<ERModbus>("WeldSys.ERModbus",1,0,"ERModbus");
     QQmlApplicationEngine engine;

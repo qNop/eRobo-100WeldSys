@@ -111,7 +111,7 @@ case  "$cmd" in
 		if [ -e /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/Material ]
 		then
 			echo "Send Material to /opt/Qt5/qml"
-			cp -R /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/Material /opt/Qt5/qml
+			cp -R -V /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/Material /opt/Qt5/qml
 		else
 			echo "Material is not found"
 		fi
