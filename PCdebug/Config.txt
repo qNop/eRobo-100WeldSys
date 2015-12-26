@@ -1,6 +1,6 @@
 [eRoboWeldSysAppConfig]
 BackLight=175
-Current_Groove=0
+Current_Groove=1
 Current_User_Name=Admin
 Current_User_PassWord=Admin
 Current_User_Type=SuperUser
