@@ -11,7 +11,7 @@ Rectangle {
     }
    Button{
        text: "button"
-       onClicked: Qt.inputMethod.show();
+       onClicked: {Qt.inputMethod.show() ;}
    }
 }
 

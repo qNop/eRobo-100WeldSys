@@ -2,6 +2,8 @@ TEMPLATE = app
 
 QT += qml quick core widgets sql serialport
 
+QTPLUGIN    = virtualkeyboard
+
 SOURCES += main.cpp \
     WeldAPI/appconfig.cpp\
     libmodbus/src/modbus.c \
@@ -35,6 +37,10 @@ INCLUDEPATH +=libmodbus \
 
 DISTFILES += \
     Files/MyData.xls
+
+SUBDIRS += \
+    Files/MockupVirtualKeyboard/MockupVirtualKeyboard.pro \
+    Files/MockupVirtualKeyboard/MockupVirtualKeyboard.pro
 
 
 
