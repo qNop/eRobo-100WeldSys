@@ -38,7 +38,9 @@ INCLUDEPATH +=libmodbus \
 DISTFILES += \
     Files/MyData.xls
 
-
+SUBDIRS += \
+    Files/MockupVirtualKeyboard/MockupVirtualKeyboard.pro \
+    Files/MockupVirtualKeyboard/MockupVirtualKeyboard.pro
 
 
 
