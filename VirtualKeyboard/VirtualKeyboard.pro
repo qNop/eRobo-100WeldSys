@@ -13,15 +13,12 @@ TEMPLATE = lib
 
 DEFINES += VIRTUALKEYBOARD_LIBRARY
 
-win32 {
-    DESTDIR = $$PWD/../build-IPTest/platforminputcontexts
-    OBJECTS_DIR = $$DESTDIR/obj
-    MOC_DIR = $$DESTDIR/moc
-}
-unix{
+linux-g++{
     DESTDIR = $$[QT_INSTALL_PLUGINS]/platforminputcontexts
+}else{
+#存储位置为 downloadfiles
+    DESTDIR = /home/nop/DownLoadFiles/eRobo-100WeldSys/rootfs/opt/Qt5/plugins/platforminputcontexts
 }
-
 
 SOURCES += VirtualKeyboardplatforminputcontextplugin.cpp \
     VirtualKeyboardinputcontext.cpp \
@@ -29,12 +26,9 @@ SOURCES += VirtualKeyboardplatforminputcontextplugin.cpp \
     pinyininputmethod.cpp
 
 HEADERS += VirtualKeyboardplatforminputcontextplugin.h\
-        virtualkeyboard_global.h \
     VirtualKeyboardinputcontext.h \
     VirtualKeyboardkeyeventdispatcher.h \
     pinyininputmethod.h
-
-//INSTALLS += target
 
 OTHER_FILES += \
     InputPanel.qml \

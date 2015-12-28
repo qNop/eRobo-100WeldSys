@@ -5,7 +5,7 @@ echo "please enter the command Copy or Send."
 #读取输入命令
 read cmd 
 #读取命令文件
-echo "please enter the Dir Material or Rootfs."
+echo "please enter the Dir Material、Rootfs、Keyboard."
 read filename
 case  "$cmd" in
 #复制命令
@@ -122,6 +122,15 @@ case  "$cmd" in
 		else
 			echo "Styles is not found"
 		fi		
+		;;
+		Keyboard)
+		if [ -e /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/plugins/platforminputcontexts/libVirtualKeyboard.so ]
+		then
+			echo "Send libVirtualKeyboard.so to /opt/Qt5/plugins/platforminputcontexts"
+			cp -R /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/plugins/platforminputcontexts /opt/Qt5/plugins/
+		else	
+			echo "libVirtualKeyboard.so is not found"
+		fi
 		;;
 		*)
 			echo "filesname is not found ."

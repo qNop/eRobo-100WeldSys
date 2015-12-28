@@ -1,6 +1,5 @@
 import QtQuick 2.2
 import QtQuick.Window 2.2
-//import "."
 
 Rectangle {
     id:root
@@ -20,9 +19,6 @@ Rectangle {
     KeyModel {
         id:keyModel
     }
-//    FontLoader {
-//        source: "qrc:/font/FontAwesome.otf"
-//    }
     QtObject {
         id:pimpl
         property bool pinyinModifier: true

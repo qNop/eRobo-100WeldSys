@@ -5,7 +5,7 @@ echo "please enter the command Copy or Send."
 #读取输入命令
 read cmd 
 #读取命令文件
-echo "please enter the Dir Material or Rootfs."
+echo "please enter the Dir Material、Rootfs、Keyboard."
 read filename
 case  "$cmd" in
 #复制命令
@@ -111,17 +111,26 @@ case  "$cmd" in
 		if [ -e /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/Material ]
 		then
 			echo "Send Material to /opt/Qt5/qml"
-			cp -R -V /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/Material /opt/Qt5/qml
+			cp -R -v /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/Material /opt/Qt5/qml
 		else
 			echo "Material is not found"
 		fi
 		if [ -e /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/QtQuick/Controls/Styles/Material ]
 		then
 			echo "Send Styles to /opt/Qt5/qml/QtQuick/Controls/Styles"
-			cp -R /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/QtQuick/Controls/Styles/Material /opt/Qt5/qml/QtQuick/Controls/Styles	
+			cp -R -v /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/qml/QtQuick/Controls/Styles/Material /opt/Qt5/qml/QtQuick/Controls/Styles	
 		else
 			echo "Styles is not found"
 		fi		
+		;;
+		Keyboard)
+		if [ -e /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/plugins/platforminputcontexts/libVirtualKeyboard.so ]
+		then
+			echo "Send libVirtualKeyboard.so to /opt/Qt5/plugins/"
+			cp -R /mnt/eRobo-100WeldSys/rootfs/opt/Qt5/plugins/platforminputcontexts /opt/Qt5/plugins/
+		else	
+			echo "libVirtualKeyboard.so is not found"
+		fi
 		;;
 		*)
 			echo "filesname is not found ."
